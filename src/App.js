@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Calendar as CalendarIcon, Users, DollarSign, Mail, Plus, Settings, BarChart3, MapPin, UserCheck, CreditCard, Bell, X, Check, User, CheckCircle, Send, MessageCircle, Clock, Archive, Edit2, Copy, ChevronDown, ChevronUp, UserPlus, Trash2, Shield, AlertCircle, Search } from 'lucide-react';
+import { Calendar as CalendarIcon, Users, DollarSign, Mail, Plus, Settings, BarChart3, MapPin, UserCheck, CreditCard, Bell, X, Check, User, CheckCircle, Send, MessageCircle, Clock, Archive, Edit2, Copy, ChevronDown, ChevronUp, UserPlus, Trash2, Shield, AlertCircle, Search, Heart } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import Calendar from './Calendar';
 
@@ -490,6 +490,73 @@ const ChurchConnectDashboard = () => {
     sendVia: 'email'
   });
 
+  // State for payments and donations
+  const [paymentsTab, setPaymentsTab] = useState('overview');
+  const [showCreatePayment, setShowCreatePayment] = useState(false);
+  const [showCreateDonation, setShowCreateDonation] = useState(false);
+  const [paymentSearchTerm, setPaymentSearchTerm] = useState('');
+  const [paymentFilterStatus, setPaymentFilterStatus] = useState('all');
+  const [donationSearchTerm, setDonationSearchTerm] = useState('');
+  const [donationFilterType, setDonationFilterType] = useState('all');
+
+  // Sample payments data
+  const [payments, setPayments] = useState(() => loadFromLocalStorage('payments', [
+    {
+      id: 1,
+      eventId: 1,
+      eventName: 'Youth Summer Retreat',
+      attendeeId: 1,
+      attendeeName: 'John Smith',
+      attendeeCount: 2,
+      amount: 150.00,
+      paymentMethod: 'Credit Card',
+      status: 'completed',
+      date: '2025-01-15',
+      transactionId: 'txn_123456789'
+    },
+    {
+      id: 2,
+      eventId: 1,
+      eventName: 'Youth Summer Retreat',
+      attendeeId: 2,
+      attendeeName: 'Sarah Johnson',
+      attendeeCount: 1,
+      amount: 75.00,
+      paymentMethod: 'PayPal',
+      status: 'completed',
+      date: '2025-01-16',
+      transactionId: 'txn_123456790'
+    }
+  ]));
+
+  // Sample donations data
+  const [donations, setDonations] = useState(() => loadFromLocalStorage('donations', [
+    {
+      id: 1,
+      donorName: 'Anonymous Donor',
+      amount: 500.00,
+      campaign: 'Building Fund',
+      paymentMethod: 'Credit Card',
+      recurring: false,
+      anonymous: true,
+      message: 'In memory of our beloved community',
+      date: '2025-01-10',
+      transactionId: 'don_123456789'
+    },
+    {
+      id: 2,
+      donorName: 'Michael Brown',
+      amount: 250.00,
+      campaign: 'Youth Ministry',
+      paymentMethod: 'Bank Transfer',
+      recurring: true,
+      anonymous: false,
+      message: 'Supporting our youth programs',
+      date: '2025-01-12',
+      transactionId: 'don_123456790'
+    }
+  ]));
+
   // Message templates
   const messageTemplates = {
     'registration-confirmation': {
@@ -518,6 +585,14 @@ const ChurchConnectDashboard = () => {
   useEffect(() => {
     saveToLocalStorage('communications', communications);
   }, [communications]);
+
+  useEffect(() => {
+    saveToLocalStorage('payments', payments);
+  }, [payments]);
+
+  useEffect(() => {
+    saveToLocalStorage('donations', donations);
+  }, [donations]);
 
   // Handle form input changes
   const handleEventInputChange = useCallback((field, value) => {
@@ -586,6 +661,146 @@ const ChurchConnectDashboard = () => {
       }));
       setSelectedTemplate(templateKey);
     }
+  }, []);
+
+  // Payment utility functions
+  const getTotalRevenue = useCallback(() => {
+    const eventPayments = payments.reduce((sum, p) => sum + p.amount, 0);
+    const donationTotal = donations.reduce((sum, d) => sum + d.amount, 0);
+    return eventPayments + donationTotal;
+  }, [payments, donations]);
+
+  const getEventPaymentsTotal = useCallback(() => {
+    return payments.reduce((sum, p) => sum + p.amount, 0);
+  }, [payments]);
+
+  const getDonationsTotal = useCallback(() => {
+    return donations.reduce((sum, d) => sum + d.amount, 0);
+  }, [donations]);
+
+  const getActiveDonorsCount = useCallback(() => {
+    const uniqueDonors = new Set(donations.map(d => d.donorName));
+    return uniqueDonors.size;
+  }, [donations]);
+
+  const getRecentPaymentsActivity = useCallback(() => {
+    const allActivity = [
+      ...payments.map(p => ({
+        id: p.id,
+        type: 'payment',
+        description: `Payment for ${p.eventName}`,
+        eventName: p.eventName,
+        amount: p.amount,
+        status: p.status,
+        date: p.date
+      })),
+      ...donations.map(d => ({
+        id: d.id,
+        type: 'donation',
+        description: `Donation to ${d.campaign || 'General Fund'}`,
+        donorName: d.donorName,
+        amount: d.amount,
+        status: 'completed',
+        date: d.date
+      }))
+    ];
+    return allActivity.sort((a, b) => new Date(b.date) - new Date(a.date));
+  }, [payments, donations]);
+
+  const filterPayments = useCallback((payments, searchTerm, filterStatus) => {
+    return payments.filter(payment => {
+      const matchesSearch = payment.eventName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           payment.attendeeName.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesFilter = filterStatus === 'all' || payment.status === filterStatus;
+      return matchesSearch && matchesFilter;
+    });
+  }, []);
+
+  const filterDonations = useCallback((donations, searchTerm, filterType) => {
+    return donations.filter(donation => {
+      const matchesSearch = donation.donorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           (donation.campaign && donation.campaign.toLowerCase().includes(searchTerm.toLowerCase()));
+      const matchesFilter = filterType === 'all' || donation.campaign === filterType;
+      return matchesSearch && matchesFilter;
+    });
+  }, []);
+
+  const getPaymentStatusColor = useCallback((status) => {
+    switch (status) {
+      case 'completed': return '#10b981';
+      case 'pending': return '#f59e0b';
+      case 'failed': return '#dc2626';
+      case 'refunded': return '#6b7280';
+      default: return '#6b7280';
+    }
+  }, []);
+
+  const getMonthlyRevenueData = useCallback(() => {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return months.map((month, index) => ({
+      month,
+      amount: Math.random() * 5000 + 1000 // Mock data for now
+    }));
+  }, []);
+
+  const getTopDonors = useCallback(() => {
+    const donorTotals = {};
+    donations.forEach(donation => {
+      if (!donorTotals[donation.donorName]) {
+        donorTotals[donation.donorName] = 0;
+      }
+      donorTotals[donation.donorName] += donation.amount;
+    });
+    return Object.entries(donorTotals)
+      .map(([name, total]) => ({ name, total }))
+      .sort((a, b) => b.total - a.total);
+  }, [donations]);
+
+  const handleViewPaymentDetails = useCallback((payment) => {
+    alert(`Payment Details:\nEvent: ${payment.eventName}\nAttendee: ${payment.attendeeName}\nAmount: $${payment.amount}\nStatus: ${payment.status}`);
+  }, []);
+
+  const handleRefundPayment = useCallback((paymentId) => {
+    if (window.confirm('Are you sure you want to refund this payment?')) {
+      setPayments(prev => prev.map(p => 
+        p.id === paymentId ? { ...p, status: 'refunded' } : p
+      ));
+      alert('Payment refunded successfully!');
+    }
+  }, []);
+
+  const handleViewDonationDetails = useCallback((donation) => {
+    alert(`Donation Details:\nDonor: ${donation.donorName}\nAmount: $${donation.amount}\nCampaign: ${donation.campaign || 'General'}\nMessage: ${donation.message || 'None'}`);
+  }, []);
+
+  const handleSendThankYou = useCallback((donation) => {
+    alert(`Thank you email sent to ${donation.donorName} for their generous donation of $${donation.amount}!`);
+  }, []);
+
+  const exportPaymentsReport = useCallback(() => {
+    const csv = 'Event,Attendee,Amount,Status,Date\n' +
+                payments.map(p => `${p.eventName},${p.attendeeName},${p.amount},${p.status},${p.date}`).join('\n');
+    downloadCSV(csv, 'payments-report.csv');
+  }, [payments]);
+
+  const exportDonationsReport = useCallback(() => {
+    const csv = 'Donor,Campaign,Amount,Date\n' +
+                donations.map(d => `${d.donorName},${d.campaign || 'General'},${d.amount},${d.date}`).join('\n');
+    downloadCSV(csv, 'donations-report.csv');
+  }, [donations]);
+
+  const exportFinancialSummary = useCallback(() => {
+    alert('Financial summary PDF export would be generated here with charts and detailed breakdowns.');
+  }, []);
+
+  const downloadCSV = useCallback((csvContent, filename) => {
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    window.URL.revokeObjectURL(url);
   }, []);
 
   // Handle creating a new event
@@ -2103,36 +2318,566 @@ const ChurchConnectDashboard = () => {
         )}
 
         {activeTab === 'payments' && (
-          <div style={{ textAlign: 'center', paddingTop: '48px' }}>
-            <CreditCard style={{ height: '48px', width: '48px', color: '#6b7280', margin: '0 auto 16px' }} />
-            <h3 style={{ fontSize: '18px', marginBottom: '8px' }}>Payments & Donations</h3>
-            <p style={{ color: '#6b7280', marginBottom: '24px' }}>Coming soon - Stripe integration for processing payments</p>
-            
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-              <button style={{
-                backgroundColor: '#f3f4f6',
-                color: '#374151',
-                padding: '8px 16px',
-                borderRadius: '6px',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '14px'
-              }}>
-                <AlertCircle style={{ height: '14px', width: '14px', display: 'inline', marginRight: '4px' }} />
-                Configure Stripe
-              </button>
-              <button style={{
-                backgroundColor: '#f3f4f6',
-                color: '#374151',
-                padding: '8px 16px',
-                borderRadius: '6px',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '14px'
-              }}>
-                View Documentation
-              </button>
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+              <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0 }}>Payments & Donations</h2>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button
+                  onClick={() => setShowCreateDonation(true)}
+                  style={{
+                    backgroundColor: '#10b981',
+                    color: 'white',
+                    padding: '10px 16px',
+                    borderRadius: '6px',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  <Plus style={{ height: '16px', width: '16px' }} />
+                  New Donation
+                </button>
+                <button
+                  onClick={() => setShowCreatePayment(true)}
+                  style={{
+                    backgroundColor: '#3b82f6',
+                    color: 'white',
+                    padding: '10px 16px',
+                    borderRadius: '6px',
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  <Plus style={{ height: '16px', width: '16px' }} />
+                  Record Payment
+                </button>
+              </div>
             </div>
+
+            {/* Payment Tabs */}
+            <div style={{ marginBottom: '24px' }}>
+              <div style={{ display: 'flex', borderBottom: '1px solid #e5e7eb' }}>
+                {['overview', 'payments', 'donations', 'reports'].map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setPaymentsTab(tab)}
+                    style={{
+                      padding: '12px 24px',
+                      border: 'none',
+                      backgroundColor: 'transparent',
+                      cursor: 'pointer',
+                      borderBottom: paymentsTab === tab ? '2px solid #3b82f6' : 'none',
+                      color: paymentsTab === tab ? '#3b82f6' : '#6b7280',
+                      fontWeight: paymentsTab === tab ? 'bold' : 'normal'
+                    }}
+                  >
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Overview Tab */}
+            {paymentsTab === 'overview' && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+                <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                    <div style={{ backgroundColor: '#dbeafe', padding: '8px', borderRadius: '6px' }}>
+                      <DollarSign style={{ height: '20px', width: '20px', color: '#1d4ed8' }} />
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Total Revenue</p>
+                      <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#1d4ed8' }}>
+                        ${getTotalRevenue().toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                    <div style={{ backgroundColor: '#fef3c7', padding: '8px', borderRadius: '6px' }}>
+                      <CreditCard style={{ height: '20px', width: '20px', color: '#d97706' }} />
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Event Payments</p>
+                      <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#d97706' }}>
+                        ${getEventPaymentsTotal().toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                    <div style={{ backgroundColor: '#dcfce7', padding: '8px', borderRadius: '6px' }}>
+                      <Heart style={{ height: '20px', width: '20px', color: '#16a34a' }} />
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Donations</p>
+                      <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#16a34a' }}>
+                        ${getDonationsTotal().toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                    <div style={{ backgroundColor: '#fef2f2', padding: '8px', borderRadius: '6px' }}>
+                      <Users style={{ height: '20px', width: '20px', color: '#dc2626' }} />
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Active Donors</p>
+                      <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#dc2626' }}>
+                        {getActiveDonorsCount()}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Recent Activity */}
+              <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '20px' }}>Recent Activity</h3>
+                <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                  {getRecentPaymentsActivity().slice(0, 10).map((activity) => (
+                    <div key={activity.id} style={{ 
+                      display: 'flex', 
+                      justifyContent: 'space-between', 
+                      alignItems: 'center', 
+                      padding: '12px', 
+                      marginBottom: '8px',
+                      backgroundColor: '#f9fafb', 
+                      borderRadius: '6px',
+                      border: '1px solid #e5e7eb'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div style={{ 
+                          backgroundColor: activity.type === 'donation' ? '#dcfce7' : '#dbeafe',
+                          padding: '6px',
+                          borderRadius: '4px'
+                        }}>
+                          {activity.type === 'donation' ? (
+                            <Heart style={{ height: '14px', width: '14px', color: '#16a34a' }} />
+                          ) : (
+                            <CreditCard style={{ height: '14px', width: '14px', color: '#1d4ed8' }} />
+                          )}
+                        </div>
+                        <div>
+                          <p style={{ margin: '0 0 2px 0', fontWeight: 'bold' }}>{activity.description}</p>
+                          <p style={{ margin: 0, fontSize: '12px', color: '#6b7280' }}>
+                            {activity.donorName || activity.eventName} • {new Date(activity.date).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <p style={{ margin: '0 0 2px 0', fontWeight: 'bold', color: '#10b981' }}>
+                          +${activity.amount.toFixed(2)}
+                        </p>
+                        <p style={{ margin: 0, fontSize: '12px', color: '#6b7280' }}>
+                          {activity.status}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Payments Tab */}
+            {paymentsTab === 'payments' && (
+              <div>
+                <div style={{ marginBottom: '20px', display: 'flex', gap: '16px', alignItems: 'center' }}>
+                  <div style={{ position: 'relative', flex: 1 }}>
+                    <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', height: '16px', width: '16px', color: '#6b7280' }} />
+                    <input
+                      type="text"
+                      placeholder="Search payments by event or attendee..."
+                      value={paymentSearchTerm}
+                      onChange={(e) => setPaymentSearchTerm(e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '8px 12px 8px 40px',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontSize: '14px',
+                        boxSizing: 'border-box'
+                      }}
+                    />
+                  </div>
+                  <select
+                    value={paymentFilterStatus}
+                    onChange={(e) => setPaymentFilterStatus(e.target.value)}
+                    style={{
+                      padding: '8px 12px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '6px',
+                      fontSize: '14px',
+                      backgroundColor: 'white'
+                    }}
+                  >
+                    <option value="all">All Payments</option>
+                    <option value="completed">Completed</option>
+                    <option value="pending">Pending</option>
+                    <option value="failed">Failed</option>
+                    <option value="refunded">Refunded</option>
+                  </select>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '20px' }}>
+                  {filterPayments(payments, paymentSearchTerm, paymentFilterStatus).map(payment => (
+                    <div key={payment.id} style={{
+                      backgroundColor: 'white',
+                      borderRadius: '8px',
+                      padding: '20px',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                      border: '1px solid #e5e7eb'
+                    }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
+                        <div>
+                          <h4 style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 0 4px 0' }}>{payment.eventName}</h4>
+                          <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Attendee: {payment.attendeeName}</p>
+                        </div>
+                        <span style={{
+                          backgroundColor: getPaymentStatusColor(payment.status),
+                          color: 'white',
+                          padding: '4px 8px',
+                          borderRadius: '12px',
+                          fontSize: '10px',
+                          fontWeight: 'bold',
+                          textTransform: 'uppercase'
+                        }}>
+                          {payment.status}
+                        </span>
+                      </div>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '16px' }}>
+                        <div style={{ textAlign: 'center' }}>
+                          <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#10b981' }}>
+                            ${payment.amount.toFixed(2)}
+                          </p>
+                          <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Amount</p>
+                        </div>
+                        <div style={{ textAlign: 'center' }}>
+                          <p style={{ fontSize: '18px', width: '18px', fontWeight: 'bold', margin: '0', color: '#8b5cf6' }}>
+                            {payment.attendeeCount}
+                          </p>
+                          <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>People</p>
+                        </div>
+                        <div style={{ textAlign: 'center' }}>
+                          <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#f59e0b' }}>
+                            {payment.paymentMethod}
+                          </p>
+                          <p style={{ fontSize: '12px', color: '6b7280', margin: '2px 0 0 0' }}>Method</p>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <button
+                          onClick={() => handleViewPaymentDetails(payment)}
+                          style={{
+                            flex: 1,
+                            backgroundColor: '#3b82f6',
+                            color: 'white',
+                            padding: '8px',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '12px',
+                            fontWeight: 'bold'
+                          }}
+                        >
+                          View Details
+                        </button>
+                        {payment.status === 'completed' && (
+                          <button
+                            onClick={() => handleRefundPayment(payment.id)}
+                            style={{
+                              backgroundColor: '#dc2626',
+                              color: 'white',
+                              padding: '8px',
+                              border: 'none',
+                              borderRadius: '4px',
+                              cursor: 'pointer',
+                              fontSize: '12px',
+                              fontWeight: 'bold'
+                            }}
+                          >
+                            Refund
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Donations Tab */}
+            {paymentsTab === 'donations' && (
+              <div>
+                <div style={{ marginBottom: '20px', display: 'flex', gap: '16px', alignItems: 'center' }}>
+                  <div style={{ position: 'relative', flex: 1 }}>
+                    <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', height: '16px', width: '16px', color: '#6b7280' }} />
+                    <input
+                      type="text"
+                      placeholder="Search donations by donor or campaign..."
+                      value={donationSearchTerm}
+                      onChange={(e) => setDonationSearchTerm(e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '8px 12px 8px 40px',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontSize: '14px',
+                        boxSizing: 'border-box'
+                      }}
+                    />
+                  </div>
+                  <select
+                    value={donationFilterType}
+                    onChange={(e) => setDonationFilterType(e.target.value)}
+                    style={{
+                      padding: '8px 12px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '6px',
+                      fontSize: '14px',
+                      backgroundColor: 'white'
+                    }}
+                  >
+                    <option value="all">All Types</option>
+                    <option value="general">General</option>
+                    <option value="campaign">Campaign</option>
+                    <option value="memorial">Memorial</option>
+                    <option value="recurring">Recurring</option>
+                  </select>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '20px' }}>
+                  {filterDonations(donations, donationSearchTerm, donationFilterType).map(donation => (
+                    <div key={donation.id} style={{
+                      backgroundColor: 'white',
+                      borderRadius: '8px',
+                      padding: '20px',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                      border: '1px solid #e5e7eb'
+                    }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
+                        <div>
+                          <h4 style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 0 4px 0' }}>{donation.donorName}</h4>
+                          <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
+                            {donation.campaign || 'General Donation'}
+                          </p>
+                        </div>
+                        <span style={{
+                          backgroundColor: donation.recurring ? '#8b5cf6' : '#10b981',
+                          color: 'white',
+                          padding: '4px 8px',
+                          borderRadius: '12px',
+                          fontSize: '10px',
+                          fontWeight: 'bold',
+                          textTransform: 'uppercase'
+                        }}>
+                          {donation.recurring ? 'Recurring' : 'One-time'}
+                        </span>
+                      </div>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '16px' }}>
+                        <div style={{ textAlign: 'center' }}>
+                          <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#10b981' }}>
+                            ${donation.amount.toFixed(2)}
+                          </p>
+                          <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Amount</p>
+                        </div>
+                        <div style={{ textAlign: 'center' }}>
+                          <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#8b5cf6' }}>
+                            {donation.paymentMethod}
+                          </p>
+                          <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Method</p>
+                        </div>
+                        <div style={{ textAlign: 'center' }}>
+                          <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#f59e0b' }}>
+                            {donation.anonymous ? 'Anonymous' : 'Named'}
+                          </p>
+                          <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Display</p>
+                        </div>
+                      </div>
+
+                      {donation.message && (
+                        <div style={{ 
+                          backgroundColor: '#f9fafb', 
+                          padding: '12px', 
+                          borderRadius: '6px', 
+                          marginBottom: '16px',
+                          border: '1px solid #e5e7eb'
+                        }}>
+                          <p style={{ margin: 0, fontSize: '14px', fontStyle: 'italic', color: '#6b7280' }}>
+                            "{donation.message}"
+                          </p>
+                        </div>
+                      )}
+
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <button
+                          onClick={() => handleViewDonationDetails(donation)}
+                          style={{
+                            flex: 1,
+                            backgroundColor: '#3b82f6',
+                            color: 'white',
+                            padding: '8px',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '12px',
+                            fontWeight: 'bold'
+                          }}
+                        >
+                          View Details
+                        </button>
+                        <button
+                          onClick={() => handleSendThankYou(donation)}
+                          style={{
+                            backgroundColor: '#10b981',
+                            color: 'white',
+                            padding: '8px',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '12px',
+                            fontWeight: 'bold'
+                          }}
+                        >
+                          Thank You
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Reports Tab */}
+            {paymentsTab === 'reports' && (
+              <div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+                  <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                    <h4 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '16px' }}>Monthly Revenue</h4>
+                    <div style={{ height: '200px', display: 'flex', alignItems: 'end', gap: '4px' }}>
+                      {getMonthlyRevenueData().map((month, index) => (
+                        <div key={index} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                          <div 
+                            style={{ 
+                              backgroundColor: '#3b82f6', 
+                              width: '100%', 
+                              height: `${(month.amount / Math.max(...getMonthlyRevenueData().map(m => m.amount))) * 150}px`,
+                              borderRadius: '4px 4px 0 0'
+                            }}
+                          />
+                          <p style={{ fontSize: '10px', margin: '4px 0 0 0', color: '#6b7280' }}>
+                            {month.month}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                    <h4 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '16px' }}>Top Donors</h4>
+                    <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                      {getTopDonors().slice(0, 5).map((donor, index) => (
+                        <div key={donor.name} style={{ 
+                          display: 'flex', 
+                          justifyContent: 'space-between', 
+                          alignItems: 'center', 
+                          padding: '8px 0',
+                          borderBottom: index < 4 ? '1px solid #f3f4f6' : 'none'
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ 
+                              backgroundColor: '#3b82f6', 
+                              color: 'white', 
+                              width: '20px', 
+                              height: '20px', 
+                              borderRadius: '50%', 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              justifyContent: 'center',
+                              fontSize: '12px',
+                              fontWeight: 'bold'
+                            }}>
+                              {index + 1}
+                            </span>
+                            <span style={{ fontWeight: 'bold' }}>{donor.name}</span>
+                          </div>
+                          <span style={{ color: '#10b981', fontWeight: 'bold' }}>
+                            ${donor.total.toFixed(2)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                  <h4 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '16px' }}>Export Options</h4>
+                  <div style={{ display: 'flex', gap: '12px' }}>
+                    <button
+                      onClick={() => exportPaymentsReport()}
+                      style={{
+                        backgroundColor: '#3b82f6',
+                        color: 'white',
+                        padding: '10px 16px',
+                        border: 'none',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      Export Payments CSV
+                    </button>
+                    <button
+                      onClick={() => exportDonationsReport()}
+                      style={{
+                        backgroundColor: '#10b981',
+                        color: 'white',
+                        padding: '10px 16px',
+                        border: 'white',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      Export Donations CSV
+                    </button>
+                    <button
+                      onClick={() => exportFinancialSummary()}
+                      style={{
+                        backgroundColor: '#8b5cf6',
+                        color: 'white',
+                        padding: '10px 16px',
+                        border: 'none',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      Export Summary PDF
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -2710,7 +3455,7 @@ const ChurchConnectDashboard = () => {
               ))}
 
               <div style={{ border: '1px solid #d1d5db', borderRadius: '4px', padding: '12px' }}>
-                <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '8px }}>
                   <input 
                     type="text" 
                     value={newGroupMember.name} 
