@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Calendar, Users, DollarSign, Mail, Plus, Settings, BarChart3, MapPin, UserCheck, CreditCard, Bell, X, Check, User, CheckCircle, Send, MessageCircle, Clock, Archive, Edit2, Copy, ChevronDown, ChevronUp, UserPlus, Trash2, Shield, AlertCircle, Search } from 'lucide-react';
+import { Calendar as CalendarIcon, Users, DollarSign, Mail, Plus, Settings, BarChart3, MapPin, UserCheck, CreditCard, Bell, X, Check, User, CheckCircle, Send, MessageCircle, Clock, Archive, Edit2, Copy, ChevronDown, ChevronUp, UserPlus, Trash2, Shield, AlertCircle, Search } from 'lucide-react';
 import emailjs from '@emailjs/browser';
+import Calendar from './Calendar';
 
 // Utility functions for data persistence
 const saveToLocalStorage = (key, data) => {
@@ -1087,7 +1088,7 @@ const ChurchConnectDashboard = () => {
             
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '24px' }}>
               <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                <Calendar style={{ height: '24px', width: '24px', color: '#3b82f6', marginBottom: '8px' }} />
+                <CalendarIcon style={{ height: '24px', width: '24px', color: '#3b82f6', marginBottom: '8px' }} />
                 <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '0' }}>
                   {events.filter(e => e.status === 'active').length}
                 </p>
@@ -1109,7 +1110,7 @@ const ChurchConnectDashboard = () => {
               </div>
             </div>
 
-            <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+            <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', marginBottom: '20px' }}>
               <h3 style={{ fontSize: '18px', marginBottom: '16px' }}>Recent Communications</h3>
               {communications.slice(0, 3).map((item) => (
                 <div key={item.id} style={{ padding: '12px', backgroundColor: '#f9fafb', borderRadius: '6px', marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
@@ -1123,6 +1124,9 @@ const ChurchConnectDashboard = () => {
                 </div>
               ))}
             </div>
+            
+            {/* Event Calendar */}
+            <Calendar events={events} volunteers={volunteers} attendees={attendees} />
           </div>
         )}
 
