@@ -87,50 +87,53 @@ const mockEmailService = {
 
     console.log('📧 Attempting to send email:', { to, subject, messageLength: message.length });
     
-    // Try real EmailJS first, fallback to mock
+    // Use real EmailJS since it's now configured
     try {
       return await sendEmailViaEmailJS(to, subject, message, from);
     } catch (error) {
-      console.log('🔄 Using mock email service as fallback...');
-      // Simulate email sending with a delay
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          try {
-            console.log('📧 Mock Email Sent Successfully:', { 
-              to, 
-              subject, 
-              messagePreview: message.substring(0, 100) + '...',
-              timestamp: new Date().toISOString()
-            });
-            resolve({ success: true, messageId: Date.now() });
-          } catch (error) {
-            console.error('❌ Email sending failed:', error);
-            reject(error);
-          }
-        }, 1000);
-      });
+      console.log('🔄 EmailJS failed, using fallback service...');
+      return await sendEmailViaSimpleService(to, subject, message, from);
     }
   }
 };
 
-// EmailJS integration - DISABLED until configured
+// EmailJS integration - NOW CONFIGURED!
 const emailJSConfig = {
-  serviceId: null, // Set to your EmailJS service ID when ready
-  templateId: null, // Set to your EmailJS template ID when ready
-  userId: null // Set to your EmailJS user ID when ready
+  serviceId: 'service_zdm2o1e', // Your real EmailJS service ID
+  templateId: 'template_6b28q4u', // Your real EmailJS template ID
+  userId: 'Dy9ee3RF09BGyTeSV' // Your real EmailJS user ID
 };
 
-// Initialize EmailJS only if configured
-if (emailJSConfig.userId) {
-  emailjs.init(emailJSConfig.userId);
-}
+// Initialize EmailJS with your credentials
+emailjs.init(emailJSConfig.userId);
 
 const sendEmailViaEmailJS = async (to, subject, message, from = 'church@example.com') => {
-  // EmailJS is not configured yet, so we'll use a working email solution
-  console.log('📧 EmailJS not configured, using working email solution...');
+  // EmailJS is now configured! Let's use it
+  console.log('📧 EmailJS configured, attempting to send real email...');
   
-  // For now, we'll use a simple email service that actually works
-  return await sendEmailViaSimpleService(to, subject, message, from);
+  try {
+    console.log('📧 Sending email via EmailJS:', { to, subject, messageLength: message.length });
+    
+    const templateParams = {
+      to_email: to,
+      subject: subject,
+      message: message,
+      from_email: from
+    };
+
+    const result = await emailjs.send(
+      emailJSConfig.serviceId,
+      emailJSConfig.templateId,
+      templateParams
+    );
+
+    console.log('✅ Real email sent successfully via EmailJS:', result);
+    return { success: true, messageId: result.text };
+  } catch (error) {
+    console.error('❌ EmailJS sending failed:', error);
+    console.log('🔄 Falling back to simple service...');
+    return await sendEmailViaSimpleService(to, subject, message, from);
+  }
 };
 
 // Simple email service that actually works
