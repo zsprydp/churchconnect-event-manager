@@ -1046,7 +1046,7 @@ const ChurchConnectDashboard = () => {
         <nav style={{ marginTop: '24px' }}>
           {[
             { id: 'dashboard', name: 'Dashboard', icon: BarChart3 },
-            { id: 'events', name: 'Events', icon: Calendar },
+            { id: 'events', name: 'Events', icon: CalendarIcon },
             { id: 'volunteers', name: 'Volunteers', icon: Users },
             { id: 'attendees', name: 'Attendees', icon: User },
             { id: 'payments', name: 'Payments', icon: CreditCard },
@@ -1087,7 +1087,15 @@ const ChurchConnectDashboard = () => {
             <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Event Calendar</h2>
             
             {/* Event Calendar - Main Focus */}
-            <Calendar events={events} volunteers={volunteers} attendees={attendees} />
+            <Calendar 
+              events={events} 
+              volunteers={volunteers} 
+              attendees={attendees} 
+              onEventClick={(event) => {
+                handleManageEvent(event);
+                setActiveTab('events');
+              }}
+            />
           </div>
         )}
 
@@ -1228,7 +1236,7 @@ const ChurchConnectDashboard = () => {
                         )}
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
-                        <Calendar style={{ height: '16px', width: '16px', marginRight: '6px', color: '#6b7280' }} />
+                        <CalendarIcon style={{ height: '16px', width: '16px', marginRight: '6px', color: '#6b7280' }} />
                         <span style={{ fontSize: '14px', color: '#6b7280' }}>
                           {formatEventDates(event)}
                         </span>
@@ -2622,7 +2630,7 @@ const ChurchConnectDashboard = () => {
 
             <div style={{ marginBottom: '24px', padding: '16px', backgroundColor: '#f9fafb', borderRadius: '8px' }}>
               <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#6b7280' }}>
-                <Calendar style={{ height: '16px', width: '16px', display: 'inline', marginRight: '6px' }} />
+                <CalendarIcon style={{ height: '16px', width: '16px', display: 'inline', marginRight: '6px' }} />
                 {formatEventDates(selectedEvent)}
               </p>
               {selectedEvent.location && (
@@ -2909,7 +2917,7 @@ const ChurchConnectDashboard = () => {
 
             <div style={{ marginBottom: '24px', padding: '16px', backgroundColor: '#f9fafb', borderRadius: '8px' }}>
               <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#6b7280' }}>
-                <Calendar style={{ height: '16px', width: '16px', display: 'inline', marginRight: '6px' }} />
+                <CalendarIcon style={{ height: '16px', width: '16px', display: 'inline', marginRight: '6px' }} />
                 {formatEventDates(selectedEvent)}
               </p>
               {selectedEvent.location && (

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar as LucideCalendar, Clock } from 'lucide-react';
 
-const Calendar = ({ events = [], volunteers = [], attendees = [] }) => {
+const Calendar = ({ events = [], volunteers = [], attendees = [], onEventClick }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   
   // Get current month and year
   const currentMonth = currentDate.getMonth();
-  const currentYear = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
   
   // Navigate to previous month
   const goToPreviousMonth = () => {
@@ -91,6 +91,52 @@ const Calendar = ({ events = [], volunteers = [], attendees = [] }) => {
     const event = events.find(e => e && e.id === eventId);
     if (!event || !event.volunteers) return 0;
     return event.volunteers.length;
+  };
+
+  // Format event time for display
+  const formatEventTime = (event) => {
+    if (!event.time) return '';
+    
+    try {
+      // Handle different time formats
+      if (typeof event.time === 'string') {
+        // If it's already a formatted time string
+        if (event.time.includes(':')) {
+          return event.time;
+        }
+        // If it's a timestamp
+        const time = new Date(event.time);
+        if (!isNaN(time.getTime())) {
+          return time.toLocaleTimeString('en-US', { 
+            hour: 'numeric', 
+            minute: '2-digit',
+            hour12: true 
+          });
+        }
+      }
+      
+      // If it's a Date object
+      if (event.time instanceof Date) {
+        return event.time.toLocaleTimeString('en-US', { 
+          hour: 'numeric', 
+          minute: '2-digit',
+          hour12: true 
+        });
+      }
+      
+      return '';
+    } catch (error) {
+      console.error('Error formatting event time:', error);
+      return '';
+    }
+  };
+
+  // Handle event click
+  const handleEventClick = (event, e) => {
+    e.stopPropagation();
+    if (onEventClick) {
+      onEventClick(event);
+    }
   };
   
   // Generate calendar grid
@@ -227,18 +273,50 @@ const Calendar = ({ events = [], volunteers = [], attendees = [] }) => {
                 
                 {/* Events */}
                 {cell.events.map((event, eventIndex) => (
-                  <div key={event.id} style={{
-                    backgroundColor: '#dbeafe',
-                    border: '1px solid #3b82f6',
-                    borderRadius: '4px',
-                    padding: '4px',
-                    marginBottom: '2px',
-                    fontSize: '10px',
-                    position: 'relative'
-                  }}>
+                  <div 
+                    key={event.id} 
+                    onClick={(e) => handleEventClick(event, e)}
+                    style={{
+                      backgroundColor: '#dbeafe',
+                      border: '1px solid #3b82f6',
+                      borderRadius: '4px',
+                      padding: '4px',
+                      marginBottom: '2px',
+                      fontSize: '10px',
+                      position: 'relative',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = '#bfdbfe';
+                      e.target.style.transform = 'scale(1.02)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = '#dbeafe';
+                      e.target.style.transform = 'scale(1)';
+                    }}
+                    title={`Click to view ${event.name}`}
+                  >
                     <div style={{ fontWeight: 'bold', color: '#1d4ed8', marginBottom: '2px' }}>
                       {event.name}
                     </div>
+                    
+                    {/* Event Time - Middle Bottom */}
+                    {event.time && (
+                      <div style={{ 
+                        textAlign: 'center', 
+                        marginBottom: '2px',
+                        fontSize: '8px',
+                        color: '#6b7280',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '2px'
+                      }}>
+                        <Clock style={{ height: '8px', width: '8px' }} />
+                        {formatEventTime(event)}
+                      </div>
+                    )}
                     
                     {/* Metrics */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '8px' }}>
