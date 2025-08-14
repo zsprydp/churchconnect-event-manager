@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
 
-const Calendar = ({ events, volunteers, attendees }) => {
+const Calendar = ({ events = [], volunteers = [], attendees = [] }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   
   // Get current month and year
@@ -54,8 +54,12 @@ const Calendar = ({ events, volunteers, attendees }) => {
   
   // Get events for a specific date
   const getEventsForDate = (date) => {
+    if (!events || !Array.isArray(events)) return [];
+    
     const dateString = date.toISOString().split('T')[0];
     return events.filter(event => {
+      if (!event || !event.dates) return false;
+      
       if (event.dateType === 'single') {
         return event.dates.includes(dateString);
       } else if (event.dateType === 'multiple') {
@@ -71,14 +75,21 @@ const Calendar = ({ events, volunteers, attendees }) => {
   
   // Get total registrants for an event
   const getTotalRegistrants = (eventId) => {
-    const eventAttendees = attendees.filter(a => a.eventId === eventId);
-    return eventAttendees.reduce((sum, a) => sum + 1 + a.groupMembers.length, 0);
+    if (!attendees || !Array.isArray(attendees)) return 0;
+    
+    const eventAttendees = attendees.filter(a => a && a.eventId === eventId);
+    return eventAttendees.reduce((sum, a) => {
+      if (!a || !a.groupMembers) return sum + 1;
+      return sum + 1 + (a.groupMembers.length || 0);
+    }, 0);
   };
   
   // Get active volunteers for an event
   const getActiveVolunteers = (eventId) => {
-    const event = events.find(e => e.id === eventId);
-    if (!event) return 0;
+    if (!events || !Array.isArray(events)) return 0;
+    
+    const event = events.find(e => e && e.id === eventId);
+    if (!event || !event.volunteers) return 0;
     return event.volunteers.length;
   };
   
@@ -101,6 +112,16 @@ const Calendar = ({ events, volunteers, attendees }) => {
     
     return grid;
   };
+  
+  // Add safety check for props
+  if (!events || !volunteers || !attendees) {
+    return (
+      <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+        <h3 style={{ fontSize: '18px', fontWeight: 'bold', margin: 0 }}>Event Calendar</h3>
+        <p style={{ color: '#6b7280', marginTop: '8px' }}>Loading calendar data...</p>
+      </div>
+    );
+  }
   
   const calendarGrid = generateCalendarGrid();
   const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
