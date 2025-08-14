@@ -301,8 +301,8 @@ const Calendar = ({ events = [], volunteers = [], attendees = [], onEventClick }
                       {event.name}
                     </div>
                     
-                    {/* Event Time - Middle Bottom */}
-                    {event.time && (
+                    {/* Event Time - Between Name and Metrics */}
+                    {event.startTime && event.endTime && (
                       <div style={{ 
                         textAlign: 'center', 
                         marginBottom: '2px',
@@ -314,7 +314,7 @@ const Calendar = ({ events = [], volunteers = [], attendees = [], onEventClick }
                         gap: '2px'
                       }}>
                         <Clock style={{ height: '8px', width: '8px' }} />
-                        {formatEventTime(event)}
+                        {event.startTime}-{event.endTime}
                       </div>
                     )}
                     

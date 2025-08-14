@@ -242,13 +242,46 @@ This is an automated message from ChurchConnect Event Manager.`
 const ChurchConnectDashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   
+  // Notification system
+  const [notifications, setNotifications] = useState([]);
+  const [showCreateTemplate, setShowCreateTemplate] = useState(false);
+  const [showCreateEventTemplate, setShowCreateEventTemplate] = useState(false);
+  const [newEventTemplate, setNewEventTemplate] = useState({
+    name: '',
+    eventType: '',
+    customQuestions: []
+  });
+  const [newTemplate, setNewTemplate] = useState({
+    name: '',
+    subject: '',
+    message: '',
+    type: 'announcement'
+  });
+
+  // Add notification function
+  const addNotification = useCallback((message, type = 'success') => {
+    const id = Date.now();
+    const notification = { id, message, type, timestamp: new Date() };
+    setNotifications(prev => [...prev, notification]);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+      setNotifications(prev => prev.filter(n => n.id !== id));
+    }, 5000);
+  }, []);
+
+  // Remove notification function
+  const removeNotification = useCallback((id) => {
+    setNotifications(prev => prev.filter(n => n.id !== id));
+  }, []);
+  
   // Search and filter states
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [formErrors, setFormErrors] = useState({});
   
   // Event templates
-  const eventTemplates = {
+  const [eventTemplates, setEventTemplates] = useState({
     'dinner': {
       name: 'Community Dinner',
       eventType: 'dinner',
@@ -280,7 +313,7 @@ const ChurchConnectDashboard = () => {
         { id: 'childcare', question: 'Children attending?', type: 'yes/no', required: false }
       ]
     }
-  };
+  });
 
   // State for events with enhanced date handling
   const [events, setEvents] = useState(() => loadFromLocalStorage('events', [
@@ -289,6 +322,8 @@ const ChurchConnectDashboard = () => {
       name: 'Youth Summer Retreat',
       dateType: 'single',
       dates: ['2025-08-15'],
+      startTime: '08:00',
+      endTime: '22:00',
       recurrencePattern: null,
       location: 'Camp Pine Ridge',
       capacity: 60,
@@ -308,6 +343,8 @@ const ChurchConnectDashboard = () => {
       name: 'Community Food Drive',
       dateType: 'recurring',
       dates: [],
+      startTime: '09:00',
+      endTime: '17:00',
       recurrencePattern: '4th Tuesday of each month',
       location: 'Church Fellowship Hall',
       capacity: 50,
@@ -326,6 +363,8 @@ const ChurchConnectDashboard = () => {
       name: 'Easter Celebration',
       dateType: 'single',
       dates: ['2025-04-20'],
+      startTime: '10:00',
+      endTime: '14:00',
       recurrencePattern: null,
       location: 'Main Sanctuary',
       capacity: 200,
@@ -439,6 +478,7 @@ const ChurchConnectDashboard = () => {
   const [showRegistration, setShowRegistration] = useState(false);
   const [showSendMessage, setShowSendMessage] = useState(false);
   const [showEditAttendee, setShowEditAttendee] = useState(false);
+  const [showEditEvent, setShowEditEvent] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedAttendee, setSelectedAttendee] = useState(null);
   const [manageEventTab, setManageEventTab] = useState('volunteers');
@@ -451,6 +491,8 @@ const ChurchConnectDashboard = () => {
     name: '',
     dateType: 'single',
     dates: [''],
+    startTime: '09:00',
+    endTime: '17:00',
     recurrencePattern: '',
     location: '',
     capacity: '',
@@ -498,6 +540,13 @@ const ChurchConnectDashboard = () => {
   const [paymentFilterStatus, setPaymentFilterStatus] = useState('all');
   const [donationSearchTerm, setDonationSearchTerm] = useState('');
   const [donationFilterType, setDonationFilterType] = useState('all');
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [paymentFormData, setPaymentFormData] = useState({
+    amount: '',
+    paymentMethod: 'stripe',
+    description: '',
+    recipientEmail: ''
+  });
 
   // Sample payments data
   const [payments, setPayments] = useState(() => loadFromLocalStorage('payments', [
@@ -568,6 +617,8 @@ const ChurchConnectDashboard = () => {
       message: 'Hi {name},\n\nThis is a reminder that you\'re volunteering for {eventName} tomorrow.\n\nPlease arrive 30 minutes early at {eventLocation}.\n\nThank you for your service!\n\nBlessings,\nChurch Team'
     }
   };
+
+  const [editingEvent, setEditingEvent] = useState(null);
 
   // Save data to localStorage whenever it changes
   useEffect(() => {
@@ -803,6 +854,58 @@ const ChurchConnectDashboard = () => {
     window.URL.revokeObjectURL(url);
   }, []);
 
+  // Payment processing functions
+  const processPayment = useCallback(async (paymentData) => {
+    try {
+      // This would integrate with your chosen payment gateway
+      console.log('Processing payment:', paymentData);
+      
+      // Simulate payment processing
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // For now, create a mock payment record
+      const newPayment = {
+        id: Date.now(),
+        eventId: null,
+        eventName: 'Direct Payment',
+        attendeeId: null,
+        attendeeName: 'Direct Transfer',
+        attendeeCount: 1,
+        amount: parseFloat(paymentData.amount),
+        paymentMethod: paymentData.paymentMethod,
+        status: 'completed',
+        date: new Date().toISOString().split('T')[0],
+        transactionId: `txn_${Date.now()}`,
+        description: paymentData.description,
+        recipientEmail: paymentData.recipientEmail
+      };
+      
+      setPayments(prev => [newPayment, ...prev]);
+      setShowPaymentForm(false);
+      setPaymentFormData({ amount: '', paymentMethod: 'stripe', description: '', recipientEmail: '' });
+      
+      alert(`Payment processed successfully! Transaction ID: ${newPayment.transactionId}`);
+      
+      // In real implementation, this would:
+      // 1. Send payment to Stripe/PayPal/Square
+      // 2. Transfer funds to recipient account
+      // 3. Update payment status based on gateway response
+      
+    } catch (error) {
+      console.error('Payment processing failed:', error);
+      alert('Payment failed. Please try again.');
+    }
+  }, []);
+
+  const handlePaymentFormSubmit = useCallback((e) => {
+    e.preventDefault();
+    if (!paymentFormData.amount || !paymentFormData.description) {
+      alert('Please fill in all required fields');
+      return;
+    }
+    processPayment(paymentFormData);
+  }, [paymentFormData, processPayment]);
+
   // Handle creating a new event
   const handleCreateEvent = useCallback(() => {
     // Validate form
@@ -821,6 +924,8 @@ const ChurchConnectDashboard = () => {
         name: newEvent.name,
         dateType: newEvent.dateType,
         dates: newEvent.dates.filter(d => d),
+        startTime: newEvent.startTime,
+        endTime: newEvent.endTime,
         recurrencePattern: newEvent.recurrencePattern,
         location: newEvent.location,
         capacity: parseInt(newEvent.capacity) || 50,
@@ -835,18 +940,56 @@ const ChurchConnectDashboard = () => {
       
       setEvents(prev => [...prev, event]);
       setNewEvent({
-        name: '', dateType: 'single', dates: [''], recurrencePattern: '',
-        location: '', capacity: '', registrationFee: '', donationGoal: '',
+        name: '', dateType: 'single', dates: [''], startTime: '09:00', endTime: '17:00',
+        recurrencePattern: '', location: '', capacity: '', registrationFee: '', donationGoal: '',
         eventType: '', customQuestions: []
       });
       setSelectedTemplate('');
       setShowCreateEvent(false);
       setActiveTab('events');
-      alert('Event created successfully!');
+      addNotification('Event created successfully!', 'success');
     } else {
       alert('Please fill in at least the Event Name');
     }
-  }, [newEvent]);
+  }, [newEvent, addNotification]);
+
+  // Handle editing an event
+  const handleEditEvent = useCallback((event) => {
+    setEditingEvent({
+      ...event,
+      dates: event.dates.length > 0 ? event.dates : ['']
+    });
+    setShowEditEvent(true);
+  }, []);
+
+  // Handle updating an event
+  const handleUpdateEvent = useCallback(() => {
+    if (!editingEvent) return;
+    
+    // Validate form
+    const errors = validateEventForm(editingEvent);
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      alert('Please fix the following errors:\n' + Object.values(errors).join('\n'));
+      return;
+    }
+    
+    setFormErrors({}); // Clear errors
+    
+    setEvents(prev => prev.map(event => 
+      event.id === editingEvent.id ? {
+        ...editingEvent,
+        dates: editingEvent.dates.filter(d => d),
+        capacity: parseInt(editingEvent.capacity) || 50,
+        registrationFee: parseFloat(editingEvent.registrationFee) || 0,
+        donationGoal: parseFloat(editingEvent.donationGoal) || 0
+      } : event
+    ));
+    
+    setShowEditEvent(false);
+    setEditingEvent(null);
+    alert('Event updated successfully!');
+  }, [editingEvent]);
 
   // Handle closing/archiving an event
   const handleEventStatusChange = useCallback((eventId, newStatus) => {
@@ -888,7 +1031,7 @@ const ChurchConnectDashboard = () => {
       setVolunteers(prev => [...prev, volunteer]);
       setNewVolunteer({ name: '', email: '', phone: '', role: '', securityLevel: 'volunteer' });
       setShowAddVolunteer(false);
-      alert('Volunteer added successfully!');
+              addNotification('Volunteer added successfully!', 'success');
     } else {
       alert('Please fill in the required fields: Name and Email');
     }
@@ -1188,16 +1331,26 @@ const ChurchConnectDashboard = () => {
 
   // Helper function to format event dates
   const formatEventDates = (event) => {
+    let dateString = '';
+    
     if (event.dateType === 'recurring') {
-      return event.recurrencePattern;
+      dateString = event.recurrencePattern;
     } else if (event.dateType === 'ongoing') {
-      return 'Ongoing';
+      dateString = 'Ongoing';
     } else if (event.dates.length === 1) {
-      return new Date(event.dates[0]).toLocaleDateString();
+      dateString = new Date(event.dates[0]).toLocaleDateString();
     } else if (event.dates.length > 1) {
-      return `Multiple dates (${event.dates.length})`;
+      dateString = `Multiple dates (${event.dates.length})`;
+    } else {
+      dateString = 'No date set';
     }
-    return 'No date set';
+    
+    // Add time information if available
+    if (event.startTime && event.endTime) {
+      dateString += ` • ${event.startTime} - ${event.endTime}`;
+    }
+    
+    return dateString;
   };
 
   // Function to send volunteer reminders
@@ -1251,6 +1404,59 @@ const ChurchConnectDashboard = () => {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', display: 'flex' }}>
+      {/* Notification System */}
+      <div style={{
+        position: 'fixed',
+        top: '20px',
+        right: '20px',
+        zIndex: 1000,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px'
+      }}>
+        {notifications.map(notification => (
+          <div
+            key={notification.id}
+            style={{
+              backgroundColor: notification.type === 'success' ? '#dcfce7' : 
+                             notification.type === 'error' ? '#fef2f2' : 
+                             notification.type === 'warning' ? '#fef3c7' : '#dbeafe',
+              color: notification.type === 'success' ? '#166534' : 
+                     notification.type === 'error' ? '#dc2626' : 
+                     notification.type === 'warning' ? '#d97706' : '#1d4ed8',
+              border: `1px solid ${notification.type === 'success' ? '#bbf7d0' : 
+                                   notification.type === 'error' ? '#fecaca' : 
+                                   notification.type === 'warning' ? '#fed7aa' : '#bfdbfe'}`,
+              borderRadius: '8px',
+              padding: '12px 16px',
+              minWidth: '300px',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              animation: 'slideIn 0.3s ease-out'
+            }}
+          >
+            <span style={{ fontSize: '14px', fontWeight: '500' }}>
+              {notification.message}
+            </span>
+            <button
+              onClick={() => removeNotification(notification.id)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'inherit',
+                cursor: 'pointer',
+                padding: '4px',
+                marginLeft: '12px'
+              }}
+            >
+              <X style={{ height: '16px', width: '16px' }} />
+            </button>
+          </div>
+        ))}
+      </div>
+      
       {/* Sidebar */}
       <div style={{ width: '256px', backgroundColor: 'white', borderRight: '1px solid #e5e7eb' }}>
         <div style={{ padding: '24px' }}>
@@ -1456,6 +1662,14 @@ const ChurchConnectDashboard = () => {
                           {formatEventDates(event)}
                         </span>
                       </div>
+                      {event.startTime && event.endTime && (
+                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
+                          <Clock style={{ height: '16px', width: '16px', marginRight: '6px', color: '#6b7280' }} />
+                          <span style={{ fontSize: '14px', color: '#6b7280' }}>
+                            {event.startTime} - {event.endTime}
+                          </span>
+                        </div>
+                      )}
                       {event.location && (
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                           <MapPin style={{ height: '16px', width: '16px', marginRight: '6px', color: '#6b7280' }} />
@@ -1484,12 +1698,6 @@ const ChurchConnectDashboard = () => {
                         <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Fee</p>
                       </div>
                       <div style={{ textAlign: 'center' }}>
-                        <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: spotsLeft <= 5 ? '#dc2626' : '#10b981' }}>
-                          {spotsLeft}
-                        </p>
-                        <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Spots Left</p>
-                      </div>
-                      <div style={{ textAlign: 'center' }}>
                         <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#f59e0b' }}>
                           {communications.filter(c => c.recipients.includes(event.name) || c.recipients === 'All Events').length}
                         </p>
@@ -1514,6 +1722,22 @@ const ChurchConnectDashboard = () => {
                           }}
                         >
                           Manage
+                        </button>
+                        <button 
+                          onClick={() => handleEditEvent(event)}
+                          style={{
+                            backgroundColor: '#8b5cf6',
+                            color: 'white',
+                            padding: '8px',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '12px',
+                            fontWeight: 'bold'
+                          }}
+                          title="Edit Event"
+                        >
+                          <Edit2 style={{ height: '14px', width: '14px' }} />
                         </button>
                         {event.volunteers.length > 0 && (
                           <button 
@@ -2087,7 +2311,28 @@ const ChurchConnectDashboard = () => {
 
             {communicationsTab === 'compose' && (
               <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '20px' }}>Enhanced Email Templates</h3>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: 'bold', margin: 0 }}>Enhanced Email Templates</h3>
+                  <button
+                    onClick={() => setShowCreateTemplate(true)}
+                    style={{
+                      backgroundColor: '#10b981',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '6px',
+                      padding: '8px 16px',
+                      cursor: 'pointer',
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    <Plus style={{ height: '16px', width: '16px' }} />
+                    Create Template
+                  </button>
+                </div>
                 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
                   {Object.entries(enhancedMessageTemplates).map(([key, template]) => (
@@ -2323,14 +2568,32 @@ const ChurchConnectDashboard = () => {
               <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0 }}>Payments & Donations</h2>
               <div style={{ display: 'flex', gap: '12px' }}>
                 <button
-                  onClick={() => setShowCreateDonation(true)}
+                  onClick={() => setShowPaymentForm(true)}
                   style={{
-                    backgroundColor: '#10b981',
+                    backgroundColor: '#8b5cf6',
                     color: 'white',
                     padding: '10px 16px',
                     borderRadius: '6px',
                     border: 'none',
                     cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  <CreditCard style={{ height: '16px', width: '16px' }} />
+                  Process Payment
+                </button>
+                <button
+                  onClick={() => setShowCreateDonation(true)}
+                  style={{
+                    backgroundColor: '#10b981',
+                    color: 'white',
+                    padding: '10px 16px',
+                borderRadius: '6px',
+                border: 'none',
+                cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '8px',
@@ -2386,111 +2649,113 @@ const ChurchConnectDashboard = () => {
 
             {/* Overview Tab */}
             {paymentsTab === 'overview' && (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '24px' }}>
-                <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-                    <div style={{ backgroundColor: '#dbeafe', padding: '8px', borderRadius: '6px' }}>
-                      <DollarSign style={{ height: '20px', width: '20px', color: '#1d4ed8' }} />
+              <div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+                  <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                      <div style={{ backgroundColor: '#dbeafe', padding: '8px', borderRadius: '6px' }}>
+                        <DollarSign style={{ height: '20px', width: '20px', color: '#1d4ed8' }} />
+                      </div>
+                      <div>
+                        <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Total Revenue</p>
+                        <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#1d4ed8' }}>
+                          ${getTotalRevenue().toFixed(2)}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Total Revenue</p>
-                      <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#1d4ed8' }}>
-                        ${getTotalRevenue().toFixed(2)}
-                      </p>
+                  </div>
+
+                  <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                      <div style={{ backgroundColor: '#fef3c7', padding: '8px', borderRadius: '6px' }}>
+                        <CreditCard style={{ height: '20px', width: '20px', color: '#d97706' }} />
+                      </div>
+                      <div>
+                        <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Event Payments</p>
+                        <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#d97706' }}>
+                          ${getEventPaymentsTotal().toFixed(2)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                      <div style={{ backgroundColor: '#dcfce7', padding: '8px', borderRadius: '6px' }}>
+                        <Heart style={{ height: '20px', width: '20px', color: '#16a34a' }} />
+                      </div>
+                      <div>
+                        <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Donations</p>
+                        <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#16a34a' }}>
+                          ${getDonationsTotal().toFixed(2)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                      <div style={{ backgroundColor: '#fef2f2', padding: '8px', borderRadius: '6px' }}>
+                        <Users style={{ height: '20px', width: '20px', color: '#dc2626' }} />
+                      </div>
+                      <div>
+                        <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Active Donors</p>
+                        <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#dc2626' }}>
+                          {getActiveDonorsCount()}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-                    <div style={{ backgroundColor: '#fef3c7', padding: '8px', borderRadius: '6px' }}>
-                      <CreditCard style={{ height: '20px', width: '20px', color: '#d97706' }} />
-                    </div>
-                    <div>
-                      <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Event Payments</p>
-                      <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#d97706' }}>
-                        ${getEventPaymentsTotal().toFixed(2)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-                    <div style={{ backgroundColor: '#dcfce7', padding: '8px', borderRadius: '6px' }}>
-                      <Heart style={{ height: '20px', width: '20px', color: '#16a34a' }} />
-                    </div>
-                    <div>
-                      <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Donations</p>
-                      <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#16a34a' }}>
-                        ${getDonationsTotal().toFixed(2)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-                    <div style={{ backgroundColor: '#fef2f2', padding: '8px', borderRadius: '6px' }}>
-                      <Users style={{ height: '20px', width: '20px', color: '#dc2626' }} />
-                    </div>
-                    <div>
-                      <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Active Donors</p>
-                      <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#dc2626' }}>
-                        {getActiveDonorsCount()}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Recent Activity */}
-              <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '20px' }}>Recent Activity</h3>
-                <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                  {getRecentPaymentsActivity().slice(0, 10).map((activity) => (
-                    <div key={activity.id} style={{ 
-                      display: 'flex', 
-                      justifyContent: 'space-between', 
-                      alignItems: 'center', 
-                      padding: '12px', 
-                      marginBottom: '8px',
-                      backgroundColor: '#f9fafb', 
-                      borderRadius: '6px',
-                      border: '1px solid #e5e7eb'
-                    }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <div style={{ 
-                          backgroundColor: activity.type === 'donation' ? '#dcfce7' : '#dbeafe',
-                          padding: '6px',
-                          borderRadius: '4px'
-                        }}>
-                          {activity.type === 'donation' ? (
-                            <Heart style={{ height: '14px', width: '14px', color: '#16a34a' }} />
-                          ) : (
-                            <CreditCard style={{ height: '14px', width: '14px', color: '#1d4ed8' }} />
-                          )}
+                {/* Recent Activity */}
+                <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '20px' }}>Recent Activity</h3>
+                  <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                    {getRecentPaymentsActivity().slice(0, 10).map((activity) => (
+                      <div key={activity.id} style={{ 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center', 
+                        padding: '12px', 
+                        marginBottom: '8px',
+                        backgroundColor: '#f9fafb', 
+                        borderRadius: '6px',
+                        border: '1px solid #e5e7eb'
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <div style={{ 
+                            backgroundColor: activity.type === 'donation' ? '#dcfce7' : '#dbeafe',
+                            padding: '6px',
+                            borderRadius: '4px'
+                          }}>
+                            {activity.type === 'donation' ? (
+                              <Heart style={{ height: '14px', width: '14px', color: '#16a34a' }} />
+                            ) : (
+                              <CreditCard style={{ height: '14px', width: '14px', color: '#1d4ed8' }} />
+                            )}
+                          </div>
+                          <div>
+                            <p style={{ margin: '0 0 2px 0', fontWeight: 'bold' }}>{activity.description}</p>
+                            <p style={{ margin: 0, fontSize: '12px', color: '#6b7280' }}>
+                              {activity.donorName || activity.eventName} • {new Date(activity.date).toLocaleDateString()}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <p style={{ margin: '0 0 2px 0', fontWeight: 'bold' }}>{activity.description}</p>
+                        <div style={{ textAlign: 'right' }}>
+                          <p style={{ margin: '0 0 2px 0', fontWeight: 'bold', color: '#10b981' }}>
+                            +${activity.amount.toFixed(2)}
+                          </p>
                           <p style={{ margin: 0, fontSize: '12px', color: '#6b7280' }}>
-                            {activity.donorName || activity.eventName} • {new Date(activity.date).toLocaleDateString()}
+                            {activity.status}
                           </p>
                         </div>
                       </div>
-                      <div style={{ textAlign: 'right' }}>
-                        <p style={{ margin: '0 0 2px 0', fontWeight: 'bold', color: '#10b981' }}>
-                          +${activity.amount.toFixed(2)}
-                        </p>
-                        <p style={{ margin: 0, fontSize: '12px', color: '#6b7280' }}>
-                          {activity.status}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
             {/* Payments Tab */}
             {paymentsTab === 'payments' && (
@@ -2596,7 +2861,7 @@ const ChurchConnectDashboard = () => {
                           }}
                         >
                           View Details
-                        </button>
+              </button>
                         {payment.status === 'completed' && (
                           <button
                             onClick={() => handleRefundPayment(payment.id)}
@@ -2636,7 +2901,7 @@ const ChurchConnectDashboard = () => {
                         width: '100%',
                         padding: '8px 12px 8px 40px',
                         border: '1px solid #d1d5db',
-                        borderRadius: '6px',
+                borderRadius: '6px',
                         fontSize: '14px',
                         boxSizing: 'border-box'
                       }}
@@ -2733,9 +2998,9 @@ const ChurchConnectDashboard = () => {
                             backgroundColor: '#3b82f6',
                             color: 'white',
                             padding: '8px',
-                            border: 'none',
+                border: 'none',
                             borderRadius: '4px',
-                            cursor: 'pointer',
+                cursor: 'pointer',
                             fontSize: '12px',
                             fontWeight: 'bold'
                           }}
@@ -2873,9 +3138,9 @@ const ChurchConnectDashboard = () => {
                       }}
                     >
                       Export Summary PDF
-                    </button>
+              </button>
                   </div>
-                </div>
+            </div>
               </div>
             )}
           </div>
@@ -2932,7 +3197,7 @@ const ChurchConnectDashboard = () => {
               </div>
               
               <button
-                onClick={() => alert('Template creator would open here - allows you to create custom templates with preset questions')}
+                onClick={() => setShowCreateEventTemplate(true)}
                 style={{
                   backgroundColor: '#3b82f6',
                   color: 'white',
@@ -2970,7 +3235,7 @@ const ChurchConnectDashboard = () => {
                 <button
                   onClick={() => {
                     const archivedCount = events.filter(e => e.status === 'archived').length;
-                    alert(`${archivedCount} events currently archived`);
+                    addNotification(`${archivedCount} events currently archived`, 'info');
                   }}
                   style={{
                     backgroundColor: '#6b7280',
@@ -2990,6 +3255,284 @@ const ChurchConnectDashboard = () => {
         )}
       </div>
 
+      {/* Event Template Creation Modal */}
+      {showCreateEventTemplate && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: 'white',
+            borderRadius: '12px',
+            padding: '32px',
+            maxWidth: '600px',
+            width: '90%',
+            maxHeight: '90vh',
+            overflowY: 'auto'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+              <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Create New Event Template</h3>
+              <button
+                onClick={() => setShowCreateEventTemplate(false)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '8px'
+                }}
+              >
+                <X style={{ height: '20px', width: '20px', color: '#6b7280' }} />
+              </button>
+            </div>
+
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+                Template Name *
+              </label>
+              <input
+                type="text"
+                value={newEventTemplate.name}
+                onChange={(e) => setNewEventTemplate(prev => ({ ...prev, name: e.target.value }))}
+                placeholder="e.g., Community Dinner, Youth Retreat"
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  boxSizing: 'border-box'
+                }}
+              />
+            </div>
+
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+                Event Type *
+              </label>
+              <select
+                value={newEventTemplate.eventType}
+                onChange={(e) => setNewEventTemplate(prev => ({ ...prev, eventType: e.target.value }))}
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  boxSizing: 'border-box'
+                }}
+              >
+                <option value="">Select Event Type</option>
+                <option value="dinner">Community Dinner</option>
+                <option value="feast">Feast Celebration</option>
+                <option value="retreat">Spiritual Retreat</option>
+                <option value="service">Worship Service</option>
+                <option value="workshop">Workshop</option>
+                <option value="meeting">Meeting</option>
+                <option value="social">Social Event</option>
+              </select>
+            </div>
+
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+                Custom Questions
+              </label>
+              <p style={{ fontSize: '12px', color: '#6b7280', marginBottom: '12px' }}>
+                Add custom questions that attendees will answer when registering for events using this template.
+              </p>
+              
+              {newEventTemplate.customQuestions.map((question, index) => (
+                <div key={index} style={{ 
+                  border: '1px solid #e5e7eb', 
+                  borderRadius: '6px', 
+                  padding: '12px', 
+                  marginBottom: '8px',
+                  backgroundColor: '#f9fafb'
+                }}>
+                  <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                    <input
+                      type="text"
+                      value={question.question}
+                      onChange={(e) => {
+                        const updatedQuestions = [...newEventTemplate.customQuestions];
+                        updatedQuestions[index].question = e.target.value;
+                        setNewEventTemplate(prev => ({ ...prev, customQuestions: updatedQuestions }));
+                      }}
+                      placeholder="Question text"
+                      style={{
+                        flex: 1,
+                        padding: '8px',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '4px',
+                        fontSize: '14px'
+                      }}
+                    />
+                    <select
+                      value={question.type}
+                      onChange={(e) => {
+                        const updatedQuestions = [...newEventTemplate.customQuestions];
+                        updatedQuestions[index].type = e.target.value;
+                        setNewEventTemplate(prev => ({ ...prev, customQuestions: updatedQuestions }));
+                      }}
+                      style={{
+                        padding: '8px',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '4px',
+                        fontSize: '14px',
+                        minWidth: '100px'
+                      }}
+                    >
+                      <option value="text">Text</option>
+                      <option value="yes/no">Yes/No</option>
+                      <option value="number">Number</option>
+                      <option value="select">Select</option>
+                    </select>
+                    <button
+                      onClick={() => {
+                        const updatedQuestions = newEventTemplate.customQuestions.filter((_, i) => i !== index);
+                        setNewEventTemplate(prev => ({ ...prev, customQuestions: updatedQuestions }));
+                      }}
+                      style={{
+                        backgroundColor: '#dc2626',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        padding: '8px',
+                        cursor: 'pointer',
+                        fontSize: '12px'
+                      }}
+                    >
+                      <Trash2 style={{ height: '14px', width: '14px' }} />
+                    </button>
+                  </div>
+                  
+                  {question.type === 'select' && (
+                    <div style={{ marginTop: '8px' }}>
+                      <input
+                        type="text"
+                        value={question.options ? question.options.join(', ') : ''}
+                        onChange={(e) => {
+                          const updatedQuestions = [...newEventTemplate.customQuestions];
+                          updatedQuestions[index].options = e.target.value.split(',').map(opt => opt.trim()).filter(opt => opt);
+                          setNewEventTemplate(prev => ({ ...prev, customQuestions: updatedQuestions }));
+                        }}
+                        placeholder="Options separated by commas (e.g., Morning, Afternoon, Evening)"
+                        style={{
+                          width: '100%',
+                          padding: '8px',
+                          border: '1px solid #d1d5db',
+                          borderRadius: '4px',
+                          fontSize: '14px'
+                        }}
+                      />
+                    </div>
+                  )}
+                  
+                  <div style={{ marginTop: '8px' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px' }}>
+                      <input
+                        type="checkbox"
+                        checked={question.required}
+                        onChange={(e) => {
+                          const updatedQuestions = [...newEventTemplate.customQuestions];
+                          updatedQuestions[index].required = e.target.checked;
+                          setNewEventTemplate(prev => ({ ...prev, customQuestions: updatedQuestions }));
+                        }}
+                      />
+                      Required question
+                    </label>
+                  </div>
+                </div>
+              ))}
+              
+              <button
+                onClick={() => {
+                  setNewEventTemplate(prev => ({
+                    ...prev,
+                    customQuestions: [...prev.customQuestions, { question: '', type: 'text', required: false, options: [] }]
+                  }));
+                }}
+                style={{
+                  backgroundColor: '#f3f4f6',
+                  color: '#374151',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  padding: '8px 16px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <Plus style={{ height: '16px', width: '16px' }} />
+                Add Question
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+              <button
+                onClick={() => setShowCreateEventTemplate(false)}
+                style={{
+                  backgroundColor: '#f3f4f6',
+                  color: '#374151',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '12px 24px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: 'bold'
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (newEventTemplate.name && newEventTemplate.eventType) {
+                    // Add the new template to eventTemplates
+                    const templateKey = newEventTemplate.name.toLowerCase().replace(/\s+/g, '-');
+                    setEventTemplates(prev => ({
+                      ...prev,
+                      [templateKey]: {
+                        name: newEventTemplate.name,
+                        eventType: newEventTemplate.eventType,
+                        customQuestions: newEventTemplate.customQuestions
+                      }
+                    }));
+                    
+                    // Reset form and close modal
+                    setNewEventTemplate({ name: '', eventType: '', customQuestions: [] });
+                    setShowCreateEventTemplate(false);
+                    addNotification('Event template created successfully!', 'success');
+                  } else {
+                    addNotification('Please fill in template name and event type', 'error');
+                  }
+                }}
+                style={{
+                  backgroundColor: '#3b82f6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '12px 24px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: 'bold'
+                }}
+              >
+                Create Template
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* All Modals */}
       {/* Enhanced Create Event Modal with Templates and Custom Questions */}
       {showCreateEvent && (
@@ -3005,8 +3548,8 @@ const ChurchConnectDashboard = () => {
               <button onClick={() => {
                 setShowCreateEvent(false);
                 setNewEvent({
-                  name: '', dateType: 'single', dates: [''], recurrencePattern: '',
-                  location: '', capacity: '', registrationFee: '', donationGoal: '',
+                  name: '', dateType: 'single', dates: [''], startTime: '09:00', endTime: '17:00',
+                  recurrencePattern: '', location: '', capacity: '', registrationFee: '', donationGoal: '',
                   eventType: '', customQuestions: []
                 });
                 setSelectedTemplate('');
@@ -3028,10 +3571,11 @@ const ChurchConnectDashboard = () => {
                 style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }}
               >
                 <option value="">-- No Template --</option>
-                <option value="dinner">Community Dinner</option>
-                <option value="feast">Feast Celebration</option>
-                <option value="retreat">Spiritual Retreat</option>
-                <option value="service">Worship Service</option>
+                {Object.entries(eventTemplates).map(([key, template]) => (
+                  <option key={key} value={key}>
+                    {template.name}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -3133,6 +3677,28 @@ const ChurchConnectDashboard = () => {
                 />
               </div>
             )}
+
+            {/* Time Range Selection */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+              <div>
+                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Start Time</label>
+                <input 
+                  type="time" 
+                  value={newEvent.startTime} 
+                  onChange={(e) => handleEventInputChange('startTime', e.target.value)}
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>End Time</label>
+                <input 
+                  type="time" 
+                  value={newEvent.endTime} 
+                  onChange={(e) => handleEventInputChange('endTime', e.target.value)}
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
+                />
+              </div>
+            </div>
 
             <div style={{ marginBottom: '16px' }}>
               <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Location (Optional)</label>
@@ -3248,11 +3814,219 @@ const ChurchConnectDashboard = () => {
               <button onClick={() => {
                 setShowCreateEvent(false);
                 setNewEvent({
-                  name: '', dateType: 'single', dates: [''], recurrencePattern: '',
-                  location: '', capacity: '', registrationFee: '', donationGoal: '',
+                  name: '', dateType: 'single', dates: [''], startTime: '09:00', endTime: '17:00',
+                  recurrencePattern: '', location: '', capacity: '', registrationFee: '', donationGoal: '',
                   eventType: '', customQuestions: []
                 });
                 setSelectedTemplate('');
+              }} style={{ flex: 1, backgroundColor: 'white', color: '#374151', padding: '10px', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Event Modal */}
+      {showEditEvent && editingEvent && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: 'white', borderRadius: '8px', padding: '24px', width: '90%', maxWidth: '600px', maxHeight: '80vh', overflowY: 'auto'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Edit Event: {editingEvent.name}</h3>
+              <button onClick={() => {
+                setShowEditEvent(false);
+                setEditingEvent(null);
+                setFormErrors({});
+              }} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+                <X style={{ height: '20px', width: '20px' }} />
+              </button>
+            </div>
+
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Event Name *</label>
+              <input 
+                type="text" 
+                value={editingEvent.name} 
+                onChange={(e) => setEditingEvent(prev => ({ ...prev, name: e.target.value }))} 
+                placeholder="Enter event name"
+                style={{ 
+                  width: '100%', 
+                  padding: '8px', 
+                  border: `1px solid ${formErrors.name ? '#dc2626' : '#d1d5db'}`, 
+                  borderRadius: '4px', 
+                  fontSize: '14px', 
+                  boxSizing: 'border-box' 
+                }} 
+              />
+              {formErrors.name && (
+                <p style={{ color: '#dc2626', fontSize: '12px', margin: '4px 0 0 0' }}>{formErrors.name}</p>
+              )}
+            </div>
+
+            {/* Date Type Selection */}
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Date Type</label>
+              <select 
+                value={editingEvent.dateType} 
+                onChange={(e) => setEditingEvent(prev => ({ ...prev, dateType: e.target.value }))}
+                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }}
+              >
+                <option value="single">Single Date</option>
+                <option value="multiple">Multiple Dates</option>
+                <option value="recurring">Recurring</option>
+                <option value="ongoing">Ongoing</option>
+              </select>
+            </div>
+
+            {/* Date Input Based on Type */}
+            {editingEvent.dateType === 'single' && (
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Date</label>
+                <input 
+                  type="date" 
+                  value={editingEvent.dates[0] || ''} 
+                  onChange={(e) => setEditingEvent(prev => ({ ...prev, dates: [e.target.value] }))}
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
+                />
+              </div>
+            )}
+
+            {editingEvent.dateType === 'multiple' && (
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Dates</label>
+                {editingEvent.dates.map((date, index) => (
+                  <div key={index} style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                    <input 
+                      type="date" 
+                      value={date} 
+                      onChange={(e) => {
+                        const newDates = [...editingEvent.dates];
+                        newDates[index] = e.target.value;
+                        setEditingEvent(prev => ({ ...prev, dates: newDates }));
+                      }}
+                      style={{ flex: 1, padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px' }} 
+                    />
+                    {index > 0 && (
+                      <button 
+                        onClick={() => {
+                          const newDates = editingEvent.dates.filter((_, i) => i !== index);
+                          setEditingEvent(prev => ({ ...prev, dates: newDates }));
+                        }}
+                        style={{ backgroundColor: '#dc2626', color: 'white', border: 'none', borderRadius: '4px', padding: '0 8px', cursor: 'pointer' }}
+                      >
+                        <X style={{ height: '16px', width: '16px' }} />
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button 
+                  onClick={() => setEditingEvent(prev => ({ ...prev, dates: [...prev.dates, ''] }))}
+                  style={{ backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', padding: '4px 12px', cursor: 'pointer', fontSize: '12px' }}
+                >
+                  Add Date
+                </button>
+              </div>
+            )}
+
+            {editingEvent.dateType === 'recurring' && (
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Recurrence Pattern</label>
+                <input 
+                  type="text" 
+                  value={editingEvent.recurrencePattern || ''} 
+                  onChange={(e) => setEditingEvent(prev => ({ ...prev, recurrencePattern: e.target.value }))} 
+                  placeholder="e.g., Every 4th Tuesday of the month"
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
+                />
+              </div>
+            )}
+
+            {/* Time Range Selection */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+              <div>
+                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Start Time</label>
+                <input 
+                  type="time" 
+                  value={editingEvent.startTime || '09:00'} 
+                  onChange={(e) => setEditingEvent(prev => ({ ...prev, startTime: e.target.value }))}
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>End Time</label>
+                <input 
+                  type="time" 
+                  value={editingEvent.endTime || '17:00'} 
+                  onChange={(e) => setEditingEvent(prev => ({ ...prev, endTime: e.target.value }))}
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
+                />
+              </div>
+            </div>
+
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Location (Optional)</label>
+              <input 
+                type="text" 
+                value={editingEvent.location || ''} 
+                onChange={(e) => setEditingEvent(prev => ({ ...prev, location: e.target.value }))} 
+                placeholder="Event location"
+                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
+              />
+            </div>
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Capacity</label>
+              <input 
+                type="number" 
+                value={editingEvent.capacity || ''} 
+                onChange={(e) => setEditingEvent(prev => ({ ...prev, capacity: e.target.value }))} 
+                placeholder="Maximum attendees"
+                style={{ 
+                  width: '100%', 
+                  padding: '8px', 
+                  border: `1px solid ${formErrors.capacity ? '#dc2626' : '#d1d5db'}`, 
+                  borderRadius: '4px', 
+                  fontSize: '14px', 
+                  boxSizing: 'border-box' 
+                }} 
+              />
+              {formErrors.capacity && (
+                <p style={{ color: '#dc2626', fontSize: '12px', margin: '4px 0 0 0' }}>{formErrors.capacity}</p>
+              )}
+            </div>
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Registration Fee ($)</label>
+              <input 
+                type="number" 
+                step="0.01" 
+                value={editingEvent.registrationFee || ''} 
+                onChange={(e) => setEditingEvent(prev => ({ ...prev, registrationFee: e.target.value }))} 
+                placeholder="0.00"
+                style={{ 
+                  width: '100%', 
+                  padding: '8px', 
+                  border: `1px solid ${formErrors.registrationFee ? '#dc2626' : '#d1d5db'}`, 
+                  borderRadius: '4px', 
+                  fontSize: '14px', 
+                  boxSizing: 'border-box' 
+                }} 
+              />
+              {formErrors.registrationFee && (
+                <p style={{ color: '#dc2626', fontSize: '12px', margin: '4px 0 0 0' }}>{formErrors.registrationFee}</p>
+              )}
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button onClick={handleUpdateEvent} style={{ flex: 1, backgroundColor: '#10b981', color: 'white', padding: '10px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
+                Update Event
+              </button>
+              <button onClick={() => {
+                setShowEditEvent(false);
+                setEditingEvent(null);
               }} style={{ flex: 1, backgroundColor: 'white', color: '#374151', padding: '10px', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }}>
                 Cancel
               </button>
@@ -3455,7 +4229,7 @@ const ChurchConnectDashboard = () => {
               ))}
 
               <div style={{ border: '1px solid #d1d5db', borderRadius: '4px', padding: '12px' }}>
-                <div style={{ display: 'flex', gap: '8px', marginBottom: '8px }}>
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
                   <input 
                     type="text" 
                     value={newGroupMember.name} 
@@ -3859,6 +4633,300 @@ const ChurchConnectDashboard = () => {
               </button>
               <button onClick={() => setShowSendMessage(false)} style={{ flex: 1, backgroundColor: 'white', color: '#374151', padding: '10px', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }}>
                 Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Payment Processing Modal */}
+      {showPaymentForm && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: 'white', borderRadius: '8px', padding: '24px', width: '90%', maxWidth: '500px', maxHeight: '80vh', overflowY: 'auto'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Process Payment</h3>
+              <button onClick={() => setShowPaymentForm(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+                <X style={{ height: '20px', width: '20px' }} />
+              </button>
+            </div>
+
+            <form onSubmit={handlePaymentFormSubmit}>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Amount ($) *</label>
+                <input 
+                  type="number" 
+                  step="0.01" 
+                  min="0.01"
+                  value={paymentFormData.amount} 
+                  onChange={(e) => setPaymentFormData(prev => ({ ...prev, amount: e.target.value }))} 
+                  placeholder="0.00"
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
+                  required
+                />
+              </div>
+
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Payment Method</label>
+                <select 
+                  value={paymentFormData.paymentMethod} 
+                  onChange={(e) => setPaymentFormData(prev => ({ ...prev, paymentMethod: e.target.value }))}
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }}
+                >
+                  <option value="stripe">Stripe (2.9% + 30¢)</option>
+                  <option value="square">Square (2.6% + 10¢)</option>
+                  <option value="paypal">PayPal (2.9% + fixed fee)</option>
+                  <option value="ach">Bank Transfer (ACH - $0.25)</option>
+                  <option value="plaid">Plaid (Bank Connect - $0.25)</option>
+                </select>
+              </div>
+
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Description *</label>
+                <input 
+                  type="text" 
+                  value={paymentFormData.description} 
+                  onChange={(e) => setPaymentFormData(prev => ({ ...prev, description: e.target.value }))} 
+                  placeholder="What is this payment for?"
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
+                  required
+                />
+              </div>
+
+              <div style={{ marginBottom: '20px' }}>
+                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Recipient Email (Optional)</label>
+                <input 
+                  type="email" 
+                  value={paymentFormData.recipientEmail} 
+                  onChange={(e) => setPaymentFormData(prev => ({ ...prev, recipientEmail: e.target.value }))} 
+                  placeholder="recipient@email.com"
+                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
+                />
+              </div>
+
+              <div style={{ marginBottom: '20px', padding: '12px', backgroundColor: '#f0f9ff', borderRadius: '4px', border: '1px solid #dbeafe' }}>
+                <h4 style={{ fontSize: '14px', fontWeight: 'bold', margin: '0 0 8px 0', color: '#1d4ed8' }}>Cost Breakdown:</h4>
+                <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                  <p style={{ margin: '0 0 4px 0' }}>Amount: ${paymentFormData.amount || '0.00'}</p>
+                  {paymentFormData.amount && (
+                    <>
+                      {paymentFormData.paymentMethod === 'stripe' && (
+                        <p style={{ margin: '0 0 4px 0' }}>Fee: ${(parseFloat(paymentFormData.amount) * 0.029 + 0.30).toFixed(2)}</p>
+                      )}
+                      {paymentFormData.paymentMethod === 'square' && (
+                        <p style={{ margin: '0 0 4px 0' }}>Fee: ${(parseFloat(paymentFormData.amount) * 0.026 + 0.10).toFixed(2)}</p>
+                      )}
+                      {paymentFormData.paymentMethod === 'paypal' && (
+                        <p style={{ margin: '0 0 4px 0' }}>Fee: ~${(parseFloat(paymentFormData.amount) * 0.029 + 0.49).toFixed(2)}</p>
+                      )}
+                      {paymentFormData.paymentMethod === 'ach' && (
+                        <p style={{ margin: '0 0 4px 0' }}>Fee: $0.25</p>
+                      )}
+                      {paymentFormData.paymentMethod === 'plaid' && (
+                        <p style={{ margin: '0 0 4px 0' }}>Fee: $0.25</p>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button 
+                  type="submit"
+                  style={{ flex: 1, backgroundColor: '#10b981', color: 'white', padding: '10px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                >
+                  Process Payment
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => setShowPaymentForm(false)} 
+                  style={{ flex: 1, backgroundColor: 'white', color: '#374151', padding: '10px', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Create Template Modal */}
+      {showCreateTemplate && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: 'white',
+            borderRadius: '12px',
+            padding: '32px',
+            maxWidth: '600px',
+            width: '90%',
+            maxHeight: '90vh',
+            overflowY: 'auto'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+              <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Create New Email Template</h3>
+              <button
+                onClick={() => setShowCreateTemplate(false)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '8px'
+                }}
+              >
+                <X style={{ height: '20px', width: '20px', color: '#6b7280' }} />
+              </button>
+            </div>
+
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+                Template Name *
+              </label>
+              <input
+                type="text"
+                value={newTemplate.name}
+                onChange={(e) => setNewTemplate(prev => ({ ...prev, name: e.target.value }))}
+                placeholder="e.g., Welcome Email, Event Reminder"
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  boxSizing: 'border-box'
+                }}
+              />
+            </div>
+
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+                Template Type
+              </label>
+              <select
+                value={newTemplate.type}
+                onChange={(e) => setNewTemplate(prev => ({ ...prev, type: e.target.value }))}
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  boxSizing: 'border-box'
+                }}
+              >
+                <option value="announcement">Announcement</option>
+                <option value="reminder">Reminder</option>
+                <option value="thank-you">Thank You</option>
+                <option value="update">Update</option>
+                <option value="welcome">Welcome</option>
+              </select>
+            </div>
+
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+                Subject Line *
+              </label>
+              <input
+                type="text"
+                value={newTemplate.subject}
+                onChange={(e) => setNewTemplate(prev => ({ ...prev, subject: e.target.value }))}
+                placeholder="Enter email subject"
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  boxSizing: 'border-box'
+                }}
+              />
+            </div>
+
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
+                Message Content *
+              </label>
+              <textarea
+                value={newTemplate.message}
+                onChange={(e) => setNewTemplate(prev => ({ ...prev, message: e.target.value }))}
+                placeholder="Enter your email message. You can use variables like {name}, {event}, {date} etc."
+                rows={8}
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  boxSizing: 'border-box',
+                  resize: 'vertical'
+                }}
+              />
+              <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px' }}>
+                Available variables: {'{name}'}, {'{event}'}, {'{date}'}, {'{location}'}, {'{time}'}
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+              <button
+                onClick={() => setShowCreateTemplate(false)}
+                style={{
+                  backgroundColor: '#f3f4f6',
+                  color: '#374151',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '12px 24px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: 'bold'
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (newTemplate.name && newTemplate.subject && newTemplate.message) {
+                    // Add the new template to enhancedMessageTemplates
+                    const templateKey = newTemplate.name.toLowerCase().replace(/\s+/g, '-');
+                    enhancedMessageTemplates[templateKey] = {
+                      subject: newTemplate.subject,
+                      message: newTemplate.message,
+                      type: newTemplate.type
+                    };
+                    
+                    // Reset form and close modal
+                    setNewTemplate({ name: '', subject: '', message: '', type: 'announcement' });
+                    setShowCreateTemplate(false);
+                    addNotification('Template created successfully!', 'success');
+                  } else {
+                    addNotification('Please fill in all required fields', 'error');
+                  }
+                }}
+                style={{
+                  backgroundColor: '#10b981',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '12px 24px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: 'bold'
+                }}
+              >
+                Create Template
               </button>
             </div>
           </div>
