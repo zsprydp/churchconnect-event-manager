@@ -1107,25 +1107,17 @@ const ChurchConnectDashboard = () => {
                 <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '0' }}>{volunteers.length}</p>
                 <p style={{ fontSize: '14px', color: '#6b7280', margin: '4px 0 0 0' }}>Active Volunteers</p>
               </div>
-              
-              <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                <Mail style={{ height: '24px', width: '24px', color: '#f59e0b', marginBottom: '8px' }} />
-                <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '0' }}>
-                  {communications.length}
-                </p>
-                <p style={{ fontSize: '14px', color: '#6b7280', margin: '4px 0 0 0' }}>Messages Sent</p>
-              </div>
             </div>
 
             <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-              <h3 style={{ fontSize: '18px', marginBottom: '16px' }}>Recent Activity</h3>
+              <h3 style={{ fontSize: '18px', marginBottom: '16px' }}>Recent Communications</h3>
               {communications.slice(0, 3).map((item) => (
                 <div key={item.id} style={{ padding: '12px', backgroundColor: '#f9fafb', borderRadius: '6px', marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
                   <MessageCircle style={{ height: '16px', width: '16px', marginRight: '8px', color: '#6b7280' }} />
                   <div style={{ flex: 1 }}>
                     <p style={{ fontWeight: 'bold', margin: '0 0 4px 0', fontSize: '14px' }}>{item.subject}</p>
                     <p style={{ fontSize: '12px', color: '#6b7280', margin: '0' }}>
-                      Sent by {item.sentBy} • {new Date(item.sentDate).toLocaleDateString()}
+                      To: {item.recipients} • Sent by {item.sentBy} • {new Date(item.sentDate).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
@@ -1284,7 +1276,7 @@ const ChurchConnectDashboard = () => {
                       )}
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '16px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px', marginBottom: '16px' }}>
                       <div style={{ textAlign: 'center' }}>
                         <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#3b82f6' }}>
                           {totalPeople}/{event.capacity}
@@ -1308,6 +1300,12 @@ const ChurchConnectDashboard = () => {
                           {spotsLeft}
                         </p>
                         <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Spots Left</p>
+                      </div>
+                      <div style={{ textAlign: 'center' }}>
+                        <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#f59e0b' }}>
+                          {communications.filter(c => c.recipients.includes(event.name) || c.recipients === 'All Events').length}
+                        </p>
+                        <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Messages</p>
                       </div>
                     </div>
 
