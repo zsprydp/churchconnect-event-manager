@@ -1084,48 +1084,9 @@ const ChurchConnectDashboard = () => {
       <div style={{ flex: 1, padding: '32px', overflowY: 'auto' }}>
         {activeTab === 'dashboard' && (
           <div>
-            <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Dashboard</h2>
+            <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Event Calendar</h2>
             
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '24px' }}>
-              <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                <CalendarIcon style={{ height: '24px', width: '24px', color: '#3b82f6', marginBottom: '8px' }} />
-                <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '0' }}>
-                  {events.filter(e => e.status === 'active').length}
-                </p>
-                <p style={{ fontSize: '14px', color: '#6b7280', margin: '4px 0 0 0' }}>Active Events</p>
-              </div>
-              
-              <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                <Users style={{ height: '24px', width: '24px', color: '#10b981', marginBottom: '8px' }} />
-                <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '0' }}>
-                  {attendees.reduce((sum, a) => sum + 1 + a.groupMembers.length, 0)}
-                </p>
-                <p style={{ fontSize: '14px', color: '#6b7280', margin: '4px 0 0 0' }}>Total Registrations</p>
-              </div>
-              
-              <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                <UserCheck style={{ height: '24px', width: '24px', color: '#8b5cf6', marginBottom: '8px' }} />
-                <p style={{ fontSize: '24px', fontWeight: 'bold', margin: '0' }}>{volunteers.length}</p>
-                <p style={{ fontSize: '14px', color: '#6b7280', margin: '4px 0 0 0' }}>Active Volunteers</p>
-              </div>
-            </div>
-
-            <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '18px', marginBottom: '16px' }}>Recent Communications</h3>
-              {communications.slice(0, 3).map((item) => (
-                <div key={item.id} style={{ padding: '12px', backgroundColor: '#f9fafb', borderRadius: '6px', marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
-                  <MessageCircle style={{ height: '16px', width: '16px', marginRight: '8px', color: '#6b7280' }} />
-                  <div style={{ flex: 1 }}>
-                    <p style={{ fontWeight: 'bold', margin: '0 0 4px 0', fontSize: '14px' }}>{item.subject}</p>
-                    <p style={{ fontSize: '12px', color: '#6b7280', margin: '0' }}>
-                      To: {item.recipients} • Sent by {item.sentBy} • {new Date(item.sentDate).toLocaleDateString()}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            {/* Event Calendar */}
+            {/* Event Calendar - Main Focus */}
             <Calendar events={events} volunteers={volunteers} attendees={attendees} />
           </div>
         )}
@@ -1880,6 +1841,16 @@ const ChurchConnectDashboard = () => {
                 History ({communications.length})
               </button>
               <button
+                onClick={() => setCommunicationsTab('recent')}
+                style={{
+                  padding: '8px 16px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer',
+                  borderBottom: communicationsTab === 'recent' ? '2px solid #3b82f6' : 'none',
+                  color: communicationsTab === 'recent' ? '#3b82f6' : '#6b7280', fontWeight: 'bold'
+                }}
+              >
+                Recent ({communications.slice(0, 3).length})
+              </button>
+              <button
                 onClick={() => setCommunicationsTab('settings')}
                 style={{
                   padding: '8px 16px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer',
@@ -2015,6 +1986,58 @@ const ChurchConnectDashboard = () => {
                     <Mail style={{ height: '48px', width: '48px', color: '#6b7280', margin: '0 auto 16px' }} />
                     <h3 style={{ fontSize: '18px', marginBottom: '8px' }}>No Messages Sent Yet</h3>
                     <p style={{ color: '#6b7280' }}>Your communication history will appear here</p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {communicationsTab === 'recent' && (
+              <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '20px' }}>Recent Communications</h3>
+                <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '20px' }}>
+                  Your most recent communications and messages sent.
+                </p>
+                
+                {communications.slice(0, 5).map((item) => (
+                  <div key={item.id} style={{ 
+                    padding: '16px', 
+                    backgroundColor: '#f9fafb', 
+                    borderRadius: '8px', 
+                    marginBottom: '12px',
+                    border: '1px solid #e5e7eb'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '8px' }}>
+                      <h4 style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 0 4px 0' }}>{item.subject}</h4>
+                      <span style={{
+                        backgroundColor: item.type === 'automated' ? '#fef3c7' : '#dbeafe',
+                        color: item.type === 'automated' ? '#d97706' : '#1d4ed8',
+                        padding: '2px 8px',
+                        borderRadius: '12px',
+                        fontSize: '10px',
+                        fontWeight: 'bold',
+                        textTransform: 'uppercase'
+                      }}>
+                        {item.type}
+                      </span>
+                    </div>
+                    <p style={{ fontSize: '14px', color: '#6b7280', margin: '0 0 8px 0' }}>
+                      To: {item.recipients} • {item.recipientCount} recipient{item.recipientCount !== 1 ? 's' : ''} • {item.sendVia}
+                    </p>
+                    <p style={{ fontSize: '14px', color: '#374151', margin: '0 0 8px 0', lineHeight: '1.4' }}>
+                      {item.message.length > 150 ? item.message.substring(0, 150) + '...' : item.message}
+                    </p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px', color: '#6b7280' }}>
+                      <span>Sent by {item.sentBy}</span>
+                      <span>{new Date(item.sentDate).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                ))}
+
+                {communications.length === 0 && (
+                  <div style={{ textAlign: 'center', padding: '32px' }}>
+                    <MessageCircle style={{ height: '32px', width: '32px', color: '#6b7280', margin: '0 auto 12px' }} />
+                    <h4 style={{ fontSize: '16px', marginBottom: '4px' }}>No Communications Yet</h4>
+                    <p style={{ color: '#6b7280', fontSize: '14px' }}>Your recent communications will appear here</p>
                   </div>
                 )}
               </div>
