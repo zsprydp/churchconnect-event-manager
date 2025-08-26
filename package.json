@@ -14,12 +14,18 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+"scripts": {
+  "start": "react-scripts start",
+  "build": "react-scripts build",
+  "test": "react-scripts test",
+  "eject": "react-scripts eject",
+  "clean": "rmdir /s /q node_modules 2>nul & del package-lock.json 2>nul",
+  "clean:cache": "npm cache clean --force",
+  "reinstall": "npm run clean && npm run clean:cache && npm install",
+  "fix:install": "npm run clean && npm install react-scripts@5.0.1 --force && npm install",
+  "fix:audit": "npm audit fix",
+  "fresh-start": "npm run clean && npm run clean:cache && npm install react@18.2.0 react-dom@18.2.0 --save && npm install react-scripts@5.0.1 --force && npm install"
+},
   "eslintConfig": {
     "extends": [
       "react-app",
