@@ -2,6 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Calendar as CalendarIcon, Users, DollarSign, Mail, Plus, Settings, BarChart3, MapPin, UserCheck, CreditCard, Bell, X, Check, User, CheckCircle, Send, MessageCircle, Clock, Archive, Edit2, Copy, ChevronDown, ChevronUp, UserPlus, Trash2, Shield, AlertCircle, Search, Heart } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import Calendar from './Calendar';
+import OfflineIndicator from './components/OfflineIndicator';
+import CalendarExport from './components/CalendarExport';
 
 // Utility functions for data persistence
 const saveToLocalStorage = (key, data) => {
@@ -1457,6 +1459,9 @@ const ChurchConnectDashboard = () => {
         ))}
       </div>
       
+      {/* PWA Offline Indicator */}
+      <OfflineIndicator />
+      
       {/* Sidebar */}
       <div style={{ width: '256px', backgroundColor: 'white', borderRight: '1px solid #e5e7eb' }}>
         <div style={{ padding: '24px' }}>
@@ -1623,6 +1628,14 @@ const ChurchConnectDashboard = () => {
               </select>
             </div>
 
+            {/* Bulk Calendar Export */}
+            <div style={{ marginBottom: '20px' }}>
+              <CalendarExport 
+                events={events.filter(e => e.status !== 'archived')} 
+                showBulkExport={true} 
+              />
+            </div>
+
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '20px' }}>
               {filterEvents(events, searchTerm, filterStatus)
                 .filter(e => showArchivedEvents || e.status !== 'archived')
@@ -1703,6 +1716,11 @@ const ChurchConnectDashboard = () => {
                         </p>
                         <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Messages</p>
                       </div>
+                    </div>
+
+                    {/* Calendar Export Component */}
+                    <div style={{ marginBottom: '16px' }}>
+                      <CalendarExport event={event} />
                     </div>
 
                     {event.status === 'active' && (
