@@ -16,39 +16,70 @@ const CalendarExport = ({ event, events = [], showBulkExport = false }) => {
   const [selectedCalendar, setSelectedCalendar] = useState(null);
 
   const handleSingleEventExport = () => {
-    if (!event) return;
+    if (!event) {
+      console.error('No event provided for export');
+      return;
+    }
     
-    const icsContent = generateICSContent(event);
-    const filename = `${event.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.ics`;
-    downloadICSFile(icsContent, filename);
+    console.log('Exporting single event:', event);
+    
+    try {
+      const icsContent = generateICSContent(event);
+      const filename = `${event.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.ics`;
+      downloadICSFile(icsContent, filename);
+      console.log('ICS file downloaded successfully');
+    } catch (error) {
+      console.error('Failed to export event:', error);
+      alert('Failed to export event. Please check the console for details.');
+    }
   };
 
   const handleBulkExport = () => {
-    if (!events || events.length === 0) return;
+    if (!events || events.length === 0) {
+      console.error('No events provided for bulk export');
+      return;
+    }
     
-    const icsContent = generateBulkICSContent(events);
-    const filename = `churchconnect_events_${new Date().toISOString().slice(0, 10)}.ics`;
-    downloadICSFile(icsContent, filename);
+    console.log('Exporting bulk events:', events);
+    
+    try {
+      const icsContent = generateBulkICSContent(events);
+      const filename = `churchconnect_events_${new Date().toISOString().slice(0, 10)}.ics`;
+      downloadICSFile(icsContent, filename);
+      console.log('Bulk ICS file downloaded successfully');
+    } catch (error) {
+      console.error('Failed to export bulk events:', error);
+      alert('Failed to export events. Please check the console for details.');
+    }
   };
 
   const handleCalendarServiceClick = (service, eventData) => {
+    console.log(`Opening ${service} calendar for event:`, eventData);
+    
     let url;
     
-    switch (service) {
-      case 'google':
-        url = generateGoogleCalendarLink(eventData);
-        break;
-      case 'outlook':
-        url = generateOutlookCalendarLink(eventData);
-        break;
-      case 'apple':
-        url = generateAppleCalendarLink(eventData);
-        break;
-      default:
-        return;
+    try {
+      switch (service) {
+        case 'google':
+          url = generateGoogleCalendarLink(eventData);
+          break;
+        case 'outlook':
+          url = generateOutlookCalendarLink(eventData);
+          break;
+        case 'apple':
+          url = generateAppleCalendarLink(eventData);
+          break;
+        default:
+          console.error('Unknown calendar service:', service);
+          return;
+      }
+      
+      console.log(`${service} calendar URL:`, url);
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } catch (error) {
+      console.error(`Failed to generate ${service} calendar link:`, error);
+      alert(`Failed to open ${service} calendar. Please check the console for details.`);
     }
-    
-    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const getCalendarServiceIcon = (service) => {
@@ -90,7 +121,18 @@ const CalendarExport = ({ event, events = [], showBulkExport = false }) => {
     }
   };
 
+  // Debug logging
+  React.useEffect(() => {
+    if (event) {
+      console.log('CalendarExport component received event:', event);
+    }
+    if (events && events.length > 0) {
+      console.log('CalendarExport component received events:', events);
+    }
+  }, [event, events]);
+
   if (!event && (!events || events.length === 0)) {
+    console.log('CalendarExport: No event or events provided');
     return null;
   }
 

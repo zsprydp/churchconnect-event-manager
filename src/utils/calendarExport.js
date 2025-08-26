@@ -9,26 +9,45 @@
 export function generateICSContent(event) {
   const {
     id,
-    title,
+    name: title,
     description = '',
     location = '',
-    startDate,
-    endDate,
-    allDay = false,
+    dates,
+    startTime,
+    endTime,
+    dateType = 'single',
     created = new Date(),
     lastModified = new Date()
   } = event;
 
+  // Handle ChurchConnect date format
+  let startDate, endDate;
+  if (dateType === 'single' && dates && dates.length > 0) {
+    startDate = new Date(dates[0]);
+    endDate = new Date(dates[0]);
+    
+    // Add time if available
+    if (startTime) {
+      const [startHour, startMinute] = startTime.split(':').map(Number);
+      startDate.setHours(startHour, startMinute, 0, 0);
+    }
+    
+    if (endTime) {
+      const [endHour, endMinute] = endTime.split(':').map(Number);
+      endDate.setHours(endHour, endMinute, 0, 0);
+    }
+  } else {
+    // Fallback to current date if no valid dates
+    startDate = new Date();
+    endDate = new Date();
+    endDate.setHours(endDate.getHours() + 1);
+  }
+
   // Format dates for .ics
   const formatDate = (date) => {
-    if (allDay) {
-      return date.toISOString().slice(0, 10).replace(/-/g, '');
-    }
     return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
   };
 
-  const start = new Date(startDate);
-  const end = new Date(endDate);
   const createdDate = new Date(created);
   const modifiedDate = new Date(lastModified);
 
@@ -37,6 +56,7 @@ export function generateICSContent(event) {
 
   // Escape special characters in text fields
   const escapeText = (text) => {
+    if (!text) return '';
     return text
       .replace(/[\\;,]/g, '\\$&')
       .replace(/\n/g, '\\n')
@@ -52,8 +72,8 @@ export function generateICSContent(event) {
     'BEGIN:VEVENT',
     `UID:${uid}`,
     `DTSTAMP:${formatDate(createdDate)}`,
-    `DTSTART:${allDay ? 'VALUE=DATE:' : ''}${formatDate(start)}`,
-    `DTEND:${allDay ? 'VALUE=DATE:' : ''}${formatDate(end)}`,
+    `DTSTART:${formatDate(startDate)}`,
+    `DTEND:${formatDate(endDate)}`,
     `SUMMARY:${escapeText(title)}`,
     `DESCRIPTION:${escapeText(description)}`,
     `LOCATION:${escapeText(location)}`,
@@ -87,30 +107,50 @@ export function generateBulkICSContent(events) {
   const eventBlocks = events.map(event => {
     const {
       id,
-      title,
+      name: title,
       description = '',
       location = '',
-      startDate,
-      endDate,
-      allDay = false,
+      dates,
+      startTime,
+      endTime,
+      dateType = 'single',
       created = new Date(),
       lastModified = new Date()
     } = event;
 
-    const formatDate = (date) => {
-      if (allDay) {
-        return date.toISOString().slice(0, 10).replace(/-/g, '');
+    // Handle ChurchConnect date format
+    let startDate, endDate;
+    if (dateType === 'single' && dates && dates.length > 0) {
+      startDate = new Date(dates[0]);
+      endDate = new Date(dates[0]);
+      
+      // Add time if available
+      if (startTime) {
+        const [startHour, startMinute] = startTime.split(':').map(Number);
+        startDate.setHours(startHour, startMinute, 0, 0);
       }
+      
+      if (endTime) {
+        const [endHour, endMinute] = endTime.split(':').map(Number);
+        endDate.setHours(endHour, endMinute, 0, 0);
+      }
+    } else {
+      // Fallback to current date if no valid dates
+      startDate = new Date();
+      endDate = new Date();
+      endDate.setHours(endDate.getHours() + 1);
+    }
+
+    const formatDate = (date) => {
       return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
     };
 
-    const start = new Date(startDate);
-    const end = new Date(endDate);
     const createdDate = new Date(created);
     const modifiedDate = new Date(lastModified);
     const uid = `${id}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}@churchconnect.com`;
 
     const escapeText = (text) => {
+      if (!text) return '';
       return text
         .replace(/[\\;,]/g, '\\$&')
         .replace(/\n/g, '\\n')
@@ -121,8 +161,8 @@ export function generateBulkICSContent(events) {
       'BEGIN:VEVENT',
       `UID:${uid}`,
       `DTSTAMP:${formatDate(createdDate)}`,
-      `DTSTART:${allDay ? 'VALUE=DATE:' : ''}${formatDate(start)}`,
-      `DTEND:${allDay ? 'VALUE=DATE:' : ''}${formatDate(end)}`,
+      `DTSTART:${formatDate(startDate)}`,
+      `DTEND:${formatDate(endDate)}`,
       `SUMMARY:${escapeText(title)}`,
       `DESCRIPTION:${escapeText(description)}`,
       `LOCATION:${escapeText(location)}`,
@@ -165,16 +205,37 @@ export function downloadICSFile(content, filename = 'event.ics') {
  */
 export function generateGoogleCalendarLink(event) {
   const {
-    title,
+    name: title,
     description = '',
     location = '',
-    startDate,
-    endDate,
-    allDay = false
+    dates,
+    startTime,
+    endTime,
+    dateType = 'single'
   } = event;
 
-  const start = new Date(startDate);
-  const end = new Date(endDate);
+  // Handle ChurchConnect date format
+  let startDate, endDate;
+  if (dateType === 'single' && dates && dates.length > 0) {
+    startDate = new Date(dates[0]);
+    endDate = new Date(dates[0]);
+    
+    // Add time if available
+    if (startTime) {
+      const [startHour, startMinute] = startTime.split(':').map(Number);
+      startDate.setHours(startHour, startMinute, 0, 0);
+    }
+    
+    if (endTime) {
+      const [endHour, endMinute] = endTime.split(':').map(Number);
+      endDate.setHours(endHour, endMinute, 0, 0);
+    }
+  } else {
+    // Fallback to current date if no valid dates
+    startDate = new Date();
+    endDate = new Date();
+    endDate.setHours(endDate.getHours() + 1);
+  }
 
   const formatDate = (date) => {
     return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
@@ -183,7 +244,7 @@ export function generateGoogleCalendarLink(event) {
   const params = new URLSearchParams({
     action: 'TEMPLATE',
     text: title,
-    dates: `${formatDate(start)}/${formatDate(end)}`,
+    dates: `${formatDate(startDate)}/${formatDate(endDate)}`,
     details: description,
     location: location,
     ctz: Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -199,15 +260,37 @@ export function generateGoogleCalendarLink(event) {
  */
 export function generateOutlookCalendarLink(event) {
   const {
-    title,
+    name: title,
     description = '',
     location = '',
-    startDate,
-    endDate
+    dates,
+    startTime,
+    endTime,
+    dateType = 'single'
   } = event;
 
-  const start = new Date(startDate);
-  const end = new Date(endDate);
+  // Handle ChurchConnect date format
+  let startDate, endDate;
+  if (dateType === 'single' && dates && dates.length > 0) {
+    startDate = new Date(dates[0]);
+    endDate = new Date(dates[0]);
+    
+    // Add time if available
+    if (startTime) {
+      const [startHour, startMinute] = startTime.split(':').map(Number);
+      startDate.setHours(startHour, startMinute, 0, 0);
+    }
+    
+    if (endTime) {
+      const [endHour, endMinute] = endTime.split(':').map(Number);
+      endDate.setHours(endHour, endMinute, 0, 0);
+    }
+  } else {
+    // Fallback to current date if no valid dates
+    startDate = new Date();
+    endDate = new Date();
+    endDate.setHours(endDate.getHours() + 1);
+  }
 
   const formatDate = (date) => {
     return date.toISOString().split('.')[0] + 'Z';
@@ -217,8 +300,8 @@ export function generateOutlookCalendarLink(event) {
     path: '/calendar/action/compose',
     rru: 'addevent',
     subject: title,
-    startdt: formatDate(start),
-    enddt: formatDate(end),
+    startdt: formatDate(startDate),
+    enddt: formatDate(endDate),
     body: description,
     location: location
   });
@@ -233,15 +316,37 @@ export function generateOutlookCalendarLink(event) {
  */
 export function generateAppleCalendarLink(event) {
   const {
-    title,
+    name: title,
     description = '',
     location = '',
-    startDate,
-    endDate
+    dates,
+    startTime,
+    endTime,
+    dateType = 'single'
   } = event;
 
-  const start = new Date(startDate);
-  const end = new Date(endDate);
+  // Handle ChurchConnect date format
+  let startDate, endDate;
+  if (dateType === 'single' && dates && dates.length > 0) {
+    startDate = new Date(dates[0]);
+    endDate = new Date(dates[0]);
+    
+    // Add time if available
+    if (startTime) {
+      const [startHour, startMinute] = startTime.split(':').map(Number);
+      startDate.setHours(startHour, startMinute, 0, 0);
+    }
+    
+    if (endTime) {
+      const [endHour, endMinute] = endTime.split(':').map(Number);
+      endDate.setHours(endHour, endMinute, 0, 0);
+    }
+  } else {
+    // Fallback to current date if no valid dates
+    startDate = new Date();
+    endDate = new Date();
+    endDate.setHours(endDate.getHours() + 1);
+  }
 
   const formatDate = (date) => {
     return date.toISOString().split('.')[0] + 'Z';
