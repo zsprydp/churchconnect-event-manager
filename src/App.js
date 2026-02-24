@@ -100,20 +100,22 @@ const mockEmailService = {
   }
 };
 
-// EmailJS integration - NOW CONFIGURED!
 const emailJSConfig = {
-  serviceId: 'service_zdm2o1e', // Your real EmailJS service ID
-  templateId: 'template_6b28q4u', // Your real EmailJS template ID
-  userId: 'Dy9ee3RF09BGyTeSV' // Your real EmailJS user ID
+  serviceId: process.env.REACT_APP_EMAILJS_SERVICE_ID || '',
+  templateId: process.env.REACT_APP_EMAILJS_TEMPLATE_ID || '',
+  userId: process.env.REACT_APP_EMAILJS_USER_ID || ''
 };
 
-// Initialize EmailJS with your credentials
-emailjs.init(emailJSConfig.userId);
+if (emailJSConfig.userId) {
+  emailjs.init(emailJSConfig.userId);
+}
 
 const sendEmailViaEmailJS = async (to, subject, message, from = 'church@example.com') => {
-  // EmailJS is now configured! Let's use it
-  console.log('📧 EmailJS configured, attempting to send real email...');
-  
+  if (!emailJSConfig.serviceId || !emailJSConfig.templateId || !emailJSConfig.userId) {
+    console.log('📧 EmailJS not configured, using fallback service...');
+    return await sendEmailViaSimpleService(to, subject, message, from);
+  }
+
   try {
     console.log('📧 Sending email via EmailJS:', { to, subject, messageLength: message.length });
     
@@ -154,10 +156,9 @@ const sendEmailViaSimpleService = async (to, subject, message, from = 'church@ex
     console.log('📧 Subject:', subject);
     console.log('📝 Message preview:', message.substring(0, 100) + '...');
     
-    // Show instructions for real email setup
     console.log('💡 To get real emails working:');
     console.log('   1. Follow EMAILJS_SETUP.md guide');
-    console.log('   2. Update emailJSConfig with your real credentials');
+    console.log('   2. Set REACT_APP_EMAILJS_SERVICE_ID, REACT_APP_EMAILJS_TEMPLATE_ID, and REACT_APP_EMAILJS_USER_ID in your .env file');
     console.log('   3. Or use a different email service');
     
     return { success: true, messageId: Date.now() };
