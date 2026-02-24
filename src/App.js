@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Calendar as CalendarIcon, Users, Mail, Plus, Settings, BarChart3, MapPin, UserCheck, CreditCard, X, Check, User, CheckCircle, Send, Edit2, Copy, ChevronDown, ChevronUp, UserPlus, Trash2, Shield, AlertCircle, Search } from 'lucide-react';
+import { Calendar as CalendarIcon, Users, Mail, Plus, Settings, BarChart3, CreditCard, X, User, CheckCircle, Edit2, Trash2, Shield, Search } from 'lucide-react';
 import Calendar from './Calendar';
 import OfflineIndicator from './components/OfflineIndicator';
 import { saveToLocalStorage, loadFromLocalStorage } from './utils/storage';
@@ -10,6 +10,16 @@ import EventsView from './views/EventsView';
 import CommunicationsView from './views/CommunicationsView';
 import PaymentsView from './views/PaymentsView';
 import SettingsView from './views/SettingsView';
+import EventTemplateCreationModal from './components/modals/EventTemplateCreationModal';
+import CreateEventModal from './components/modals/CreateEventModal';
+import EditEventModal from './components/modals/EditEventModal';
+import AddVolunteerModal from './components/modals/AddVolunteerModal';
+import EventRegistrationModal from './components/modals/EventRegistrationModal';
+import EditAttendeeModal from './components/modals/EditAttendeeModal';
+import ManageEventModal from './components/modals/ManageEventModal';
+import SendMessageModal from './components/modals/SendMessageModal';
+import PaymentProcessingModal from './components/modals/PaymentProcessingModal';
+import CreateTemplateModal from './components/modals/CreateTemplateModal';
 
 const ChurchConnectDashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -1724,1680 +1734,179 @@ const ChurchConnectDashboard = () => {
 
       {/* Event Template Creation Modal */}
       {showCreateEventTemplate && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000
-        }}>
-          <div style={{
-            backgroundColor: 'white',
-            borderRadius: '12px',
-            padding: '32px',
-            maxWidth: '600px',
-            width: '90%',
-            maxHeight: '90vh',
-            overflowY: 'auto'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-              <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Create New Event Template</h3>
-              <button
-                onClick={() => setShowCreateEventTemplate(false)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: '8px'
-                }}
-              >
-                <X style={{ height: '20px', width: '20px', color: '#6b7280' }} />
-              </button>
-            </div>
-
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
-                Template Name *
-              </label>
-              <input
-                type="text"
-                value={newEventTemplate.name}
-                onChange={(e) => setNewEventTemplate(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="e.g., Community Dinner, Youth Retreat"
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  boxSizing: 'border-box'
-                }}
-              />
-            </div>
-
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
-                Event Type *
-              </label>
-              <select
-                value={newEventTemplate.eventType}
-                onChange={(e) => setNewEventTemplate(prev => ({ ...prev, eventType: e.target.value }))}
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  boxSizing: 'border-box'
-                }}
-              >
-                <option value="">Select Event Type</option>
-                <option value="dinner">Community Dinner</option>
-                <option value="feast">Feast Celebration</option>
-                <option value="retreat">Spiritual Retreat</option>
-                <option value="service">Worship Service</option>
-                <option value="workshop">Workshop</option>
-                <option value="meeting">Meeting</option>
-                <option value="social">Social Event</option>
-              </select>
-            </div>
-
-            <div style={{ marginBottom: '24px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
-                Custom Questions
-              </label>
-              <p style={{ fontSize: '12px', color: '#6b7280', marginBottom: '12px' }}>
-                Add custom questions that attendees will answer when registering for events using this template.
-              </p>
-              
-              {newEventTemplate.customQuestions.map((question, index) => (
-                <div key={index} style={{ 
-                  border: '1px solid #e5e7eb', 
-                  borderRadius: '6px', 
-                  padding: '12px', 
-                  marginBottom: '8px',
-                  backgroundColor: '#f9fafb'
-                }}>
-                  <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-                    <input
-                      type="text"
-                      value={question.question}
-                      onChange={(e) => {
-                        const updatedQuestions = [...newEventTemplate.customQuestions];
-                        updatedQuestions[index].question = e.target.value;
-                        setNewEventTemplate(prev => ({ ...prev, customQuestions: updatedQuestions }));
-                      }}
-                      placeholder="Question text"
-                      style={{
-                        flex: 1,
-                        padding: '8px',
-                        border: '1px solid #d1d5db',
-                        borderRadius: '4px',
-                        fontSize: '14px'
-                      }}
-                    />
-                    <select
-                      value={question.type}
-                      onChange={(e) => {
-                        const updatedQuestions = [...newEventTemplate.customQuestions];
-                        updatedQuestions[index].type = e.target.value;
-                        setNewEventTemplate(prev => ({ ...prev, customQuestions: updatedQuestions }));
-                      }}
-                      style={{
-                        padding: '8px',
-                        border: '1px solid #d1d5db',
-                        borderRadius: '4px',
-                        fontSize: '14px',
-                        minWidth: '100px'
-                      }}
-                    >
-                      <option value="text">Text</option>
-                      <option value="yes/no">Yes/No</option>
-                      <option value="number">Number</option>
-                      <option value="select">Select</option>
-                    </select>
-                    <button
-                      onClick={() => {
-                        const updatedQuestions = newEventTemplate.customQuestions.filter((_, i) => i !== index);
-                        setNewEventTemplate(prev => ({ ...prev, customQuestions: updatedQuestions }));
-                      }}
-                      style={{
-                        backgroundColor: '#dc2626',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '4px',
-                        padding: '8px',
-                        cursor: 'pointer',
-                        fontSize: '12px'
-                      }}
-                    >
-                      <Trash2 style={{ height: '14px', width: '14px' }} />
-                    </button>
-                  </div>
-                  
-                  {question.type === 'select' && (
-                    <div style={{ marginTop: '8px' }}>
-                      <input
-                        type="text"
-                        value={question.options ? question.options.join(', ') : ''}
-                        onChange={(e) => {
-                          const updatedQuestions = [...newEventTemplate.customQuestions];
-                          updatedQuestions[index].options = e.target.value.split(',').map(opt => opt.trim()).filter(opt => opt);
-                          setNewEventTemplate(prev => ({ ...prev, customQuestions: updatedQuestions }));
-                        }}
-                        placeholder="Options separated by commas (e.g., Morning, Afternoon, Evening)"
-                        style={{
-                          width: '100%',
-                          padding: '8px',
-                          border: '1px solid #d1d5db',
-                          borderRadius: '4px',
-                          fontSize: '14px'
-                        }}
-                      />
-                    </div>
-                  )}
-                  
-                  <div style={{ marginTop: '8px' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px' }}>
-                      <input
-                        type="checkbox"
-                        checked={question.required}
-                        onChange={(e) => {
-                          const updatedQuestions = [...newEventTemplate.customQuestions];
-                          updatedQuestions[index].required = e.target.checked;
-                          setNewEventTemplate(prev => ({ ...prev, customQuestions: updatedQuestions }));
-                        }}
-                      />
-                      Required question
-                    </label>
-                  </div>
-                </div>
-              ))}
-              
-              <button
-                onClick={() => {
-                  setNewEventTemplate(prev => ({
-                    ...prev,
-                    customQuestions: [...prev.customQuestions, { question: '', type: 'text', required: false, options: [] }]
-                  }));
-                }}
-                style={{
-                  backgroundColor: '#f3f4f6',
-                  color: '#374151',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '6px',
-                  padding: '8px 16px',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px'
-                }}
-              >
-                <Plus style={{ height: '16px', width: '16px' }} />
-                Add Question
-              </button>
-            </div>
-
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-              <button
-                onClick={() => setShowCreateEventTemplate(false)}
-                style={{
-                  backgroundColor: '#f3f4f6',
-                  color: '#374151',
-                  border: 'none',
-                  borderRadius: '6px',
-                  padding: '12px 24px',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  fontWeight: 'bold'
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  if (newEventTemplate.name && newEventTemplate.eventType) {
-                    // Add the new template to eventTemplates
-                    const templateKey = newEventTemplate.name.toLowerCase().replace(/\s+/g, '-');
-                    setEventTemplates(prev => ({
-                      ...prev,
-                      [templateKey]: {
-                        name: newEventTemplate.name,
-                        eventType: newEventTemplate.eventType,
-                        customQuestions: newEventTemplate.customQuestions
-                      }
-                    }));
-                    
-                    // Reset form and close modal
-                    setNewEventTemplate({ name: '', eventType: '', customQuestions: [] });
-                    setShowCreateEventTemplate(false);
-                    addNotification('Event template created successfully!', 'success');
-                  } else {
-                    addNotification('Please fill in template name and event type', 'error');
-                  }
-                }}
-                style={{
-                  backgroundColor: '#3b82f6',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '6px',
-                  padding: '12px 24px',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  fontWeight: 'bold'
-                }}
-              >
-                Create Template
-              </button>
-            </div>
-          </div>
-        </div>
+        <EventTemplateCreationModal
+          newEventTemplate={newEventTemplate}
+          setNewEventTemplate={setNewEventTemplate}
+          onClose={() => setShowCreateEventTemplate(false)}
+          onCreate={() => {
+            const templateKey = newEventTemplate.name.toLowerCase().replace(/\s+/g, '-');
+            setEventTemplates(prev => ({
+              ...prev,
+              [templateKey]: {
+                name: newEventTemplate.name,
+                eventType: newEventTemplate.eventType,
+                customQuestions: newEventTemplate.customQuestions
+              }
+            }));
+            setNewEventTemplate({ name: '', eventType: '', customQuestions: [] });
+            setShowCreateEventTemplate(false);
+            addNotification('Event template created successfully!', 'success');
+          }}
+          addNotification={addNotification}
+        />
       )}
 
       {/* All Modals */}
       {/* Enhanced Create Event Modal with Templates and Custom Questions */}
       {showCreateEvent && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
-        }}>
-          <div style={{
-            backgroundColor: 'white', borderRadius: '8px', padding: '24px', width: '90%', maxWidth: '600px', maxHeight: '80vh', overflowY: 'auto'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Create New Event</h3>
-              <button onClick={() => {
-                setShowCreateEvent(false);
-                setNewEvent({
-                  name: '', dateType: 'single', dates: [''], startTime: '09:00', endTime: '17:00',
-                  recurrencePattern: '', location: '', capacity: '', registrationFee: '', donationGoal: '',
-                  eventType: '', customQuestions: []
-                });
-                setSelectedTemplate('');
-                setFormErrors({});
-              }} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                <X style={{ height: '20px', width: '20px' }} />
-              </button>
-            </div>
-
-            {/* Event Template Selection */}
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Use Template (Optional)</label>
-              <select 
-                value={selectedTemplate} 
-                onChange={(e) => {
-                  setSelectedTemplate(e.target.value);
-                  if (e.target.value) applyEventTemplate(e.target.value);
-                }}
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }}
-              >
-                <option value="">-- No Template --</option>
-                {Object.entries(eventTemplates).map(([key, template]) => (
-                  <option key={key} value={key}>
-                    {template.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Event Name *</label>
-              <input 
-                type="text" 
-                value={newEvent.name} 
-                onChange={(e) => handleEventInputChange('name', e.target.value)} 
-                placeholder="Enter event name"
-                style={{ 
-                  width: '100%', 
-                  padding: '8px', 
-                  border: `1px solid ${formErrors.name ? '#dc2626' : '#d1d5db'}`, 
-                  borderRadius: '4px', 
-                  fontSize: '14px', 
-                  boxSizing: 'border-box' 
-                }} 
-              />
-              {formErrors.name && (
-                <p style={{ color: '#dc2626', fontSize: '12px', margin: '4px 0 0 0' }}>{formErrors.name}</p>
-              )}
-            </div>
-
-            {/* Date Type Selection */}
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Date Type</label>
-              <select 
-                value={newEvent.dateType} 
-                onChange={(e) => handleEventInputChange('dateType', e.target.value)}
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }}
-              >
-                <option value="single">Single Date</option>
-                <option value="multiple">Multiple Dates</option>
-                <option value="recurring">Recurring</option>
-                <option value="ongoing">Ongoing</option>
-              </select>
-            </div>
-
-            {/* Date Input Based on Type */}
-            {newEvent.dateType === 'single' && (
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Date</label>
-                <input 
-                  type="date" 
-                  value={newEvent.dates[0]} 
-                  onChange={(e) => handleEventInputChange('dates', [e.target.value])}
-                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-                />
-              </div>
-            )}
-
-            {newEvent.dateType === 'multiple' && (
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Dates</label>
-                {newEvent.dates.map((date, index) => (
-                  <div key={index} style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-                    <input 
-                      type="date" 
-                      value={date} 
-                      onChange={(e) => {
-                        const newDates = [...newEvent.dates];
-                        newDates[index] = e.target.value;
-                        handleEventInputChange('dates', newDates);
-                      }}
-                      style={{ flex: 1, padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px' }} 
-                    />
-                    {index > 0 && (
-                      <button 
-                        onClick={() => {
-                          const newDates = newEvent.dates.filter((_, i) => i !== index);
-                          handleEventInputChange('dates', newDates);
-                        }}
-                        style={{ backgroundColor: '#dc2626', color: 'white', border: 'none', borderRadius: '4px', padding: '0 8px', cursor: 'pointer' }}
-                      >
-                        <X style={{ height: '16px', width: '16px' }} />
-                      </button>
-                    )}
-                  </div>
-                ))}
-                <button 
-                  onClick={() => handleEventInputChange('dates', [...newEvent.dates, ''])}
-                  style={{ backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', padding: '4px 12px', cursor: 'pointer', fontSize: '12px' }}
-                >
-                  Add Date
-                </button>
-              </div>
-            )}
-
-            {newEvent.dateType === 'recurring' && (
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Recurrence Pattern</label>
-                <input 
-                  type="text" 
-                  value={newEvent.recurrencePattern} 
-                  onChange={(e) => handleEventInputChange('recurrencePattern', e.target.value)} 
-                  placeholder="e.g., Every 4th Tuesday of the month"
-                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-                />
-              </div>
-            )}
-
-            {/* Time Range Selection */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
-              <div>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Start Time</label>
-                <input 
-                  type="time" 
-                  value={newEvent.startTime} 
-                  onChange={(e) => handleEventInputChange('startTime', e.target.value)}
-                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-                />
-              </div>
-              <div>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>End Time</label>
-                <input 
-                  type="time" 
-                  value={newEvent.endTime} 
-                  onChange={(e) => handleEventInputChange('endTime', e.target.value)}
-                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-                />
-              </div>
-            </div>
-
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Location (Optional)</label>
-              <input type="text" value={newEvent.location} onChange={(e) => handleEventInputChange('location', e.target.value)} placeholder="Event location"
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} />
-            </div>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Capacity</label>
-              <input 
-                type="number" 
-                value={newEvent.capacity} 
-                onChange={(e) => handleEventInputChange('capacity', e.target.value)} 
-                placeholder="Maximum attendees"
-                style={{ 
-                  width: '100%', 
-                  padding: '8px', 
-                  border: `1px solid ${formErrors.capacity ? '#dc2626' : '#d1d5db'}`, 
-                  borderRadius: '4px', 
-                  fontSize: '14px', 
-                  boxSizing: 'border-box' 
-                }} 
-              />
-              {formErrors.capacity && (
-                <p style={{ color: '#dc2626', fontSize: '12px', margin: '4px 0 0 0' }}>{formErrors.capacity}</p>
-              )}
-            </div>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Registration Fee ($)</label>
-              <input 
-                type="number" 
-                step="0.01" 
-                value={newEvent.registrationFee} 
-                onChange={(e) => handleEventInputChange('registrationFee', e.target.value)} 
-                placeholder="0.00"
-                style={{ 
-                  width: '100%', 
-                  padding: '8px', 
-                  border: `1px solid ${formErrors.registrationFee ? '#dc2626' : '#d1d5db'}`, 
-                  borderRadius: '4px', 
-                  fontSize: '14px', 
-                  boxSizing: 'border-box' 
-                }} 
-              />
-              {formErrors.registrationFee && (
-                <p style={{ color: '#dc2626', fontSize: '12px', margin: '4px 0 0 0' }}>{formErrors.registrationFee}</p>
-              )}
-            </div>
-
-            {/* Custom Questions Section */}
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Custom Questions</label>
-              
-              {newEvent.customQuestions.map((q) => (
-                <div key={q.id} style={{ padding: '8px', backgroundColor: '#f9fafb', borderRadius: '4px', marginBottom: '8px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
-                    <div style={{ flex: 1 }}>
-                      <p style={{ margin: '0 0 4px 0', fontWeight: 'bold', fontSize: '14px' }}>{q.question}</p>
-                      <p style={{ margin: '0', fontSize: '12px', color: '#6b7280' }}>
-                        Type: {q.type} • {q.required ? 'Required' : 'Optional'}
-                      </p>
-                    </div>
-                    <button 
-                      onClick={() => removeCustomQuestion(q.id)}
-                      style={{ backgroundColor: '#dc2626', color: 'white', border: 'none', borderRadius: '4px', padding: '4px 8px', cursor: 'pointer' }}
-                    >
-                      <X style={{ height: '14px', width: '14px' }} />
-                    </button>
-                  </div>
-                </div>
-              ))}
-
-              <div style={{ border: '1px solid #d1d5db', borderRadius: '4px', padding: '12px' }}>
-                <input 
-                  type="text" 
-                  value={newQuestion.question} 
-                  onChange={(e) => setNewQuestion(prev => ({ ...prev, question: e.target.value }))}
-                  placeholder="Question text"
-                  style={{ width: '100%', padding: '6px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', marginBottom: '8px', boxSizing: 'border-box' }} 
-                />
-                <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-                  <select 
-                    value={newQuestion.type} 
-                    onChange={(e) => setNewQuestion(prev => ({ ...prev, type: e.target.value }))}
-                    style={{ flex: 1, padding: '6px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px' }}
-                  >
-                    <option value="text">Text</option>
-                    <option value="yes/no">Yes/No</option>
-                    <option value="number">Number</option>
-                    <option value="select">Multiple Choice</option>
-                  </select>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <input 
-                      type="checkbox" 
-                      checked={newQuestion.required} 
-                      onChange={(e) => setNewQuestion(prev => ({ ...prev, required: e.target.checked }))}
-                    />
-                    Required
-                  </label>
-                </div>
-                <button 
-                  onClick={addCustomQuestion}
-                  style={{ backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', padding: '6px 12px', cursor: 'pointer', fontSize: '12px' }}
-                >
-                  Add Question
-                </button>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button onClick={handleCreateEvent} style={{ flex: 1, backgroundColor: '#3b82f6', color: 'white', padding: '10px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
-                Create Event
-              </button>
-              <button onClick={() => {
-                setShowCreateEvent(false);
-                setNewEvent({
-                  name: '', dateType: 'single', dates: [''], startTime: '09:00', endTime: '17:00',
-                  recurrencePattern: '', location: '', capacity: '', registrationFee: '', donationGoal: '',
-                  eventType: '', customQuestions: []
-                });
-                setSelectedTemplate('');
-              }} style={{ flex: 1, backgroundColor: 'white', color: '#374151', padding: '10px', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
+        <CreateEventModal
+          newEvent={newEvent}
+          handleEventInputChange={handleEventInputChange}
+          selectedTemplate={selectedTemplate}
+          setSelectedTemplate={setSelectedTemplate}
+          eventTemplates={eventTemplates}
+          applyEventTemplate={applyEventTemplate}
+          formErrors={formErrors}
+          newQuestion={newQuestion}
+          setNewQuestion={setNewQuestion}
+          addCustomQuestion={addCustomQuestion}
+          removeCustomQuestion={removeCustomQuestion}
+          onClose={() => {
+            setShowCreateEvent(false);
+            setNewEvent({
+              name: '', dateType: 'single', dates: [''], startTime: '09:00', endTime: '17:00',
+              recurrencePattern: '', location: '', capacity: '', registrationFee: '', donationGoal: '',
+              eventType: '', customQuestions: []
+            });
+            setSelectedTemplate('');
+            setFormErrors({});
+          }}
+          onCreate={handleCreateEvent}
+        />
       )}
 
       {/* Edit Event Modal */}
       {showEditEvent && editingEvent && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
-        }}>
-          <div style={{
-            backgroundColor: 'white', borderRadius: '8px', padding: '24px', width: '90%', maxWidth: '600px', maxHeight: '80vh', overflowY: 'auto'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Edit Event: {editingEvent.name}</h3>
-              <button onClick={() => {
-                setShowEditEvent(false);
-                setEditingEvent(null);
-                setFormErrors({});
-              }} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                <X style={{ height: '20px', width: '20px' }} />
-              </button>
-            </div>
-
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Event Name *</label>
-              <input 
-                type="text" 
-                value={editingEvent.name} 
-                onChange={(e) => setEditingEvent(prev => ({ ...prev, name: e.target.value }))} 
-                placeholder="Enter event name"
-                style={{ 
-                  width: '100%', 
-                  padding: '8px', 
-                  border: `1px solid ${formErrors.name ? '#dc2626' : '#d1d5db'}`, 
-                  borderRadius: '4px', 
-                  fontSize: '14px', 
-                  boxSizing: 'border-box' 
-                }} 
-              />
-              {formErrors.name && (
-                <p style={{ color: '#dc2626', fontSize: '12px', margin: '4px 0 0 0' }}>{formErrors.name}</p>
-              )}
-            </div>
-
-            {/* Date Type Selection */}
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Date Type</label>
-              <select 
-                value={editingEvent.dateType} 
-                onChange={(e) => setEditingEvent(prev => ({ ...prev, dateType: e.target.value }))}
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }}
-              >
-                <option value="single">Single Date</option>
-                <option value="multiple">Multiple Dates</option>
-                <option value="recurring">Recurring</option>
-                <option value="ongoing">Ongoing</option>
-              </select>
-            </div>
-
-            {/* Date Input Based on Type */}
-            {editingEvent.dateType === 'single' && (
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Date</label>
-                <input 
-                  type="date" 
-                  value={editingEvent.dates[0] || ''} 
-                  onChange={(e) => setEditingEvent(prev => ({ ...prev, dates: [e.target.value] }))}
-                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-                />
-              </div>
-            )}
-
-            {editingEvent.dateType === 'multiple' && (
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Dates</label>
-                {editingEvent.dates.map((date, index) => (
-                  <div key={index} style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-                    <input 
-                      type="date" 
-                      value={date} 
-                      onChange={(e) => {
-                        const newDates = [...editingEvent.dates];
-                        newDates[index] = e.target.value;
-                        setEditingEvent(prev => ({ ...prev, dates: newDates }));
-                      }}
-                      style={{ flex: 1, padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px' }} 
-                    />
-                    {index > 0 && (
-                      <button 
-                        onClick={() => {
-                          const newDates = editingEvent.dates.filter((_, i) => i !== index);
-                          setEditingEvent(prev => ({ ...prev, dates: newDates }));
-                        }}
-                        style={{ backgroundColor: '#dc2626', color: 'white', border: 'none', borderRadius: '4px', padding: '0 8px', cursor: 'pointer' }}
-                      >
-                        <X style={{ height: '16px', width: '16px' }} />
-                      </button>
-                    )}
-                  </div>
-                ))}
-                <button 
-                  onClick={() => setEditingEvent(prev => ({ ...prev, dates: [...prev.dates, ''] }))}
-                  style={{ backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', padding: '4px 12px', cursor: 'pointer', fontSize: '12px' }}
-                >
-                  Add Date
-                </button>
-              </div>
-            )}
-
-            {editingEvent.dateType === 'recurring' && (
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Recurrence Pattern</label>
-                <input 
-                  type="text" 
-                  value={editingEvent.recurrencePattern || ''} 
-                  onChange={(e) => setEditingEvent(prev => ({ ...prev, recurrencePattern: e.target.value }))} 
-                  placeholder="e.g., Every 4th Tuesday of the month"
-                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-                />
-              </div>
-            )}
-
-            {/* Time Range Selection */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
-              <div>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Start Time</label>
-                <input 
-                  type="time" 
-                  value={editingEvent.startTime || '09:00'} 
-                  onChange={(e) => setEditingEvent(prev => ({ ...prev, startTime: e.target.value }))}
-                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-                />
-              </div>
-              <div>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>End Time</label>
-                <input 
-                  type="time" 
-                  value={editingEvent.endTime || '17:00'} 
-                  onChange={(e) => setEditingEvent(prev => ({ ...prev, endTime: e.target.value }))}
-                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-                />
-              </div>
-            </div>
-
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Location (Optional)</label>
-              <input 
-                type="text" 
-                value={editingEvent.location || ''} 
-                onChange={(e) => setEditingEvent(prev => ({ ...prev, location: e.target.value }))} 
-                placeholder="Event location"
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-              />
-            </div>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Capacity</label>
-              <input 
-                type="number" 
-                value={editingEvent.capacity || ''} 
-                onChange={(e) => setEditingEvent(prev => ({ ...prev, capacity: e.target.value }))} 
-                placeholder="Maximum attendees"
-                style={{ 
-                  width: '100%', 
-                  padding: '8px', 
-                  border: `1px solid ${formErrors.capacity ? '#dc2626' : '#d1d5db'}`, 
-                  borderRadius: '4px', 
-                  fontSize: '14px', 
-                  boxSizing: 'border-box' 
-                }} 
-              />
-              {formErrors.capacity && (
-                <p style={{ color: '#dc2626', fontSize: '12px', margin: '4px 0 0 0' }}>{formErrors.capacity}</p>
-              )}
-            </div>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Registration Fee ($)</label>
-              <input 
-                type="number" 
-                step="0.01" 
-                value={editingEvent.registrationFee || ''} 
-                onChange={(e) => setEditingEvent(prev => ({ ...prev, registrationFee: e.target.value }))} 
-                placeholder="0.00"
-                style={{ 
-                  width: '100%', 
-                  padding: '8px', 
-                  border: `1px solid ${formErrors.registrationFee ? '#dc2626' : '#d1d5db'}`, 
-                  borderRadius: '4px', 
-                  fontSize: '14px', 
-                  boxSizing: 'border-box' 
-                }} 
-              />
-              {formErrors.registrationFee && (
-                <p style={{ color: '#dc2626', fontSize: '12px', margin: '4px 0 0 0' }}>{formErrors.registrationFee}</p>
-              )}
-            </div>
-
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button onClick={handleUpdateEvent} style={{ flex: 1, backgroundColor: '#10b981', color: 'white', padding: '10px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
-                Update Event
-              </button>
-              <button onClick={() => {
-                setShowEditEvent(false);
-                setEditingEvent(null);
-              }} style={{ flex: 1, backgroundColor: 'white', color: '#374151', padding: '10px', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
+        <EditEventModal
+          editingEvent={editingEvent}
+          setEditingEvent={setEditingEvent}
+          formErrors={formErrors}
+          onClose={() => {
+            setShowEditEvent(false);
+            setEditingEvent(null);
+            setFormErrors({});
+          }}
+          onUpdate={handleUpdateEvent}
+        />
       )}
 
       {/* Enhanced Add Volunteer Modal with Security Level */}
       {showAddVolunteer && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
-        }}>
-          <div style={{
-            backgroundColor: 'white', borderRadius: '8px', padding: '24px', width: '90%', maxWidth: '500px', maxHeight: '80vh', overflowY: 'auto'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Add New Volunteer</h3>
-              <button onClick={() => {
-                setShowAddVolunteer(false);
-                setFormErrors({});
-              }} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                <X style={{ height: '20px', width: '20px' }} />
-              </button>
-            </div>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Name *</label>
-              <input 
-                type="text" 
-                value={newVolunteer.name} 
-                onChange={(e) => handleVolunteerInputChange('name', e.target.value)} 
-                placeholder="Volunteer's full name"
-                style={{ 
-                  width: '100%', 
-                  padding: '8px', 
-                  border: `1px solid ${formErrors.name ? '#dc2626' : '#d1d5db'}`, 
-                  borderRadius: '4px', 
-                  fontSize: '14px', 
-                  boxSizing: 'border-box' 
-                }} 
-              />
-              {formErrors.name && (
-                <p style={{ color: '#dc2626', fontSize: '12px', margin: '4px 0 0 0' }}>{formErrors.name}</p>
-              )}
-            </div>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Email *</label>
-              <input 
-                type="email" 
-                value={newVolunteer.email} 
-                onChange={(e) => handleVolunteerInputChange('email', e.target.value)} 
-                placeholder="volunteer@email.com"
-                style={{ 
-                  width: '100%', 
-                  padding: '8px', 
-                  border: `1px solid ${formErrors.email ? '#dc2626' : '#d1d5db'}`, 
-                  borderRadius: '4px', 
-                  fontSize: '14px', 
-                  boxSizing: 'border-box' 
-                }} 
-              />
-              {formErrors.email && (
-                <p style={{ color: '#dc2626', fontSize: '12px', margin: '4px 0 0 0' }}>{formErrors.email}</p>
-              )}
-            </div>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Phone</label>
-              <input type="tel" value={newVolunteer.phone} onChange={(e) => handleVolunteerInputChange('phone', e.target.value)} placeholder="555-0123"
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} />
-            </div>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Role</label>
-              <input type="text" value={newVolunteer.role} onChange={(e) => handleVolunteerInputChange('role', e.target.value)} placeholder="e.g., Event Coordinator, Setup Team, Registration"
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} />
-            </div>
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Security Level</label>
-              <select 
-                value={newVolunteer.securityLevel} 
-                onChange={(e) => handleVolunteerInputChange('securityLevel', e.target.value)}
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }}
-              >
-                <option value="volunteer">Volunteer</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button onClick={handleAddVolunteer} style={{ flex: 1, backgroundColor: '#3b82f6', color: 'white', padding: '10px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
-                Add Volunteer
-              </button>
-              <button onClick={() => setShowAddVolunteer(false)} style={{ flex: 1, backgroundColor: 'white', color: '#374151', padding: '10px', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
+        <AddVolunteerModal
+          newVolunteer={newVolunteer}
+          handleVolunteerInputChange={handleVolunteerInputChange}
+          formErrors={formErrors}
+          onClose={() => {
+            setShowAddVolunteer(false);
+            setFormErrors({});
+          }}
+          onAdd={handleAddVolunteer}
+        />
       )}
 
       {/* Enhanced Event Registration Modal with Group Members and Custom Questions */}
       {showRegistration && selectedEvent && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
-        }}>
-          <div style={{
-            backgroundColor: 'white', borderRadius: '8px', padding: '24px', width: '90%', maxWidth: '600px', maxHeight: '80vh', overflowY: 'auto'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Register for {selectedEvent.name}</h3>
-              <button onClick={() => {
-                setShowRegistration(false);
-                setNewAttendee({ primaryName: '', email: '', phone: '', groupMembers: [], customResponses: {} });
-                setNewGroupMember({ name: '', relationship: '' });
-                setFormErrors({});
-              }} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                <X style={{ height: '20px', width: '20px' }} />
-              </button>
-            </div>
-
-            <div style={{ marginBottom: '24px', padding: '16px', backgroundColor: '#f9fafb', borderRadius: '8px' }}>
-              <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#6b7280' }}>
-                <CalendarIcon style={{ height: '16px', width: '16px', display: 'inline', marginRight: '6px' }} />
-                {formatEventDates(selectedEvent)}
-              </p>
-              {selectedEvent.location && (
-                <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#6b7280' }}>
-                  <MapPin style={{ height: '16px', width: '16px', display: 'inline', marginRight: '6px' }} />
-                  {selectedEvent.location}
-                </p>
-              )}
-              <p style={{ margin: '0', fontSize: '14px', fontWeight: 'bold', color: selectedEvent.registrationFee > 0 ? '#dc2626' : '#10b981' }}>
-                {selectedEvent.registrationFee > 0 ? `Registration Fee: $${selectedEvent.registrationFee} per person` : 'Free Event'}
-              </p>
-            </div>
-
-            <h4 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '12px' }}>Primary Registrant</h4>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Full Name *</label>
-              <input 
-                type="text" 
-                value={newAttendee.primaryName} 
-                onChange={(e) => handleAttendeeInputChange('primaryName', e.target.value)} 
-                placeholder="Enter your full name"
-                style={{ 
-                  width: '100%', 
-                  padding: '8px', 
-                  border: `1px solid ${formErrors.primaryName ? '#dc2626' : '#d1d5db'}`, 
-                  borderRadius: '4px', 
-                  fontSize: '14px', 
-                  boxSizing: 'border-box' 
-                }} 
-              />
-              {formErrors.primaryName && (
-                <p style={{ color: '#dc2626', fontSize: '12px', margin: '4px 0 0 0' }}>{formErrors.primaryName}</p>
-              )}
-            </div>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Email *</label>
-              <input 
-                type="email" 
-                value={newAttendee.email} 
-                onChange={(e) => handleAttendeeInputChange('email', e.target.value)} 
-                placeholder="your@email.com"
-                style={{ 
-                  width: '100%', 
-                  padding: '8px', 
-                  border: `1px solid ${formErrors.email ? '#dc2626' : '#d1d5db'}`, 
-                  borderRadius: '4px', 
-                  fontSize: '14px', 
-                  boxSizing: 'border-box' 
-                }} 
-              />
-              {formErrors.email && (
-                <p style={{ color: '#dc2626', fontSize: '12px', margin: '4px 0 0 0' }}>{formErrors.email}</p>
-              )}
-            </div>
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Phone (Optional)</label>
-              <input type="tel" value={newAttendee.phone} onChange={(e) => handleAttendeeInputChange('phone', e.target.value)} placeholder="555-0123"
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} />
-            </div>
-
-            {/* Group Members Section */}
-            <div style={{ marginBottom: '20px' }}>
-              <h4 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '12px' }}>Additional Registrants</h4>
-              
-              {newAttendee.groupMembers.map((member, index) => (
-                <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', padding: '8px', backgroundColor: '#f9fafb', borderRadius: '4px' }}>
-                  <div style={{ flex: 1 }}>
-                    <span style={{ fontWeight: 'bold' }}>{member.name}</span> ({member.relationship})
-                  </div>
-                  <button 
-                    onClick={() => removeGroupMember(index)}
-                    style={{ backgroundColor: '#dc2626', color: 'white', border: 'none', borderRadius: '4px', padding: '4px 8px', cursor: 'pointer' }}
-                  >
-                    <X style={{ height: '14px', width: '14px' }} />
-                  </button>
-                </div>
-              ))}
-
-              <div style={{ border: '1px solid #d1d5db', borderRadius: '4px', padding: '12px' }}>
-                <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-                  <input 
-                    type="text" 
-                    value={newGroupMember.name} 
-                    onChange={(e) => setNewGroupMember(prev => ({ ...prev, name: e.target.value }))}
-                    placeholder="Name"
-                    style={{ flex: 1, padding: '6px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px' }} 
-                  />
-                  <select 
-                    value={newGroupMember.relationship} 
-                    onChange={(e) => setNewGroupMember(prev => ({ ...prev, relationship: e.target.value }))}
-                    style={{ padding: '6px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px' }}
-                  >
-                    <option value="">Relationship</option>
-                    <option value="Spouse">Spouse</option>
-                    <option value="Child">Child</option>
-                    <option value="Parent">Parent</option>
-                    <option value="Friend">Friend</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                <button 
-                  onClick={addGroupMember}
-                  style={{ backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', padding: '6px 12px', cursor: 'pointer', fontSize: '12px' }}
-                >
-                  <UserPlus style={{ height: '14px', width: '14px', display: 'inline', marginRight: '4px' }} />
-                  Add Person
-                </button>
-              </div>
-            </div>
-
-            {/* Custom Questions */}
-            {selectedEvent.customQuestions && selectedEvent.customQuestions.length > 0 && (
-              <div style={{ marginBottom: '20px' }}>
-                <h4 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '12px' }}>Additional Information</h4>
-                {selectedEvent.customQuestions.map((question) => (
-                  <div key={question.id} style={{ marginBottom: '16px' }}>
-                    <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>
-                      {question.question} {question.required && '*'}
-                    </label>
-                    {question.type === 'text' && (
-                      <input 
-                        type="text" 
-                        value={newAttendee.customResponses[question.id] || ''} 
-                        onChange={(e) => handleAttendeeInputChange('customResponses', { ...newAttendee.customResponses, [question.id]: e.target.value })}
-                        style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-                      />
-                    )}
-                    {question.type === 'yes/no' && (
-                      <select 
-                        value={newAttendee.customResponses[question.id] || ''} 
-                        onChange={(e) => handleAttendeeInputChange('customResponses', { ...newAttendee.customResponses, [question.id]: e.target.value })}
-                        style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }}
-                      >
-                        <option value="">-- Select --</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                      </select>
-                    )}
-                    {question.type === 'number' && (
-                      <input 
-                        type="number" 
-                        value={newAttendee.customResponses[question.id] || ''} 
-                        onChange={(e) => handleAttendeeInputChange('customResponses', { ...newAttendee.customResponses, [question.id]: e.target.value })}
-                        style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-                      />
-                    )}
-                    {question.type === 'select' && question.options && (
-                      <select 
-                        value={newAttendee.customResponses[question.id] || ''} 
-                        onChange={(e) => handleAttendeeInputChange('customResponses', { ...newAttendee.customResponses, [question.id]: e.target.value })}
-                        style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }}
-                      >
-                        <option value="">-- Select --</option>
-                        {question.options.map(opt => (
-                          <option key={opt} value={opt}>{opt}</option>
-                        ))}
-                      </select>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Total Summary */}
-            {(selectedEvent.registrationFee > 0 || newAttendee.groupMembers.length > 0) && (
-              <div style={{ marginBottom: '20px', padding: '12px', backgroundColor: '#f0f9ff', borderRadius: '4px' }}>
-                <p style={{ margin: '0 0 4px 0', fontWeight: 'bold' }}>Registration Summary:</p>
-                <p style={{ margin: '0', fontSize: '14px' }}>
-                  Total People: {1 + newAttendee.groupMembers.length}
-                </p>
-                {selectedEvent.registrationFee > 0 && (
-                  <p style={{ margin: '4px 0 0 0', fontSize: '16px', fontWeight: 'bold', color: '#dc2626' }}>
-                    Total Amount: ${selectedEvent.registrationFee * (1 + newAttendee.groupMembers.length)}
-                  </p>
-                )}
-              </div>
-            )}
-
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button onClick={handleEventRegistration} style={{ flex: 1, backgroundColor: '#10b981', color: 'white', padding: '10px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
-                {selectedEvent.registrationFee > 0 ? `Register & Pay $${selectedEvent.registrationFee * (1 + newAttendee.groupMembers.length)}` : 'Register Now'}
-              </button>
-              <button onClick={() => {
-                setShowRegistration(false);
-                setNewAttendee({ primaryName: '', email: '', phone: '', groupMembers: [], customResponses: {} });
-                setNewGroupMember({ name: '', relationship: '' });
-              }} style={{ flex: 1, backgroundColor: 'white', color: '#374151', padding: '10px', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
+        <EventRegistrationModal
+          selectedEvent={selectedEvent}
+          newAttendee={newAttendee}
+          handleAttendeeInputChange={handleAttendeeInputChange}
+          newGroupMember={newGroupMember}
+          setNewGroupMember={setNewGroupMember}
+          addGroupMember={addGroupMember}
+          removeGroupMember={removeGroupMember}
+          formErrors={formErrors}
+          formatEventDates={formatEventDates}
+          onClose={() => {
+            setShowRegistration(false);
+            setNewAttendee({ primaryName: '', email: '', phone: '', groupMembers: [], customResponses: {} });
+            setNewGroupMember({ name: '', relationship: '' });
+            setFormErrors({});
+          }}
+          onRegister={handleEventRegistration}
+        />
       )}
 
       {/* Edit Attendee Modal */}
       {showEditAttendee && selectedAttendee && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
-        }}>
-          <div style={{
-            backgroundColor: 'white', borderRadius: '8px', padding: '24px', width: '90%', maxWidth: '500px', maxHeight: '80vh', overflowY: 'auto'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Edit Attendee</h3>
-              <button onClick={() => {
-                setShowEditAttendee(false);
-                setSelectedAttendee(null);
-              }} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                <X style={{ height: '20px', width: '20px' }} />
-              </button>
-            </div>
-
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Name</label>
-              <input 
-                type="text" 
-                value={selectedAttendee.primaryName} 
-                onChange={(e) => setSelectedAttendee(prev => ({ ...prev, primaryName: e.target.value }))}
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-              />
-            </div>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Email</label>
-              <input 
-                type="email" 
-                value={selectedAttendee.email} 
-                onChange={(e) => setSelectedAttendee(prev => ({ ...prev, email: e.target.value }))}
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-              />
-            </div>
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Phone</label>
-              <input 
-                type="tel" 
-                value={selectedAttendee.phone} 
-                onChange={(e) => setSelectedAttendee(prev => ({ ...prev, phone: e.target.value }))}
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-              />
-            </div>
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Payment Status</label>
-              <select 
-                value={selectedAttendee.paymentStatus} 
-                onChange={(e) => setSelectedAttendee(prev => ({ ...prev, paymentStatus: e.target.value }))}
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }}
-              >
-                <option value="pending">Pending</option>
-                <option value="paid">Paid</option>
-                <option value="free">Free</option>
-              </select>
-            </div>
-
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button onClick={handleUpdateAttendee} style={{ flex: 1, backgroundColor: '#3b82f6', color: 'white', padding: '10px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
-                Update
-              </button>
-              <button onClick={() => {
-                setShowEditAttendee(false);
-                setSelectedAttendee(null);
-              }} style={{ flex: 1, backgroundColor: 'white', color: '#374151', padding: '10px', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
+        <EditAttendeeModal
+          selectedAttendee={selectedAttendee}
+          setSelectedAttendee={setSelectedAttendee}
+          onClose={() => {
+            setShowEditAttendee(false);
+            setSelectedAttendee(null);
+          }}
+          onUpdate={handleUpdateAttendee}
+        />
       )}
 
       {/* Manage Event Modal */}
       {showManageEvent && selectedEvent && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
-        }}>
-          <div style={{
-            backgroundColor: 'white', borderRadius: '8px', padding: '24px', width: '90%', maxWidth: '700px', maxHeight: '80vh', overflowY: 'auto'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Manage: {selectedEvent.name}</h3>
-              <button onClick={() => setShowManageEvent(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                <X style={{ height: '20px', width: '20px' }} />
-              </button>
-            </div>
-
-            <div style={{ marginBottom: '24px', padding: '16px', backgroundColor: '#f9fafb', borderRadius: '8px' }}>
-              <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#6b7280' }}>
-                <CalendarIcon style={{ height: '16px', width: '16px', display: 'inline', marginRight: '6px' }} />
-                {formatEventDates(selectedEvent)}
-              </p>
-              {selectedEvent.location && (
-                <p style={{ margin: '0', fontSize: '14px', color: '#6b7280' }}>
-                  <MapPin style={{ height: '16px', width: '16px', display: 'inline', marginRight: '6px' }} />
-                  {selectedEvent.location}
-                </p>
-              )}
-            </div>
-
-            <div style={{ display: 'flex', gap: '4px', marginBottom: '20px', borderBottom: '1px solid #e5e7eb' }}>
-              <button
-                onClick={() => setManageEventTab('volunteers')}
-                style={{
-                  padding: '8px 16px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer',
-                  borderBottom: manageEventTab === 'volunteers' ? '2px solid #3b82f6' : 'none',
-                  color: manageEventTab === 'volunteers' ? '#3b82f6' : '#6b7280', fontWeight: 'bold'
-                }}
-              >
-                Volunteers ({selectedEvent.volunteers.length})
-              </button>
-              <button
-                onClick={() => setManageEventTab('attendees')}
-                style={{
-                  padding: '8px 16px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer',
-                  borderBottom: manageEventTab === 'attendees' ? '2px solid #3b82f6' : 'none',
-                  color: manageEventTab === 'attendees' ? '#3b82f6' : '#6b7280', fontWeight: 'bold'
-                }}
-              >
-                Attendees ({getTotalPeopleCount(selectedEvent.id)})
-              </button>
-            </div>
-
-            {manageEventTab === 'volunteers' && (
-              <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                <h4 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '16px' }}>Assign Volunteers</h4>
-                {volunteers.map(volunteer => {
-                  const isAssigned = selectedEvent.volunteers.includes(volunteer.id);
-                  return (
-                    <div key={volunteer.id} style={{
-                      display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', marginBottom: '8px',
-                      backgroundColor: isAssigned ? '#f0f9ff' : '#f9fafb', borderRadius: '8px',
-                      border: isAssigned ? '2px solid #3b82f6' : '1px solid #e5e7eb'
-                    }}>
-                      <div>
-                        <p style={{ margin: '0 0 2px 0', fontWeight: 'bold' }}>{volunteer.name}</p>
-                        <p style={{ margin: '0', fontSize: '12px', color: '#6b7280' }}>{volunteer.role} • {volunteer.email}</p>
-                      </div>
-                      <button onClick={() => toggleVolunteerAssignment(volunteer.id)} style={{
-                        backgroundColor: isAssigned ? '#dc2626' : '#3b82f6', color: 'white', border: 'none', borderRadius: '6px',
-                        padding: '6px 12px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px'
-                      }}>
-                        {isAssigned ? (<><X style={{ height: '12px', width: '12px' }} />Remove</>) : (<><Check style={{ height: '12px', width: '12px' }} />Assign</>)}
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-            {manageEventTab === 'attendees' && (
-              <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                <h4 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '16px' }}>Event Attendees</h4>
-                {getEventAttendees(selectedEvent.id).map(attendee => (
-                  <div key={attendee.id} style={{
-                    padding: '12px', marginBottom: '8px',
-                    backgroundColor: attendee.checkedIn ? '#f0f9ff' : '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb'
-                  }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                          <p style={{ margin: '0', fontWeight: 'bold' }}>{attendee.primaryName}</p>
-                          {attendee.checkedIn && <CheckCircle style={{ height: '16px', width: '16px', color: '#10b981' }} />}
-                        </div>
-                        <p style={{ margin: '0', fontSize: '12px', color: '#6b7280' }}>{attendee.email}</p>
-                        
-                        {attendee.groupMembers.length > 0 && (
-                          <div style={{ marginTop: '8px', fontSize: '12px', color: '#6b7280' }}>
-                            +{attendee.groupMembers.length} additional: {attendee.groupMembers.map(m => m.name).join(', ')}
-                          </div>
-                        )}
-                      </div>
-                      <button onClick={() => toggleAttendeeCheckIn(attendee.id)} style={{
-                        backgroundColor: attendee.checkedIn ? '#dc2626' : '#10b981', color: 'white', border: 'none', borderRadius: '6px',
-                        padding: '6px 12px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold'
-                      }}>
-                        {attendee.checkedIn ? 'Check Out' : 'Check In'}
-                      </button>
-                    </div>
-                  </div>
-                ))}
-                
-                {getEventAttendees(selectedEvent.id).length === 0 && (
-                  <div style={{ textAlign: 'center', padding: '20px', color: '#6b7280' }}>
-                    <User style={{ height: '32px', width: '32px', margin: '0 auto 8px' }} />
-                    <p>No attendees registered yet</p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            <div style={{ marginTop: '20px', textAlign: 'center' }}>
-              <button onClick={() => setShowManageEvent(false)} style={{
-                backgroundColor: '#3b82f6', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold'
-              }}>
-                Done
-              </button>
-            </div>
-          </div>
-        </div>
+        <ManageEventModal
+          selectedEvent={selectedEvent}
+          manageEventTab={manageEventTab}
+          setManageEventTab={setManageEventTab}
+          volunteers={volunteers}
+          toggleVolunteerAssignment={toggleVolunteerAssignment}
+          toggleAttendeeCheckIn={toggleAttendeeCheckIn}
+          getEventAttendees={getEventAttendees}
+          getTotalPeopleCount={getTotalPeopleCount}
+          formatEventDates={formatEventDates}
+          onClose={() => setShowManageEvent(false)}
+        />
       )}
 
       {/* Send Message Modal */}
       {showSendMessage && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
-        }}>
-          <div style={{
-            backgroundColor: 'white', borderRadius: '8px', padding: '24px', width: '90%', maxWidth: '600px', maxHeight: '80vh', overflowY: 'auto'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Send Message</h3>
-              <button onClick={() => setShowSendMessage(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                <X style={{ height: '20px', width: '20px' }} />
-              </button>
-            </div>
-
-            <div style={{ display: 'flex', gap: '16px', marginBottom: '20px' }}>
-              <div style={{ flex: 1 }}>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Message Type</label>
-                <select value={newMessage.type} onChange={(e) => handleMessageInputChange('type', e.target.value)}
-                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px' }}>
-                  <option value="announcement">Announcement</option>
-                  <option value="reminder">Reminder</option>
-                  <option value="update">Update</option>
-                  <option value="thank-you">Thank You</option>
-                </select>
-              </div>
-              <div style={{ flex: 1 }}>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Send Via</label>
-                <select value={newMessage.sendVia} onChange={(e) => handleMessageInputChange('sendVia', e.target.value)}
-                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px' }}>
-                  <option value="email">Email</option>
-                  <option value="sms">SMS</option>
-                </select>
-              </div>
-            </div>
-
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Recipients</label>
-              <select value={newMessage.recipients} onChange={(e) => handleMessageInputChange('recipients', e.target.value)}
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px' }}>
-                <option value="all-volunteers">All Volunteers ({volunteers.length})</option>
-                <option value="all-attendees">All Attendees ({attendees.length})</option>
-                <option value="event-volunteers">Event Volunteers</option>
-                <option value="event-attendees">Event Attendees</option>
-              </select>
-            </div>
-
-            {(newMessage.recipients === 'event-volunteers' || newMessage.recipients === 'event-attendees') && (
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Select Event</label>
-                <select value={newMessage.eventId} onChange={(e) => handleMessageInputChange('eventId', e.target.value)}
-                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px' }}>
-                  <option value="">Choose an event...</option>
-                  {events.filter(e => e.status === 'active').map(event => (
-                    <option key={event.id} value={event.id}>{event.name}</option>
-                  ))}
-                </select>
-              </div>
-            )}
-
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Subject *</label>
-              <input type="text" value={newMessage.subject} onChange={(e) => handleMessageInputChange('subject', e.target.value)} placeholder="Enter subject line"
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} />
-            </div>
-
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Message *</label>
-              <textarea rows={6} value={newMessage.message} onChange={(e) => handleMessageInputChange('message', e.target.value)} placeholder="Write your message..."
-                style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box', resize: 'vertical' }} />
-            </div>
-
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button 
-                onClick={handleSendMessage} 
-                data-send-button
-                style={{ flex: 1, backgroundColor: '#10b981', color: 'white', padding: '10px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
-              >
-                <Send style={{ height: '16px', width: '16px' }} />
-                Send Message
-              </button>
-              <button onClick={() => setShowSendMessage(false)} style={{ flex: 1, backgroundColor: 'white', color: '#374151', padding: '10px', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
+        <SendMessageModal
+          newMessage={newMessage}
+          handleMessageInputChange={handleMessageInputChange}
+          volunteers={volunteers}
+          attendees={attendees}
+          events={events}
+          onClose={() => setShowSendMessage(false)}
+          onSend={handleSendMessage}
+        />
       )}
 
       {/* Payment Processing Modal */}
       {showPaymentForm && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
-        }}>
-          <div style={{
-            backgroundColor: 'white', borderRadius: '8px', padding: '24px', width: '90%', maxWidth: '500px', maxHeight: '80vh', overflowY: 'auto'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Process Payment</h3>
-              <button onClick={() => setShowPaymentForm(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                <X style={{ height: '20px', width: '20px' }} />
-              </button>
-            </div>
-
-            <form onSubmit={handlePaymentFormSubmit}>
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Amount ($) *</label>
-                <input 
-                  type="number" 
-                  step="0.01" 
-                  min="0.01"
-                  value={paymentFormData.amount} 
-                  onChange={(e) => setPaymentFormData(prev => ({ ...prev, amount: e.target.value }))} 
-                  placeholder="0.00"
-                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-                  required
-                />
-              </div>
-
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Payment Method</label>
-                <select 
-                  value={paymentFormData.paymentMethod} 
-                  onChange={(e) => setPaymentFormData(prev => ({ ...prev, paymentMethod: e.target.value }))}
-                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }}
-                >
-                  <option value="stripe">Stripe (2.9% + 30¢)</option>
-                  <option value="square">Square (2.6% + 10¢)</option>
-                  <option value="paypal">PayPal (2.9% + fixed fee)</option>
-                  <option value="ach">Bank Transfer (ACH - $0.25)</option>
-                  <option value="plaid">Plaid (Bank Connect - $0.25)</option>
-                </select>
-              </div>
-
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Description *</label>
-                <input 
-                  type="text" 
-                  value={paymentFormData.description} 
-                  onChange={(e) => setPaymentFormData(prev => ({ ...prev, description: e.target.value }))} 
-                  placeholder="What is this payment for?"
-                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-                  required
-                />
-              </div>
-
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Recipient Email (Optional)</label>
-                <input 
-                  type="email" 
-                  value={paymentFormData.recipientEmail} 
-                  onChange={(e) => setPaymentFormData(prev => ({ ...prev, recipientEmail: e.target.value }))} 
-                  placeholder="recipient@email.com"
-                  style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
-                />
-              </div>
-
-              <div style={{ marginBottom: '20px', padding: '12px', backgroundColor: '#f0f9ff', borderRadius: '4px', border: '1px solid #dbeafe' }}>
-                <h4 style={{ fontSize: '14px', fontWeight: 'bold', margin: '0 0 8px 0', color: '#1d4ed8' }}>Cost Breakdown:</h4>
-                <div style={{ fontSize: '12px', color: '#6b7280' }}>
-                  <p style={{ margin: '0 0 4px 0' }}>Amount: ${paymentFormData.amount || '0.00'}</p>
-                  {paymentFormData.amount && (
-                    <>
-                      {paymentFormData.paymentMethod === 'stripe' && (
-                        <p style={{ margin: '0 0 4px 0' }}>Fee: ${(parseFloat(paymentFormData.amount) * 0.029 + 0.30).toFixed(2)}</p>
-                      )}
-                      {paymentFormData.paymentMethod === 'square' && (
-                        <p style={{ margin: '0 0 4px 0' }}>Fee: ${(parseFloat(paymentFormData.amount) * 0.026 + 0.10).toFixed(2)}</p>
-                      )}
-                      {paymentFormData.paymentMethod === 'paypal' && (
-                        <p style={{ margin: '0 0 4px 0' }}>Fee: ~${(parseFloat(paymentFormData.amount) * 0.029 + 0.49).toFixed(2)}</p>
-                      )}
-                      {paymentFormData.paymentMethod === 'ach' && (
-                        <p style={{ margin: '0 0 4px 0' }}>Fee: $0.25</p>
-                      )}
-                      {paymentFormData.paymentMethod === 'plaid' && (
-                        <p style={{ margin: '0 0 4px 0' }}>Fee: $0.25</p>
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button 
-                  type="submit"
-                  style={{ flex: 1, backgroundColor: '#10b981', color: 'white', padding: '10px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
-                >
-                  Process Payment
-                </button>
-                <button 
-                  type="button"
-                  onClick={() => setShowPaymentForm(false)} 
-                  style={{ flex: 1, backgroundColor: 'white', color: '#374151', padding: '10px', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }}
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <PaymentProcessingModal
+          paymentFormData={paymentFormData}
+          setPaymentFormData={setPaymentFormData}
+          onClose={() => setShowPaymentForm(false)}
+          onSubmit={handlePaymentFormSubmit}
+        />
       )}
 
       {/* Create Template Modal */}
       {showCreateTemplate && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000
-        }}>
-          <div style={{
-            backgroundColor: 'white',
-            borderRadius: '12px',
-            padding: '32px',
-            maxWidth: '600px',
-            width: '90%',
-            maxHeight: '90vh',
-            overflowY: 'auto'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-              <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Create New Email Template</h3>
-              <button
-                onClick={() => setShowCreateTemplate(false)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: '8px'
-                }}
-              >
-                <X style={{ height: '20px', width: '20px', color: '#6b7280' }} />
-              </button>
-            </div>
-
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
-                Template Name *
-              </label>
-              <input
-                type="text"
-                value={newTemplate.name}
-                onChange={(e) => setNewTemplate(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="e.g., Welcome Email, Event Reminder"
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  boxSizing: 'border-box'
-                }}
-              />
-            </div>
-
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
-                Template Type
-              </label>
-              <select
-                value={newTemplate.type}
-                onChange={(e) => setNewTemplate(prev => ({ ...prev, type: e.target.value }))}
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  boxSizing: 'border-box'
-                }}
-              >
-                <option value="announcement">Announcement</option>
-                <option value="reminder">Reminder</option>
-                <option value="thank-you">Thank You</option>
-                <option value="update">Update</option>
-                <option value="welcome">Welcome</option>
-              </select>
-            </div>
-
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
-                Subject Line *
-              </label>
-              <input
-                type="text"
-                value={newTemplate.subject}
-                onChange={(e) => setNewTemplate(prev => ({ ...prev, subject: e.target.value }))}
-                placeholder="Enter email subject"
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  boxSizing: 'border-box'
-                }}
-              />
-            </div>
-
-            <div style={{ marginBottom: '24px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
-                Message Content *
-              </label>
-              <textarea
-                value={newTemplate.message}
-                onChange={(e) => setNewTemplate(prev => ({ ...prev, message: e.target.value }))}
-                placeholder="Enter your email message. You can use variables like {name}, {event}, {date} etc."
-                rows={8}
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  boxSizing: 'border-box',
-                  resize: 'vertical'
-                }}
-              />
-              <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px' }}>
-                Available variables: {'{name}'}, {'{event}'}, {'{date}'}, {'{location}'}, {'{time}'}
-              </p>
-            </div>
-
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-              <button
-                onClick={() => setShowCreateTemplate(false)}
-                style={{
-                  backgroundColor: '#f3f4f6',
-                  color: '#374151',
-                  border: 'none',
-                  borderRadius: '6px',
-                  padding: '12px 24px',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  fontWeight: 'bold'
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  if (newTemplate.name && newTemplate.subject && newTemplate.message) {
-                    // Add the new template to enhancedMessageTemplates
-                    const templateKey = newTemplate.name.toLowerCase().replace(/\s+/g, '-');
-                    enhancedMessageTemplates[templateKey] = {
-                      subject: newTemplate.subject,
-                      message: newTemplate.message,
-                      type: newTemplate.type
-                    };
-                    
-                    // Reset form and close modal
-                    setNewTemplate({ name: '', subject: '', message: '', type: 'announcement' });
-                    setShowCreateTemplate(false);
-                    addNotification('Template created successfully!', 'success');
-                  } else {
-                    addNotification('Please fill in all required fields', 'error');
-                  }
-                }}
-                style={{
-                  backgroundColor: '#10b981',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '6px',
-                  padding: '12px 24px',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  fontWeight: 'bold'
-                }}
-              >
-                Create Template
-              </button>
-            </div>
-          </div>
-        </div>
+        <CreateTemplateModal
+          newTemplate={newTemplate}
+          setNewTemplate={setNewTemplate}
+          onClose={() => setShowCreateTemplate(false)}
+          onCreate={() => {
+            const templateKey = newTemplate.name.toLowerCase().replace(/\s+/g, '-');
+            enhancedMessageTemplates[templateKey] = {
+              subject: newTemplate.subject,
+              message: newTemplate.message,
+              type: newTemplate.type
+            };
+            setNewTemplate({ name: '', subject: '', message: '', type: 'announcement' });
+            setShowCreateTemplate(false);
+            addNotification('Template created successfully!', 'success');
+          }}
+          addNotification={addNotification}
+        />
       )}
     </div>
   );
