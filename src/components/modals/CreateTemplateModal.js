@@ -9,7 +9,7 @@ const CreateTemplateModal = ({
   addNotification
 }) => {
   return (
-    <div style={{
+    <div role="dialog" aria-modal="true" aria-labelledby="modal-title" tabIndex={-1} onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }} style={{
       position: 'fixed',
       top: 0,
       left: 0,
@@ -31,9 +31,10 @@ const CreateTemplateModal = ({
         overflowY: 'auto'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-          <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Create New Email Template</h3>
+          <h3 id="modal-title" style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Create New Email Template</h3>
           <button
             onClick={onClose}
+            aria-label="Close"
             style={{
               background: 'none',
               border: 'none',
