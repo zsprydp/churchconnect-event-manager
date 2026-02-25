@@ -1,13 +1,13 @@
 # ChurchConnect Event Manager — Product Roadmap
 
-## Phase 1: Foundation — Real data, real money, real users ← CURRENT
+## Phase 1: Foundation — Real data, real money, real users ✅ COMPLETE
 | # | Feature | Status |
 |---|---|---|
-| 1 | Backend + Auth + Roles (Supabase) | 🔲 Not started |
-| 2 | Household / Family Profiles | 🔲 Not started |
-| 3 | Donation & Ticketing (Stripe) | 🔲 Not started |
+| 1 | Backend + Auth + Roles (Supabase) | ✅ Done |
+| 2 | Household / Family Profiles | ✅ Done |
+| 3 | Donation & Ticketing (Stripe) | ✅ Done |
 
-## Phase 2: Operational value + pastoral care
+## Phase 2: Operational value + pastoral care ← NEXT
 | # | Feature | Status |
 |---|---|---|
 | 4 | Volunteer Scheduling with Role Sign-ups | 🔲 Not started |
