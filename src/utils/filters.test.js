@@ -3,17 +3,17 @@ import { filterEvents, filterVolunteers, filterAttendees } from './filters';
 const sampleEvents = [
   { id: 1, name: 'Youth Retreat', location: 'Camp Pine', status: 'active' },
   { id: 2, name: 'Food Drive', location: 'Church Hall', status: 'active' },
-  { id: 3, name: 'Easter Service', location: 'Main Sanctuary', status: 'closed' }
+  { id: 3, name: 'Easter Service', location: 'Main Sanctuary', status: 'closed' },
 ];
 
 const sampleVolunteers = [
   { id: 1, name: 'Sarah Johnson', email: 'sarah@email.com', role: 'Coordinator' },
-  { id: 2, name: 'Mike Chen', email: 'mike@email.com', role: 'Setup Team' }
+  { id: 2, name: 'Mike Chen', email: 'mike@email.com', role: 'Setup Team' },
 ];
 
 const sampleAttendees = [
   { id: 1, primaryName: 'John Smith', email: 'john@email.com' },
-  { id: 2, primaryName: 'Mary Johnson', email: 'mary@email.com' }
+  { id: 2, primaryName: 'Mary Johnson', email: 'mary@email.com' },
 ];
 
 describe('filterEvents', () => {

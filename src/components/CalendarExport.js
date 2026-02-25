@@ -8,7 +8,7 @@ import {
   generateGoogleCalendarLink,
   generateOutlookCalendarLink,
   generateAppleCalendarLink,
-  getAllCalendarLinks
+  getAllCalendarLinks,
 } from '../utils/calendarExport';
 import './CalendarExport.css';
 
@@ -21,9 +21,9 @@ const CalendarExport = ({ event, events = [], showBulkExport = false, onNotifica
       logger.error('No event provided for export');
       return;
     }
-    
+
     logger.log('Exporting single event:', event);
-    
+
     try {
       const icsContent = generateICSContent(event);
       const filename = `${event.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.ics`;
@@ -40,9 +40,9 @@ const CalendarExport = ({ event, events = [], showBulkExport = false, onNotifica
       logger.error('No events provided for bulk export');
       return;
     }
-    
+
     logger.log('Exporting bulk events:', events);
-    
+
     try {
       const icsContent = generateBulkICSContent(events);
       const filename = `churchconnect_events_${new Date().toISOString().slice(0, 10)}.ics`;
@@ -56,9 +56,9 @@ const CalendarExport = ({ event, events = [], showBulkExport = false, onNotifica
 
   const handleCalendarServiceClick = (service, eventData) => {
     logger.log(`Opening ${service} calendar for event:`, eventData);
-    
+
     let url;
-    
+
     try {
       switch (service) {
         case 'google':
@@ -74,12 +74,13 @@ const CalendarExport = ({ event, events = [], showBulkExport = false, onNotifica
           logger.error('Unknown calendar service:', service);
           return;
       }
-      
+
       logger.log(`${service} calendar URL:`, url);
       window.open(url, '_blank', 'noopener,noreferrer');
     } catch (error) {
       logger.error(`Failed to generate ${service} calendar link:`, error);
-      if (onNotification) onNotification(`Failed to open ${service} calendar. Please check the console for details.`, 'error');
+      if (onNotification)
+        onNotification(`Failed to open ${service} calendar. Please check the console for details.`, 'error');
     }
   };
 
@@ -158,18 +159,15 @@ const CalendarExport = ({ event, events = [], showBulkExport = false, onNotifica
             <div className="export-section">
               <h4>Export Single Event</h4>
               <div className="export-options">
-                <button
-                  className="export-btn primary"
-                  onClick={handleSingleEventExport}
-                >
+                <button className="export-btn primary" onClick={handleSingleEventExport}>
                   <Download size={16} />
                   Download .ics File
                 </button>
-                
+
                 <div className="calendar-services">
                   <span>Quick Add to:</span>
                   <div className="service-buttons">
-                    {['google', 'outlook', 'apple'].map(service => (
+                    {['google', 'outlook', 'apple'].map((service) => (
                       <button
                         key={service}
                         className="service-btn"
@@ -192,10 +190,7 @@ const CalendarExport = ({ event, events = [], showBulkExport = false, onNotifica
             <div className="export-section">
               <h4>Export All Events</h4>
               <div className="export-options">
-                <button
-                  className="export-btn secondary"
-                  onClick={handleBulkExport}
-                >
+                <button className="export-btn secondary" onClick={handleBulkExport}>
                   <Download size={16} />
                   Download All Events (.ics)
                 </button>
@@ -237,8 +232,8 @@ const CalendarExport = ({ event, events = [], showBulkExport = false, onNotifica
           {/* Help Text */}
           <div className="help-text">
             <p>
-              <strong>Tip:</strong> Use the .ics file to import events into any calendar application.
-              Most calendar apps support this standard format.
+              <strong>Tip:</strong> Use the .ics file to import events into any calendar application. Most calendar apps
+              support this standard format.
             </p>
           </div>
         </div>

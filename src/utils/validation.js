@@ -2,8 +2,10 @@ export const validateEventForm = (eventData) => {
   const errors = {};
   if (!eventData.name?.trim()) errors.name = 'Event name is required';
   if (eventData.capacity && parseInt(eventData.capacity) < 1) errors.capacity = 'Capacity must be at least 1';
-  if (eventData.registrationFee && parseFloat(eventData.registrationFee) < 0) errors.registrationFee = 'Fee cannot be negative';
-  if (eventData.dateType === 'single' && (!eventData.dates[0] || eventData.dates[0] === '')) errors.date = 'Date is required';
+  if (eventData.registrationFee && parseFloat(eventData.registrationFee) < 0)
+    errors.registrationFee = 'Fee cannot be negative';
+  if (eventData.dateType === 'single' && (!eventData.dates[0] || eventData.dates[0] === ''))
+    errors.date = 'Date is required';
   return errors;
 };
 

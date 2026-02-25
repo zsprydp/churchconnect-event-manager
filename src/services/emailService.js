@@ -4,7 +4,7 @@ import logger from '../utils/logger';
 const emailJSConfig = {
   serviceId: process.env.REACT_APP_EMAILJS_SERVICE_ID || '',
   templateId: process.env.REACT_APP_EMAILJS_TEMPLATE_ID || '',
-  userId: process.env.REACT_APP_EMAILJS_USER_ID || ''
+  userId: process.env.REACT_APP_EMAILJS_USER_ID || '',
 };
 
 if (emailJSConfig.userId) {
@@ -15,7 +15,7 @@ const sendEmailViaSimpleService = async (to, subject, message, from = 'church@ex
   try {
     logger.log('📧 Sending email via simple service:', { to, subject, messageLength: message.length });
 
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     logger.log('✅ Email would be sent to:', to);
     logger.log('📧 Subject:', subject);
@@ -23,7 +23,9 @@ const sendEmailViaSimpleService = async (to, subject, message, from = 'church@ex
 
     logger.log('💡 To get real emails working:');
     logger.log('   1. Follow EMAILJS_SETUP.md guide');
-    logger.log('   2. Set REACT_APP_EMAILJS_SERVICE_ID, REACT_APP_EMAILJS_TEMPLATE_ID, and REACT_APP_EMAILJS_USER_ID in your .env file');
+    logger.log(
+      '   2. Set REACT_APP_EMAILJS_SERVICE_ID, REACT_APP_EMAILJS_TEMPLATE_ID, and REACT_APP_EMAILJS_USER_ID in your .env file'
+    );
     logger.log('   3. Or use a different email service');
 
     return { success: true, messageId: Date.now() };
@@ -46,14 +48,10 @@ const sendEmailViaEmailJS = async (to, subject, message, from = 'church@example.
       to_email: to,
       subject: subject,
       message: message,
-      from_email: from
+      from_email: from,
     };
 
-    const result = await emailjs.send(
-      emailJSConfig.serviceId,
-      emailJSConfig.templateId,
-      templateParams
-    );
+    const result = await emailjs.send(emailJSConfig.serviceId, emailJSConfig.templateId, templateParams);
 
     logger.log('✅ Real email sent successfully via EmailJS:', result);
     return { success: true, messageId: result.text };
@@ -79,7 +77,7 @@ export const mockEmailService = {
       logger.log('🔄 EmailJS failed, using fallback service...');
       return await sendEmailViaSimpleService(to, subject, message, from);
     }
-  }
+  },
 };
 
 export const enhancedMessageTemplates = {
@@ -100,7 +98,7 @@ Best regards,
 Church Connect Team
 
 ---
-This is an automated message from ChurchConnect Event Manager.`
+This is an automated message from ChurchConnect Event Manager.`,
   },
   'volunteer-reminder': {
     subject: 'Volunteer Reminder - {eventName}',
@@ -119,7 +117,7 @@ Blessings,
 Church Connect Team
 
 ---
-This is an automated message from ChurchConnect Event Manager.`
+This is an automated message from ChurchConnect Event Manager.`,
   },
   'event-update': {
     subject: 'Important Update - {eventName}',
@@ -135,7 +133,7 @@ Best regards,
 Church Connect Team
 
 ---
-This is an automated message from ChurchConnect Event Manager.`
+This is an automated message from ChurchConnect Event Manager.`,
   },
   'donation-thank-you': {
     subject: 'Thank You for Your Donation',
@@ -151,6 +149,6 @@ Blessings,
 Church Connect Team
 
 ---
-This is an automated message from ChurchConnect Event Manager.`
-  }
+This is an automated message from ChurchConnect Event Manager.`,
+  },
 };

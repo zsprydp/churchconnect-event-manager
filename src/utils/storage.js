@@ -33,7 +33,9 @@ export const saveToLocalStorage = (key, data) => {
     const projectedUsage = currentUsage - existingSize + entrySize;
 
     if (projectedUsage > MAX_STORAGE_BYTES) {
-      logger.warn(`localStorage near quota (${formatBytes(projectedUsage)} / ${formatBytes(MAX_STORAGE_BYTES)}). Save for "${key}" skipped.`);
+      logger.warn(
+        `localStorage near quota (${formatBytes(projectedUsage)} / ${formatBytes(MAX_STORAGE_BYTES)}). Save for "${key}" skipped.`
+      );
       return false;
     }
 
@@ -68,7 +70,7 @@ export const loadFromLocalStorage = (key, defaultValue = []) => {
 
 export const exportAllData = () => {
   const data = {};
-  STORAGE_KEYS.forEach(key => {
+  STORAGE_KEYS.forEach((key) => {
     const value = localStorage.getItem(key);
     if (value) {
       try {
@@ -81,7 +83,7 @@ export const exportAllData = () => {
   return {
     version: 1,
     exportedAt: new Date().toISOString(),
-    data
+    data,
   };
 };
 
@@ -94,7 +96,7 @@ export const importAllData = (exportedJson) => {
     const { data } = exportedJson;
     const imported = [];
 
-    STORAGE_KEYS.forEach(key => {
+    STORAGE_KEYS.forEach((key) => {
       if (data[key] !== undefined) {
         localStorage.setItem(key, JSON.stringify(data[key]));
         imported.push(key);
@@ -108,5 +110,5 @@ export const importAllData = (exportedJson) => {
 };
 
 export const clearAllData = () => {
-  STORAGE_KEYS.forEach(key => localStorage.removeItem(key));
+  STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
 };

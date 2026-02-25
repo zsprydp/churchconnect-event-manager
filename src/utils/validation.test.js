@@ -17,7 +17,12 @@ describe('validateEventForm', () => {
   });
 
   test('returns error when registration fee is negative', () => {
-    const errors = validateEventForm({ name: 'Test', registrationFee: '-5', dates: ['2025-01-01'], dateType: 'single' });
+    const errors = validateEventForm({
+      name: 'Test',
+      registrationFee: '-5',
+      dates: ['2025-01-01'],
+      dateType: 'single',
+    });
     expect(errors.registrationFee).toBe('Fee cannot be negative');
   });
 
@@ -32,7 +37,7 @@ describe('validateEventForm', () => {
       dateType: 'single',
       dates: ['2025-06-01'],
       capacity: '100',
-      registrationFee: '0'
+      registrationFee: '0',
     });
     expect(Object.keys(errors)).toHaveLength(0);
   });
@@ -41,7 +46,7 @@ describe('validateEventForm', () => {
     const errors = validateEventForm({
       name: 'Weekly Service',
       dateType: 'recurring',
-      dates: []
+      dates: [],
     });
     expect(errors.date).toBeUndefined();
   });

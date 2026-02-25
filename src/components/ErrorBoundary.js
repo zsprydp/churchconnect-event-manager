@@ -22,52 +22,62 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#f9fafb',
-          padding: '24px'
-        }}>
-          <div style={{
-            maxWidth: '480px',
-            width: '100%',
-            textAlign: 'center',
-            backgroundColor: 'white',
-            borderRadius: '12px',
-            padding: '48px 32px',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
-          }}>
+        <div
+          style={{
+            minHeight: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#f9fafb',
+            padding: '24px',
+          }}
+        >
+          <div
+            style={{
+              maxWidth: '480px',
+              width: '100%',
+              textAlign: 'center',
+              backgroundColor: 'white',
+              borderRadius: '12px',
+              padding: '48px 32px',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+            }}
+          >
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>⚠️</div>
-            <h1 style={{
-              fontSize: '20px',
-              fontWeight: '600',
-              color: '#111827',
-              marginBottom: '8px'
-            }}>
+            <h1
+              style={{
+                fontSize: '20px',
+                fontWeight: '600',
+                color: '#111827',
+                marginBottom: '8px',
+              }}
+            >
               Something went wrong
             </h1>
-            <p style={{
-              fontSize: '14px',
-              color: '#6b7280',
-              marginBottom: '24px',
-              lineHeight: '1.5'
-            }}>
+            <p
+              style={{
+                fontSize: '14px',
+                color: '#6b7280',
+                marginBottom: '24px',
+                lineHeight: '1.5',
+              }}
+            >
               An unexpected error occurred. Your data is safe in local storage.
             </p>
             {process.env.NODE_ENV === 'development' && this.state.error && (
-              <pre style={{
-                textAlign: 'left',
-                fontSize: '12px',
-                backgroundColor: '#fef2f2',
-                color: '#991b1b',
-                padding: '12px',
-                borderRadius: '8px',
-                marginBottom: '24px',
-                overflow: 'auto',
-                maxHeight: '160px'
-              }}>
+              <pre
+                style={{
+                  textAlign: 'left',
+                  fontSize: '12px',
+                  backgroundColor: '#fef2f2',
+                  color: '#991b1b',
+                  padding: '12px',
+                  borderRadius: '8px',
+                  marginBottom: '24px',
+                  overflow: 'auto',
+                  maxHeight: '160px',
+                }}
+              >
                 {this.state.error.toString()}
               </pre>
             )}
@@ -81,7 +91,7 @@ class ErrorBoundary extends React.Component {
                 padding: '10px 24px',
                 fontSize: '14px',
                 fontWeight: '500',
-                cursor: 'pointer'
+                cursor: 'pointer',
               }}
             >
               Try again

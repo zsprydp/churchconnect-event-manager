@@ -1,4 +1,12 @@
-import { saveToLocalStorage, loadFromLocalStorage, getStorageUsage, formatBytes, exportAllData, importAllData, clearAllData } from './storage';
+import {
+  saveToLocalStorage,
+  loadFromLocalStorage,
+  getStorageUsage,
+  formatBytes,
+  exportAllData,
+  importAllData,
+  clearAllData,
+} from './storage';
 
 beforeEach(() => {
   localStorage.clear();

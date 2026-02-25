@@ -12,19 +12,50 @@ const EventRegistrationModal = ({
   formErrors,
   formatEventDates,
   onClose,
-  onRegister
+  onRegister,
 }) => {
   return (
-    <div role="dialog" aria-modal="true" aria-labelledby="modal-title" tabIndex={-1} onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }} style={{
-      position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-      backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
-    }}>
-      <div style={{
-        backgroundColor: 'white', borderRadius: '8px', padding: '24px', width: '90%', maxWidth: '600px', maxHeight: '80vh', overflowY: 'auto'
-      }}>
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+      tabIndex={-1}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') onClose();
+      }}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000,
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: 'white',
+          borderRadius: '8px',
+          padding: '24px',
+          width: '90%',
+          maxWidth: '600px',
+          maxHeight: '80vh',
+          overflowY: 'auto',
+        }}
+      >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <h3 id="modal-title" style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Register for {selectedEvent.name}</h3>
-          <button onClick={onClose} aria-label="Close" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+          <h3 id="modal-title" style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>
+            Register for {selectedEvent.name}
+          </h3>
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+          >
             <X style={{ height: '20px', width: '20px' }} />
           </button>
         </div>
@@ -40,27 +71,36 @@ const EventRegistrationModal = ({
               {selectedEvent.location}
             </p>
           )}
-          <p style={{ margin: '0', fontSize: '14px', fontWeight: 'bold', color: selectedEvent.registrationFee > 0 ? '#dc2626' : '#10b981' }}>
-            {selectedEvent.registrationFee > 0 ? `Registration Fee: $${selectedEvent.registrationFee} per person` : 'Free Event'}
+          <p
+            style={{
+              margin: '0',
+              fontSize: '14px',
+              fontWeight: 'bold',
+              color: selectedEvent.registrationFee > 0 ? '#dc2626' : '#10b981',
+            }}
+          >
+            {selectedEvent.registrationFee > 0
+              ? `Registration Fee: $${selectedEvent.registrationFee} per person`
+              : 'Free Event'}
           </p>
         </div>
 
         <h4 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '12px' }}>Primary Registrant</h4>
         <div style={{ marginBottom: '16px' }}>
           <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Full Name *</label>
-          <input 
-            type="text" 
-            value={newAttendee.primaryName} 
-            onChange={(e) => handleAttendeeInputChange('primaryName', e.target.value)} 
+          <input
+            type="text"
+            value={newAttendee.primaryName}
+            onChange={(e) => handleAttendeeInputChange('primaryName', e.target.value)}
             placeholder="Enter your full name"
-            style={{ 
-              width: '100%', 
-              padding: '8px', 
-              border: `1px solid ${formErrors.primaryName ? '#dc2626' : '#d1d5db'}`, 
-              borderRadius: '4px', 
-              fontSize: '14px', 
-              boxSizing: 'border-box' 
-            }} 
+            style={{
+              width: '100%',
+              padding: '8px',
+              border: `1px solid ${formErrors.primaryName ? '#dc2626' : '#d1d5db'}`,
+              borderRadius: '4px',
+              fontSize: '14px',
+              boxSizing: 'border-box',
+            }}
           />
           {formErrors.primaryName && (
             <p style={{ color: '#dc2626', fontSize: '12px', margin: '4px 0 0 0' }}>{formErrors.primaryName}</p>
@@ -68,19 +108,19 @@ const EventRegistrationModal = ({
         </div>
         <div style={{ marginBottom: '16px' }}>
           <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Email *</label>
-          <input 
-            type="email" 
-            value={newAttendee.email} 
-            onChange={(e) => handleAttendeeInputChange('email', e.target.value)} 
+          <input
+            type="email"
+            value={newAttendee.email}
+            onChange={(e) => handleAttendeeInputChange('email', e.target.value)}
             placeholder="your@email.com"
-            style={{ 
-              width: '100%', 
-              padding: '8px', 
-              border: `1px solid ${formErrors.email ? '#dc2626' : '#d1d5db'}`, 
-              borderRadius: '4px', 
-              fontSize: '14px', 
-              boxSizing: 'border-box' 
-            }} 
+            style={{
+              width: '100%',
+              padding: '8px',
+              border: `1px solid ${formErrors.email ? '#dc2626' : '#d1d5db'}`,
+              borderRadius: '4px',
+              fontSize: '14px',
+              boxSizing: 'border-box',
+            }}
           />
           {formErrors.email && (
             <p style={{ color: '#dc2626', fontSize: '12px', margin: '4px 0 0 0' }}>{formErrors.email}</p>
@@ -88,22 +128,52 @@ const EventRegistrationModal = ({
         </div>
         <div style={{ marginBottom: '20px' }}>
           <label style={{ display: 'block', marginBottom: '4px', fontWeight: 'bold' }}>Phone (Optional)</label>
-          <input type="tel" value={newAttendee.phone} onChange={(e) => handleAttendeeInputChange('phone', e.target.value)} placeholder="555-0123"
-            style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} />
+          <input
+            type="tel"
+            value={newAttendee.phone}
+            onChange={(e) => handleAttendeeInputChange('phone', e.target.value)}
+            placeholder="555-0123"
+            style={{
+              width: '100%',
+              padding: '8px',
+              border: '1px solid #d1d5db',
+              borderRadius: '4px',
+              fontSize: '14px',
+              boxSizing: 'border-box',
+            }}
+          />
         </div>
 
         {/* Group Members Section */}
         <div style={{ marginBottom: '20px' }}>
           <h4 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '12px' }}>Additional Registrants</h4>
-          
+
           {newAttendee.groupMembers.map((member, index) => (
-            <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', padding: '8px', backgroundColor: '#f9fafb', borderRadius: '4px' }}>
+            <div
+              key={index}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginBottom: '8px',
+                padding: '8px',
+                backgroundColor: '#f9fafb',
+                borderRadius: '4px',
+              }}
+            >
               <div style={{ flex: 1 }}>
                 <span style={{ fontWeight: 'bold' }}>{member.name}</span> ({member.relationship})
               </div>
-              <button 
+              <button
                 onClick={() => removeGroupMember(index)}
-                style={{ backgroundColor: '#dc2626', color: 'white', border: 'none', borderRadius: '4px', padding: '4px 8px', cursor: 'pointer' }}
+                style={{
+                  backgroundColor: '#dc2626',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  padding: '4px 8px',
+                  cursor: 'pointer',
+                }}
               >
                 <X style={{ height: '14px', width: '14px' }} />
               </button>
@@ -112,16 +182,16 @@ const EventRegistrationModal = ({
 
           <div style={{ border: '1px solid #d1d5db', borderRadius: '4px', padding: '12px' }}>
             <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-              <input 
-                type="text" 
-                value={newGroupMember.name} 
-                onChange={(e) => setNewGroupMember(prev => ({ ...prev, name: e.target.value }))}
+              <input
+                type="text"
+                value={newGroupMember.name}
+                onChange={(e) => setNewGroupMember((prev) => ({ ...prev, name: e.target.value }))}
                 placeholder="Name"
-                style={{ flex: 1, padding: '6px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px' }} 
+                style={{ flex: 1, padding: '6px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px' }}
               />
-              <select 
-                value={newGroupMember.relationship} 
-                onChange={(e) => setNewGroupMember(prev => ({ ...prev, relationship: e.target.value }))}
+              <select
+                value={newGroupMember.relationship}
+                onChange={(e) => setNewGroupMember((prev) => ({ ...prev, relationship: e.target.value }))}
                 style={{ padding: '6px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px' }}
               >
                 <option value="">Relationship</option>
@@ -132,9 +202,17 @@ const EventRegistrationModal = ({
                 <option value="Other">Other</option>
               </select>
             </div>
-            <button 
+            <button
               onClick={addGroupMember}
-              style={{ backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', padding: '6px 12px', cursor: 'pointer', fontSize: '12px' }}
+              style={{
+                backgroundColor: '#3b82f6',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                padding: '6px 12px',
+                cursor: 'pointer',
+                fontSize: '12px',
+              }}
             >
               <UserPlus style={{ height: '14px', width: '14px', display: 'inline', marginRight: '4px' }} />
               Add Person
@@ -152,18 +230,42 @@ const EventRegistrationModal = ({
                   {question.question} {question.required && '*'}
                 </label>
                 {question.type === 'text' && (
-                  <input 
-                    type="text" 
-                    value={newAttendee.customResponses[question.id] || ''} 
-                    onChange={(e) => handleAttendeeInputChange('customResponses', { ...newAttendee.customResponses, [question.id]: e.target.value })}
-                    style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
+                  <input
+                    type="text"
+                    value={newAttendee.customResponses[question.id] || ''}
+                    onChange={(e) =>
+                      handleAttendeeInputChange('customResponses', {
+                        ...newAttendee.customResponses,
+                        [question.id]: e.target.value,
+                      })
+                    }
+                    style={{
+                      width: '100%',
+                      padding: '8px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '4px',
+                      fontSize: '14px',
+                      boxSizing: 'border-box',
+                    }}
                   />
                 )}
                 {question.type === 'yes/no' && (
-                  <select 
-                    value={newAttendee.customResponses[question.id] || ''} 
-                    onChange={(e) => handleAttendeeInputChange('customResponses', { ...newAttendee.customResponses, [question.id]: e.target.value })}
-                    style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }}
+                  <select
+                    value={newAttendee.customResponses[question.id] || ''}
+                    onChange={(e) =>
+                      handleAttendeeInputChange('customResponses', {
+                        ...newAttendee.customResponses,
+                        [question.id]: e.target.value,
+                      })
+                    }
+                    style={{
+                      width: '100%',
+                      padding: '8px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '4px',
+                      fontSize: '14px',
+                      boxSizing: 'border-box',
+                    }}
                   >
                     <option value="">-- Select --</option>
                     <option value="yes">Yes</option>
@@ -171,22 +273,48 @@ const EventRegistrationModal = ({
                   </select>
                 )}
                 {question.type === 'number' && (
-                  <input 
-                    type="number" 
-                    value={newAttendee.customResponses[question.id] || ''} 
-                    onChange={(e) => handleAttendeeInputChange('customResponses', { ...newAttendee.customResponses, [question.id]: e.target.value })}
-                    style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }} 
+                  <input
+                    type="number"
+                    value={newAttendee.customResponses[question.id] || ''}
+                    onChange={(e) =>
+                      handleAttendeeInputChange('customResponses', {
+                        ...newAttendee.customResponses,
+                        [question.id]: e.target.value,
+                      })
+                    }
+                    style={{
+                      width: '100%',
+                      padding: '8px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '4px',
+                      fontSize: '14px',
+                      boxSizing: 'border-box',
+                    }}
                   />
                 )}
                 {question.type === 'select' && question.options && (
-                  <select 
-                    value={newAttendee.customResponses[question.id] || ''} 
-                    onChange={(e) => handleAttendeeInputChange('customResponses', { ...newAttendee.customResponses, [question.id]: e.target.value })}
-                    style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '14px', boxSizing: 'border-box' }}
+                  <select
+                    value={newAttendee.customResponses[question.id] || ''}
+                    onChange={(e) =>
+                      handleAttendeeInputChange('customResponses', {
+                        ...newAttendee.customResponses,
+                        [question.id]: e.target.value,
+                      })
+                    }
+                    style={{
+                      width: '100%',
+                      padding: '8px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '4px',
+                      fontSize: '14px',
+                      boxSizing: 'border-box',
+                    }}
                   >
                     <option value="">-- Select --</option>
-                    {question.options.map(opt => (
-                      <option key={opt} value={opt}>{opt}</option>
+                    {question.options.map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
                     ))}
                   </select>
                 )}
@@ -199,9 +327,7 @@ const EventRegistrationModal = ({
         {(selectedEvent.registrationFee > 0 || newAttendee.groupMembers.length > 0) && (
           <div style={{ marginBottom: '20px', padding: '12px', backgroundColor: '#f0f9ff', borderRadius: '4px' }}>
             <p style={{ margin: '0 0 4px 0', fontWeight: 'bold' }}>Registration Summary:</p>
-            <p style={{ margin: '0', fontSize: '14px' }}>
-              Total People: {1 + newAttendee.groupMembers.length}
-            </p>
+            <p style={{ margin: '0', fontSize: '14px' }}>Total People: {1 + newAttendee.groupMembers.length}</p>
             {selectedEvent.registrationFee > 0 && (
               <p style={{ margin: '4px 0 0 0', fontSize: '16px', fontWeight: 'bold', color: '#dc2626' }}>
                 Total Amount: ${selectedEvent.registrationFee * (1 + newAttendee.groupMembers.length)}
@@ -211,10 +337,35 @@ const EventRegistrationModal = ({
         )}
 
         <div style={{ display: 'flex', gap: '10px' }}>
-          <button onClick={onRegister} style={{ flex: 1, backgroundColor: '#10b981', color: 'white', padding: '10px', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
-            {selectedEvent.registrationFee > 0 ? `Register & Pay $${selectedEvent.registrationFee * (1 + newAttendee.groupMembers.length)}` : 'Register Now'}
+          <button
+            onClick={onRegister}
+            style={{
+              flex: 1,
+              backgroundColor: '#10b981',
+              color: 'white',
+              padding: '10px',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+            }}
+          >
+            {selectedEvent.registrationFee > 0
+              ? `Register & Pay $${selectedEvent.registrationFee * (1 + newAttendee.groupMembers.length)}`
+              : 'Register Now'}
           </button>
-          <button onClick={onClose} style={{ flex: 1, backgroundColor: 'white', color: '#374151', padding: '10px', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer' }}>
+          <button
+            onClick={onClose}
+            style={{
+              flex: 1,
+              backgroundColor: 'white',
+              color: '#374151',
+              padding: '10px',
+              border: '1px solid #d1d5db',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+          >
             Cancel
           </button>
         </div>

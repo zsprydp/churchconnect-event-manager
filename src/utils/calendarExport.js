@@ -17,7 +17,7 @@ export function generateICSContent(event) {
     endTime,
     dateType = 'single',
     created = new Date(),
-    lastModified = new Date()
+    lastModified = new Date(),
   } = event;
 
   // Handle ChurchConnect date format
@@ -25,13 +25,13 @@ export function generateICSContent(event) {
   if (dateType === 'single' && dates && dates.length > 0) {
     startDate = new Date(dates[0]);
     endDate = new Date(dates[0]);
-    
+
     // Add time if available
     if (startTime) {
       const [startHour, startMinute] = startTime.split(':').map(Number);
       startDate.setHours(startHour, startMinute, 0, 0);
     }
-    
+
     if (endTime) {
       const [endHour, endMinute] = endTime.split(':').map(Number);
       endDate.setHours(endHour, endMinute, 0, 0);
@@ -82,7 +82,7 @@ export function generateICSContent(event) {
     `CREATED:${formatDate(createdDate)}`,
     `LAST-MODIFIED:${formatDate(modifiedDate)}`,
     'END:VEVENT',
-    'END:VCALENDAR'
+    'END:VCALENDAR',
   ].join('\r\n');
 
   return icsContent;
@@ -99,12 +99,12 @@ export function generateBulkICSContent(events) {
     'VERSION:2.0',
     'PRODID:-//ChurchConnect//Event Manager//EN',
     'CALSCALE:GREGORIAN',
-    'METHOD:PUBLISH'
+    'METHOD:PUBLISH',
   ];
 
   const footer = ['END:VCALENDAR'];
 
-  const eventBlocks = events.map(event => {
+  const eventBlocks = events.map((event) => {
     const {
       id,
       name: title,
@@ -115,7 +115,7 @@ export function generateBulkICSContent(events) {
       endTime,
       dateType = 'single',
       created = new Date(),
-      lastModified = new Date()
+      lastModified = new Date(),
     } = event;
 
     // Handle ChurchConnect date format
@@ -123,13 +123,13 @@ export function generateBulkICSContent(events) {
     if (dateType === 'single' && dates && dates.length > 0) {
       startDate = new Date(dates[0]);
       endDate = new Date(dates[0]);
-      
+
       // Add time if available
       if (startTime) {
         const [startHour, startMinute] = startTime.split(':').map(Number);
         startDate.setHours(startHour, startMinute, 0, 0);
       }
-      
+
       if (endTime) {
         const [endHour, endMinute] = endTime.split(':').map(Number);
         endDate.setHours(endHour, endMinute, 0, 0);
@@ -170,7 +170,7 @@ export function generateBulkICSContent(events) {
       `SEQUENCE:0`,
       `CREATED:${formatDate(createdDate)}`,
       `LAST-MODIFIED:${formatDate(modifiedDate)}`,
-      'END:VEVENT'
+      'END:VEVENT',
     ].join('\r\n');
   });
 
@@ -185,16 +185,16 @@ export function generateBulkICSContent(events) {
 export function downloadICSFile(content, filename = 'event.ics') {
   const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' });
   const url = URL.createObjectURL(blob);
-  
+
   const link = document.createElement('a');
   link.href = url;
   link.download = filename;
   link.style.display = 'none';
-  
+
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  
+
   URL.revokeObjectURL(url);
 }
 
@@ -204,28 +204,20 @@ export function downloadICSFile(content, filename = 'event.ics') {
  * @returns {string} - Google Calendar URL
  */
 export function generateGoogleCalendarLink(event) {
-  const {
-    name: title,
-    description = '',
-    location = '',
-    dates,
-    startTime,
-    endTime,
-    dateType = 'single'
-  } = event;
+  const { name: title, description = '', location = '', dates, startTime, endTime, dateType = 'single' } = event;
 
   // Handle ChurchConnect date format
   let startDate, endDate;
   if (dateType === 'single' && dates && dates.length > 0) {
     startDate = new Date(dates[0]);
     endDate = new Date(dates[0]);
-    
+
     // Add time if available
     if (startTime) {
       const [startHour, startMinute] = startTime.split(':').map(Number);
       startDate.setHours(startHour, startMinute, 0, 0);
     }
-    
+
     if (endTime) {
       const [endHour, endMinute] = endTime.split(':').map(Number);
       endDate.setHours(endHour, endMinute, 0, 0);
@@ -247,7 +239,7 @@ export function generateGoogleCalendarLink(event) {
     dates: `${formatDate(startDate)}/${formatDate(endDate)}`,
     details: description,
     location: location,
-    ctz: Intl.DateTimeFormat().resolvedOptions().timeZone
+    ctz: Intl.DateTimeFormat().resolvedOptions().timeZone,
   });
 
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
@@ -259,28 +251,20 @@ export function generateGoogleCalendarLink(event) {
  * @returns {string} - Outlook Calendar URL
  */
 export function generateOutlookCalendarLink(event) {
-  const {
-    name: title,
-    description = '',
-    location = '',
-    dates,
-    startTime,
-    endTime,
-    dateType = 'single'
-  } = event;
+  const { name: title, description = '', location = '', dates, startTime, endTime, dateType = 'single' } = event;
 
   // Handle ChurchConnect date format
   let startDate, endDate;
   if (dateType === 'single' && dates && dates.length > 0) {
     startDate = new Date(dates[0]);
     endDate = new Date(dates[0]);
-    
+
     // Add time if available
     if (startTime) {
       const [startHour, startMinute] = startTime.split(':').map(Number);
       startDate.setHours(startHour, startMinute, 0, 0);
     }
-    
+
     if (endTime) {
       const [endHour, endMinute] = endTime.split(':').map(Number);
       endDate.setHours(endHour, endMinute, 0, 0);
@@ -303,7 +287,7 @@ export function generateOutlookCalendarLink(event) {
     startdt: formatDate(startDate),
     enddt: formatDate(endDate),
     body: description,
-    location: location
+    location: location,
   });
 
   return `https://outlook.live.com/calendar/0/deeplink/compose?${params.toString()}`;
@@ -315,28 +299,20 @@ export function generateOutlookCalendarLink(event) {
  * @returns {string} - Apple Calendar URL
  */
 export function generateAppleCalendarLink(event) {
-  const {
-    name: title,
-    description = '',
-    location = '',
-    dates,
-    startTime,
-    endTime,
-    dateType = 'single'
-  } = event;
+  const { name: title, description = '', location = '', dates, startTime, endTime, dateType = 'single' } = event;
 
   // Handle ChurchConnect date format
   let startDate, endDate;
   if (dateType === 'single' && dates && dates.length > 0) {
     startDate = new Date(dates[0]);
     endDate = new Date(dates[0]);
-    
+
     // Add time if available
     if (startTime) {
       const [startHour, startMinute] = startTime.split(':').map(Number);
       startDate.setHours(startHour, startMinute, 0, 0);
     }
-    
+
     if (endTime) {
       const [endHour, endMinute] = endTime.split(':').map(Number);
       endDate.setHours(endHour, endMinute, 0, 0);
@@ -370,7 +346,7 @@ export function getAllCalendarLinks(event) {
     google: generateGoogleCalendarLink(event),
     outlook: generateOutlookCalendarLink(event),
     apple: generateAppleCalendarLink(event),
-    ics: generateICSContent(event)
+    ics: generateICSContent(event),
   };
 }
 
@@ -382,7 +358,7 @@ export function getAllCalendarLinks(event) {
  */
 export function formatEventDate(date, includeTime = true) {
   const eventDate = new Date(date);
-  
+
   if (includeTime) {
     return eventDate.toLocaleString('en-US', {
       weekday: 'long',
@@ -390,15 +366,15 @@ export function formatEventDate(date, includeTime = true) {
       month: 'long',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   }
-  
+
   return eventDate.toLocaleDateString('en-US', {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   });
 }
 
@@ -410,7 +386,7 @@ export function formatEventDate(date, includeTime = true) {
 export function isEventToday(eventDate) {
   const today = new Date();
   const event = new Date(eventDate);
-  
+
   return today.toDateString() === event.toDateString();
 }
 
@@ -422,12 +398,12 @@ export function isEventToday(eventDate) {
 export function isEventThisWeek(eventDate) {
   const today = new Date();
   const event = new Date(eventDate);
-  
+
   const startOfWeek = new Date(today);
   startOfWeek.setDate(today.getDate() - today.getDay());
-  
+
   const endOfWeek = new Date(startOfWeek);
   endOfWeek.setDate(startOfWeek.getDate() + 6);
-  
+
   return event >= startOfWeek && event <= endOfWeek;
 }
