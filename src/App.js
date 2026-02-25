@@ -8,6 +8,7 @@ import {
   Settings,
   BarChart3,
   CreditCard,
+  Heart,
   X,
   User,
   CheckCircle,
@@ -29,7 +30,7 @@ import { mockEmailService, enhancedMessageTemplates } from './services/emailServ
 
 const EventsView = lazy(() => import('./views/EventsView'));
 const CommunicationsView = lazy(() => import('./views/CommunicationsView'));
-const PaymentsView = lazy(() => import('./views/PaymentsView'));
+const GivingView = lazy(() => import('./views/GivingView'));
 const SettingsView = lazy(() => import('./views/SettingsView'));
 const FamiliesView = lazy(() => import('./views/FamiliesView'));
 const EventTemplateCreationModal = lazy(() => import('./components/modals/EventTemplateCreationModal'));
@@ -1498,7 +1499,7 @@ const ChurchConnectDashboard = () => {
             { id: 'volunteers', name: 'Volunteers', icon: Users },
             { id: 'attendees', name: 'Attendees', icon: User },
             { id: 'families', name: 'Families', icon: Home },
-            { id: 'payments', name: 'Payments', icon: CreditCard },
+            { id: 'payments', name: 'Giving', icon: Heart },
             { id: 'communications', name: 'Communications', icon: Mail },
             { id: 'settings', name: 'Settings', icon: Settings },
           ].map((item) => (
@@ -2034,39 +2035,13 @@ const ChurchConnectDashboard = () => {
           )}
 
           {activeTab === 'payments' && (
-            <PaymentsView
-              paymentsTab={paymentsTab}
-              setPaymentsTab={setPaymentsTab}
-              payments={payments}
+            <GivingView
               donations={donations}
-              getTotalRevenue={getTotalRevenue}
-              getEventPaymentsTotal={getEventPaymentsTotal}
-              getDonationsTotal={getDonationsTotal}
-              getActiveDonorsCount={getActiveDonorsCount}
-              getRecentPaymentsActivity={getRecentPaymentsActivity}
-              getMonthlyRevenueData={getMonthlyRevenueData}
-              getTopDonors={getTopDonors}
-              filterPayments={filterPayments}
-              filterDonations={filterDonations}
-              paymentSearchTerm={paymentSearchTerm}
-              setPaymentSearchTerm={setPaymentSearchTerm}
-              paymentFilterStatus={paymentFilterStatus}
-              setPaymentFilterStatus={setPaymentFilterStatus}
-              donationSearchTerm={donationSearchTerm}
-              setDonationSearchTerm={setDonationSearchTerm}
-              donationFilterType={donationFilterType}
-              setDonationFilterType={setDonationFilterType}
-              getPaymentStatusColor={getPaymentStatusColor}
-              handleViewPaymentDetails={handleViewPaymentDetails}
-              handleRefundPayment={handleRefundPayment}
-              handleViewDonationDetails={handleViewDonationDetails}
-              handleSendThankYou={handleSendThankYou}
-              exportPaymentsReport={exportPaymentsReport}
-              exportDonationsReport={exportDonationsReport}
-              exportFinancialSummary={exportFinancialSummary}
-              setShowPaymentForm={setShowPaymentForm}
-              setShowCreateDonation={setShowCreateDonation}
-              setShowCreatePayment={setShowCreatePayment}
+              setDonations={setDonations}
+              payments={payments}
+              setPayments={setPayments}
+              events={events}
+              addNotification={addNotification}
             />
           )}
 

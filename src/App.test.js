@@ -28,7 +28,7 @@ test('renders all sidebar navigation items', () => {
   expect(screen.getByText('Dashboard')).toBeInTheDocument();
   expect(screen.getByText('Volunteers')).toBeInTheDocument();
   expect(screen.getByText('Attendees')).toBeInTheDocument();
-  expect(screen.getByText('Payments')).toBeInTheDocument();
+  expect(screen.getByText('Giving')).toBeInTheDocument();
   expect(screen.getByText('Communications')).toBeInTheDocument();
 });
 
