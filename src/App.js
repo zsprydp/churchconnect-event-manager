@@ -18,6 +18,9 @@ import {
 } from 'lucide-react';
 import Calendar from './Calendar';
 import OfflineIndicator from './components/OfflineIndicator';
+import UserMenu from './components/UserMenu';
+import AuthScreen from './components/AuthScreen';
+import { useAuth } from './contexts/AuthContext';
 import { saveToLocalStorage, loadFromLocalStorage } from './utils/storage';
 import { validateEventForm, validateVolunteerForm, validateAttendeeForm } from './utils/validation';
 import { filterEvents, filterVolunteers, filterAttendees } from './utils/filters';
@@ -39,6 +42,7 @@ const PaymentProcessingModal = lazy(() => import('./components/modals/PaymentPro
 const CreateTemplateModal = lazy(() => import('./components/modals/CreateTemplateModal'));
 
 const ChurchConnectDashboard = () => {
+  const { isAuthenticated, isDemo, loading: authLoading } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
 
   // Notification system
@@ -1318,6 +1322,26 @@ const ChurchConnectDashboard = () => {
     [events, volunteers, addNotification]
   );
 
+  if (authLoading) {
+    return (
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#f9fafb',
+        }}
+      >
+        <p style={{ color: '#6b7280', fontSize: '16px' }}>Loading...</p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated && !isDemo) {
+    return <AuthScreen />;
+  }
+
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', display: 'flex' }}>
       {/* Skip to content link */}
@@ -1467,6 +1491,7 @@ const ChurchConnectDashboard = () => {
             </button>
           ))}
         </nav>
+        <UserMenu />
       </aside>
 
       {/* Main Content */}
