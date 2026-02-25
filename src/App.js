@@ -1186,19 +1186,45 @@ const ChurchConnectDashboard = () => {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', display: 'flex' }}>
+      {/* Skip to content link */}
+      <a
+        href="#main-content"
+        style={{
+          position: 'absolute',
+          left: '-9999px',
+          top: '0',
+          zIndex: 9999,
+          padding: '8px 16px',
+          backgroundColor: '#2563eb',
+          color: 'white',
+          textDecoration: 'none',
+          fontSize: '14px'
+        }}
+        onFocus={(e) => { e.target.style.left = '0'; }}
+        onBlur={(e) => { e.target.style.left = '-9999px'; }}
+      >
+        Skip to main content
+      </a>
+
       {/* Notification System */}
-      <div style={{
-        position: 'fixed',
-        top: '20px',
-        right: '20px',
-        zIndex: 1000,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '10px'
-      }}>
+      <div
+        role="status"
+        aria-live="polite"
+        aria-label="Notifications"
+        style={{
+          position: 'fixed',
+          top: '20px',
+          right: '20px',
+          zIndex: 1000,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '10px'
+        }}
+      >
         {notifications.map(notification => (
           <div
             key={notification.id}
+            role="alert"
             style={{
               backgroundColor: notification.type === 'success' ? '#dcfce7' : 
                              notification.type === 'error' ? '#fef2f2' : 
@@ -1224,6 +1250,7 @@ const ChurchConnectDashboard = () => {
             </span>
             <button
               onClick={() => removeNotification(notification.id)}
+              aria-label="Dismiss notification"
               style={{
                 background: 'none',
                 border: 'none',
@@ -1243,13 +1270,13 @@ const ChurchConnectDashboard = () => {
       <OfflineIndicator />
       
       {/* Sidebar */}
-      <div style={{ width: '256px', backgroundColor: 'white', borderRight: '1px solid #e5e7eb' }}>
-        <div style={{ padding: '24px' }}>
+      <aside style={{ width: '256px', backgroundColor: 'white', borderRight: '1px solid #e5e7eb' }} aria-label="Main navigation">
+        <header style={{ padding: '24px' }}>
           <h1 style={{ fontSize: '20px', fontWeight: 'bold', color: '#111827' }}>ChurchConnect</h1>
           <p style={{ fontSize: '14px', color: '#6b7280' }}>Event Manager</p>
-        </div>
+        </header>
         
-        <nav style={{ marginTop: '24px' }}>
+        <nav aria-label="Primary" style={{ marginTop: '24px' }}>
           {[
             { id: 'dashboard', name: 'Dashboard', icon: BarChart3 },
             { id: 'events', name: 'Events', icon: CalendarIcon },
@@ -1266,6 +1293,7 @@ const ChurchConnectDashboard = () => {
                 setSearchTerm('');
                 setFilterStatus('all');
               }}
+              aria-current={activeTab === item.id ? 'page' : undefined}
               style={{
                 width: '100%',
                 display: 'flex',
@@ -1279,15 +1307,15 @@ const ChurchConnectDashboard = () => {
                 transition: 'all 0.2s'
               }}
             >
-              <item.icon style={{ height: '20px', width: '20px', marginRight: '12px' }} />
+              <item.icon style={{ height: '20px', width: '20px', marginRight: '12px' }} aria-hidden="true" />
               {item.name}
             </button>
           ))}
         </nav>
-      </div>
+      </aside>
 
       {/* Main Content */}
-      <div style={{ flex: 1, padding: '32px', overflowY: 'auto' }}>
+      <main id="main-content" style={{ flex: 1, padding: '32px', overflowY: 'auto' }}>
         {activeTab === 'dashboard' && (
           <div>
             <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Event Calendar</h2>
@@ -1361,6 +1389,7 @@ const ChurchConnectDashboard = () => {
                 <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', height: '16px', width: '16px', color: '#6b7280' }} />
                 <input
                   type="text"
+                  aria-label="Search volunteers"
                   placeholder="Search volunteers by name, email, or role..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -1732,7 +1761,7 @@ const ChurchConnectDashboard = () => {
             setShowCreateEventTemplate={setShowCreateEventTemplate}
           />
         )}
-      </div>
+      </main>
 
       {/* Event Template Creation Modal */}
       {showCreateEventTemplate && (

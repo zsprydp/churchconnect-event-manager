@@ -238,6 +238,7 @@ const PaymentsView = ({
                     <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', height: '16px', width: '16px', color: '#6b7280' }} />
                     <input
                       type="text"
+                      aria-label="Search payments"
                       placeholder="Search payments by event or attendee..."
                       value={paymentSearchTerm}
                       onChange={(e) => setPaymentSearchTerm(e.target.value)}
@@ -252,6 +253,7 @@ const PaymentsView = ({
                     />
                   </div>
                   <select
+                    aria-label="Filter payments by status"
                     value={paymentFilterStatus}
                     onChange={(e) => setPaymentFilterStatus(e.target.value)}
                     style={{
@@ -367,6 +369,7 @@ const PaymentsView = ({
                     <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', height: '16px', width: '16px', color: '#6b7280' }} />
                     <input
                       type="text"
+                      aria-label="Search donations"
                       placeholder="Search donations by donor or campaign..."
                       value={donationSearchTerm}
                       onChange={(e) => setDonationSearchTerm(e.target.value)}
@@ -381,6 +384,7 @@ const PaymentsView = ({
                     />
                   </div>
                   <select
+                    aria-label="Filter donations by campaign"
                     value={donationFilterType}
                     onChange={(e) => setDonationFilterType(e.target.value)}
                     style={{

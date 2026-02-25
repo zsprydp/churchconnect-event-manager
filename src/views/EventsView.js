@@ -97,6 +97,7 @@ const EventsView = ({
                 <Search style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', height: '16px', width: '16px', color: '#6b7280' }} />
                 <input
                   type="text"
+                  aria-label="Search events"
                   placeholder="Search events by name or location..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -111,6 +112,7 @@ const EventsView = ({
                 />
               </div>
               <select
+                aria-label="Filter events by status"
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
                 style={{
