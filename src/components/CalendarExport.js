@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import logger from '../utils/logger';
 import { Calendar, Download, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import {
   generateICSContent,
@@ -17,44 +18,44 @@ const CalendarExport = ({ event, events = [], showBulkExport = false, onNotifica
 
   const handleSingleEventExport = () => {
     if (!event) {
-      console.error('No event provided for export');
+      logger.error('No event provided for export');
       return;
     }
     
-    console.log('Exporting single event:', event);
+    logger.log('Exporting single event:', event);
     
     try {
       const icsContent = generateICSContent(event);
       const filename = `${event.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.ics`;
       downloadICSFile(icsContent, filename);
-      console.log('ICS file downloaded successfully');
+      logger.log('ICS file downloaded successfully');
     } catch (error) {
-      console.error('Failed to export event:', error);
+      logger.error('Failed to export event:', error);
       if (onNotification) onNotification('Failed to export event. Please check the console for details.', 'error');
     }
   };
 
   const handleBulkExport = () => {
     if (!events || events.length === 0) {
-      console.error('No events provided for bulk export');
+      logger.error('No events provided for bulk export');
       return;
     }
     
-    console.log('Exporting bulk events:', events);
+    logger.log('Exporting bulk events:', events);
     
     try {
       const icsContent = generateBulkICSContent(events);
       const filename = `churchconnect_events_${new Date().toISOString().slice(0, 10)}.ics`;
       downloadICSFile(icsContent, filename);
-      console.log('Bulk ICS file downloaded successfully');
+      logger.log('Bulk ICS file downloaded successfully');
     } catch (error) {
-      console.error('Failed to export bulk events:', error);
+      logger.error('Failed to export bulk events:', error);
       if (onNotification) onNotification('Failed to export events. Please check the console for details.', 'error');
     }
   };
 
   const handleCalendarServiceClick = (service, eventData) => {
-    console.log(`Opening ${service} calendar for event:`, eventData);
+    logger.log(`Opening ${service} calendar for event:`, eventData);
     
     let url;
     
@@ -70,14 +71,14 @@ const CalendarExport = ({ event, events = [], showBulkExport = false, onNotifica
           url = generateAppleCalendarLink(eventData);
           break;
         default:
-          console.error('Unknown calendar service:', service);
+          logger.error('Unknown calendar service:', service);
           return;
       }
       
-      console.log(`${service} calendar URL:`, url);
+      logger.log(`${service} calendar URL:`, url);
       window.open(url, '_blank', 'noopener,noreferrer');
     } catch (error) {
-      console.error(`Failed to generate ${service} calendar link:`, error);
+      logger.error(`Failed to generate ${service} calendar link:`, error);
       if (onNotification) onNotification(`Failed to open ${service} calendar. Please check the console for details.`, 'error');
     }
   };
@@ -124,15 +125,15 @@ const CalendarExport = ({ event, events = [], showBulkExport = false, onNotifica
   // Debug logging
   React.useEffect(() => {
     if (event) {
-      console.log('CalendarExport component received event:', event);
+      logger.log('CalendarExport component received event:', event);
     }
     if (events && events.length > 0) {
-      console.log('CalendarExport component received events:', events);
+      logger.log('CalendarExport component received events:', events);
     }
   }, [event, events]);
 
   if (!event && (!events || events.length === 0)) {
-    console.log('CalendarExport: No event or events provided');
+    logger.log('CalendarExport: No event or events provided');
     return null;
   }
 

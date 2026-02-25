@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import logger from '../utils/logger';
 import { Wifi, WifiOff, Download, Bell, Settings } from 'lucide-react';
 import pwaManager from '../pwa.js';
 import './OfflineIndicator.css';
@@ -47,7 +48,7 @@ const OfflineIndicator = () => {
       const size = await pwaManager.getCacheSize();
       setCacheSize(size);
     } catch (error) {
-      console.error('Failed to get cache size:', error);
+      logger.error('Failed to get cache size:', error);
     }
   };
 
@@ -55,7 +56,7 @@ const OfflineIndicator = () => {
     try {
       await pwaManager.showInstallPrompt();
     } catch (error) {
-      console.error('Failed to show install prompt:', error);
+      logger.error('Failed to show install prompt:', error);
     }
   };
 
@@ -64,7 +65,7 @@ const OfflineIndicator = () => {
       const permission = await pwaManager.requestNotificationPermission();
       setNotificationPermission(permission);
     } catch (error) {
-      console.error('Failed to request notification permission:', error);
+      logger.error('Failed to request notification permission:', error);
     }
   };
 
@@ -73,7 +74,7 @@ const OfflineIndicator = () => {
       await pwaManager.clearCache();
       await updateCacheSize();
     } catch (error) {
-      console.error('Failed to clear cache:', error);
+      logger.error('Failed to clear cache:', error);
     }
   };
 

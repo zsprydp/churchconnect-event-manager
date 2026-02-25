@@ -1,3 +1,5 @@
+import logger from './utils/logger';
+
 // PWA Service Worker Registration and Utilities
 class PWAManager {
   constructor() {
@@ -29,7 +31,7 @@ class PWAManager {
     if ('serviceWorker' in navigator) {
       try {
         this.serviceWorker = await navigator.serviceWorker.register('/sw.js');
-        console.log('Service Worker registered successfully:', this.serviceWorker);
+        logger.log('Service Worker registered successfully:', this.serviceWorker);
 
         // Handle service worker updates
         this.serviceWorker.addEventListener('updatefound', () => {
@@ -47,7 +49,7 @@ class PWAManager {
         });
 
       } catch (error) {
-        console.error('Service Worker registration failed:', error);
+        logger.error('Service Worker registration failed:', error);
       }
     }
   }
@@ -103,7 +105,7 @@ class PWAManager {
       this.dispatchEvent('push-subscription', { subscription });
       return subscription;
     } catch (error) {
-      console.error('Failed to subscribe to push notifications:', error);
+      logger.error('Failed to subscribe to push notifications:', error);
       throw error;
     }
   }

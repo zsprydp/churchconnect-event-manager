@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import logger from './utils/logger';
 import { ChevronLeft, ChevronRight, Calendar as LucideCalendar, Clock } from 'lucide-react';
 
 const Calendar = ({ events = [], volunteers = [], attendees = [], onEventClick }) => {
@@ -126,7 +127,7 @@ const Calendar = ({ events = [], volunteers = [], attendees = [], onEventClick }
       
       return '';
     } catch (error) {
-      console.error('Error formatting event time:', error);
+      logger.error('Error formatting event time:', error);
       return '';
     }
   };

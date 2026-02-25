@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, lazy, Suspense } from 'react';
+import logger from './utils/logger';
 import { Calendar as CalendarIcon, Users, Mail, Plus, Settings, BarChart3, CreditCard, X, User, CheckCircle, Edit2, Trash2, Shield, Search } from 'lucide-react';
 import Calendar from './Calendar';
 import OfflineIndicator from './components/OfflineIndicator';
@@ -653,7 +654,7 @@ const ChurchConnectDashboard = () => {
   const processPayment = useCallback(async (paymentData) => {
     try {
       // This would integrate with your chosen payment gateway
-      console.log('Processing payment:', paymentData);
+      logger.log('Processing payment:', paymentData);
       
       // Simulate payment processing
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -687,7 +688,7 @@ const ChurchConnectDashboard = () => {
       // 3. Update payment status based on gateway response
       
     } catch (error) {
-      console.error('Payment processing failed:', error);
+      logger.error('Payment processing failed:', error);
       addNotification('Payment failed. Please try again.', 'error');
     }
   }, [addNotification]);
@@ -887,9 +888,9 @@ const ChurchConnectDashboard = () => {
             .replace(/{eventFee}/g, selectedEvent.registrationFee > 0 ? `$${selectedEvent.registrationFee}` : 'Free');
 
           await mockEmailService.sendEmail(newAttendee.email, subject, message);
-          console.log('📧 Registration confirmation email sent to:', newAttendee.email);
+          logger.log('📧 Registration confirmation email sent to:', newAttendee.email);
         } catch (error) {
-          console.error('Failed to send registration confirmation email:', error);
+          logger.error('Failed to send registration confirmation email:', error);
         }
       }
     } else {
@@ -1021,7 +1022,7 @@ const ChurchConnectDashboard = () => {
       
       addNotification(`Email sent successfully to ${recipientList.length} recipient(s)!`, 'success');
     } catch (error) {
-      console.error('Failed to send emails:', error);
+      logger.error('Failed to send emails:', error);
       addNotification('Failed to send some emails. Please try again.', 'error');
     } finally {
       // Reset button
@@ -1192,7 +1193,7 @@ const ChurchConnectDashboard = () => {
       
       setCommunications(prev => [communication, ...prev]);
     } catch (error) {
-      console.error('Failed to send volunteer reminders:', error);
+      logger.error('Failed to send volunteer reminders:', error);
       addNotification('Failed to send some volunteer reminders. Please try again.', 'error');
     }
   }, [events, volunteers, addNotification]);

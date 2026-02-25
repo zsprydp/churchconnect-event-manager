@@ -1,3 +1,5 @@
+import logger from './logger';
+
 const STORAGE_KEYS = ['events', 'volunteers', 'attendees', 'communications', 'payments', 'donations'];
 
 const MAX_STORAGE_BYTES = 4.5 * 1024 * 1024; // 4.5 MB safe limit (browsers typically allow 5-10 MB)
@@ -31,14 +33,14 @@ export const saveToLocalStorage = (key, data) => {
     const projectedUsage = currentUsage - existingSize + entrySize;
 
     if (projectedUsage > MAX_STORAGE_BYTES) {
-      console.warn(`localStorage near quota (${formatBytes(projectedUsage)} / ${formatBytes(MAX_STORAGE_BYTES)}). Save for "${key}" skipped.`);
+      logger.warn(`localStorage near quota (${formatBytes(projectedUsage)} / ${formatBytes(MAX_STORAGE_BYTES)}). Save for "${key}" skipped.`);
       return false;
     }
 
     localStorage.setItem(key, serialized);
     return true;
   } catch (error) {
-    console.error('Failed to save to localStorage:', error);
+    logger.error('Failed to save to localStorage:', error);
     return false;
   }
 };
@@ -59,7 +61,7 @@ export const loadFromLocalStorage = (key, defaultValue = []) => {
 
     return parsed;
   } catch (error) {
-    console.error('Failed to load from localStorage:', error);
+    logger.error('Failed to load from localStorage:', error);
     return defaultValue;
   }
 };

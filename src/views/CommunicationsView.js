@@ -1,4 +1,5 @@
 import React from 'react';
+import logger from '../utils/logger';
 import { Mail, Send, Plus, MessageCircle } from 'lucide-react';
 import { mockEmailService, enhancedMessageTemplates } from '../services/emailService';
 
@@ -172,7 +173,7 @@ const CommunicationsView = ({
                         </button>
                         <button 
                           onClick={() => {
-                            console.log(`Template Preview:\n\nSubject: ${template.subject}\n\nMessage:\n${template.message}`);
+                            logger.log(`Template Preview:\n\nSubject: ${template.subject}\n\nMessage:\n${template.message}`);
                             addNotification('Template preview shown in console.', 'info');
                           }}
                           style={{
