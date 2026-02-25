@@ -1,7 +1,61 @@
-import React from 'react';
-import { Plus } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Plus, Download, Upload, Trash2, HardDrive } from 'lucide-react';
+import { getStorageUsage, formatBytes, exportAllData, importAllData, clearAllData } from '../utils/storage';
 
-const SettingsView = ({ events, eventTemplates, addNotification, setShowCreateEventTemplate }) => {
+const SettingsView = ({ events, eventTemplates, addNotification, setShowCreateEventTemplate, onDataImported }) => {
+  const [storageUsed, setStorageUsed] = useState(0);
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    setStorageUsed(getStorageUsage());
+  }, [events]);
+
+  const handleExport = () => {
+    const backup = exportAllData();
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `churchconnect-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    addNotification('Backup exported successfully', 'success');
+  };
+
+  const handleImport = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      try {
+        const parsed = JSON.parse(evt.target.result);
+        const result = importAllData(parsed);
+        if (result.success) {
+          addNotification(`Imported: ${result.imported.join(', ')}. Reload the page to see changes.`, 'success');
+          setStorageUsed(getStorageUsage());
+          if (onDataImported) onDataImported();
+        } else {
+          addNotification(`Import failed: ${result.error}`, 'error');
+        }
+      } catch {
+        addNotification('Invalid backup file', 'error');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
+
+  const handleClearAll = () => {
+    if (window.confirm('Delete ALL app data? This cannot be undone.')) {
+      clearAllData();
+      addNotification('All data cleared. Reload the page.', 'success');
+      setStorageUsed(0);
+      if (onDataImported) onDataImported();
+    }
+  };
+
+  const usagePercent = Math.min((storageUsed / (4.5 * 1024 * 1024)) * 100, 100);
   return (
           <div>
             <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Settings</h2>
@@ -104,6 +158,100 @@ const SettingsView = ({ events, eventTemplates, addNotification, setShowCreateEv
                   }}
                 >
                   View Archive Statistics
+                </button>
+              </div>
+            </div>
+
+            {/* Data Management */}
+            <div style={{ backgroundColor: 'white', borderRadius: '8px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', marginTop: '20px' }}>
+              <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '20px' }}>Data Management</h3>
+
+              {/* Storage usage bar */}
+              <div style={{ marginBottom: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                  <HardDrive style={{ height: '16px', width: '16px', color: '#6b7280' }} aria-hidden="true" />
+                  <span style={{ fontSize: '14px', color: '#374151' }}>
+                    Storage: {formatBytes(storageUsed)} / {formatBytes(4.5 * 1024 * 1024)}
+                  </span>
+                </div>
+                <div style={{ height: '8px', backgroundColor: '#e5e7eb', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{
+                    height: '100%',
+                    width: `${usagePercent}%`,
+                    backgroundColor: usagePercent > 80 ? '#dc2626' : usagePercent > 60 ? '#f59e0b' : '#10b981',
+                    borderRadius: '4px',
+                    transition: 'width 0.3s'
+                  }} />
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                <button
+                  onClick={handleExport}
+                  style={{
+                    backgroundColor: '#2563eb',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '10px 16px',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '14px'
+                  }}
+                >
+                  <Download style={{ height: '16px', width: '16px' }} aria-hidden="true" />
+                  Export Backup
+                </button>
+
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  style={{
+                    backgroundColor: '#16a34a',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '10px 16px',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '14px'
+                  }}
+                >
+                  <Upload style={{ height: '16px', width: '16px' }} aria-hidden="true" />
+                  Import Backup
+                </button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".json"
+                  onChange={handleImport}
+                  style={{ display: 'none' }}
+                  aria-label="Import backup file"
+                />
+
+                <button
+                  onClick={handleClearAll}
+                  style={{
+                    backgroundColor: '#dc2626',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '10px 16px',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '14px'
+                  }}
+                >
+                  <Trash2 style={{ height: '16px', width: '16px' }} aria-hidden="true" />
+                  Clear All Data
                 </button>
               </div>
             </div>

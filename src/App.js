@@ -404,28 +404,40 @@ const ChurchConnectDashboard = () => {
 
   // Save data to localStorage whenever it changes
   useEffect(() => {
-    saveToLocalStorage('events', events);
-  }, [events]);
+    if (!saveToLocalStorage('events', events)) {
+      addNotification('Storage nearly full — event data may not be saved. Export a backup.', 'warning');
+    }
+  }, [events, addNotification]);
 
   useEffect(() => {
-    saveToLocalStorage('volunteers', volunteers);
-  }, [volunteers]);
+    if (!saveToLocalStorage('volunteers', volunteers)) {
+      addNotification('Storage nearly full — volunteer data may not be saved.', 'warning');
+    }
+  }, [volunteers, addNotification]);
 
   useEffect(() => {
-    saveToLocalStorage('attendees', attendees);
-  }, [attendees]);
+    if (!saveToLocalStorage('attendees', attendees)) {
+      addNotification('Storage nearly full — attendee data may not be saved.', 'warning');
+    }
+  }, [attendees, addNotification]);
 
   useEffect(() => {
-    saveToLocalStorage('communications', communications);
-  }, [communications]);
+    if (!saveToLocalStorage('communications', communications)) {
+      addNotification('Storage nearly full — communications may not be saved.', 'warning');
+    }
+  }, [communications, addNotification]);
 
   useEffect(() => {
-    saveToLocalStorage('payments', payments);
-  }, [payments]);
+    if (!saveToLocalStorage('payments', payments)) {
+      addNotification('Storage nearly full — payment data may not be saved.', 'warning');
+    }
+  }, [payments, addNotification]);
 
   useEffect(() => {
-    saveToLocalStorage('donations', donations);
-  }, [donations]);
+    if (!saveToLocalStorage('donations', donations)) {
+      addNotification('Storage nearly full — donation data may not be saved.', 'warning');
+    }
+  }, [donations, addNotification]);
 
   // Handle form input changes
   const handleEventInputChange = useCallback((field, value) => {
