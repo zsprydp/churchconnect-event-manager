@@ -29,11 +29,11 @@ test('shows dashboard (Event Calendar) by default', () => {
   expect(screen.getAllByText('Event Calendar').length).toBeGreaterThan(0);
 });
 
-test('navigates to Events tab when clicked', () => {
+test('navigates to Events tab when clicked', async () => {
   render(<App />);
   const eventsButtons = screen.getAllByText('Events');
   fireEvent.click(eventsButtons[0]);
-  expect(screen.getByText('Youth Summer Retreat')).toBeInTheDocument();
+  expect(await screen.findByText('Youth Summer Retreat')).toBeInTheDocument();
 });
 
 test('navigates to Volunteers tab when clicked', () => {
@@ -42,8 +42,8 @@ test('navigates to Volunteers tab when clicked', () => {
   expect(screen.getByText('Sarah Johnson')).toBeInTheDocument();
 });
 
-test('navigates to Settings tab when clicked', () => {
+test('navigates to Settings tab when clicked', async () => {
   render(<App />);
   fireEvent.click(screen.getByText('Settings'));
-  expect(screen.getByText('Event Templates')).toBeInTheDocument();
+  expect(await screen.findByText('Event Templates')).toBeInTheDocument();
 });

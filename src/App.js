@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, lazy, Suspense } from 'react';
 import { Calendar as CalendarIcon, Users, Mail, Plus, Settings, BarChart3, CreditCard, X, User, CheckCircle, Edit2, Trash2, Shield, Search } from 'lucide-react';
 import Calendar from './Calendar';
 import OfflineIndicator from './components/OfflineIndicator';
@@ -6,20 +6,21 @@ import { saveToLocalStorage, loadFromLocalStorage } from './utils/storage';
 import { validateEventForm, validateVolunteerForm, validateAttendeeForm } from './utils/validation';
 import { filterEvents, filterVolunteers, filterAttendees } from './utils/filters';
 import { mockEmailService, enhancedMessageTemplates } from './services/emailService';
-import EventsView from './views/EventsView';
-import CommunicationsView from './views/CommunicationsView';
-import PaymentsView from './views/PaymentsView';
-import SettingsView from './views/SettingsView';
-import EventTemplateCreationModal from './components/modals/EventTemplateCreationModal';
-import CreateEventModal from './components/modals/CreateEventModal';
-import EditEventModal from './components/modals/EditEventModal';
-import AddVolunteerModal from './components/modals/AddVolunteerModal';
-import EventRegistrationModal from './components/modals/EventRegistrationModal';
-import EditAttendeeModal from './components/modals/EditAttendeeModal';
-import ManageEventModal from './components/modals/ManageEventModal';
-import SendMessageModal from './components/modals/SendMessageModal';
-import PaymentProcessingModal from './components/modals/PaymentProcessingModal';
-import CreateTemplateModal from './components/modals/CreateTemplateModal';
+
+const EventsView = lazy(() => import('./views/EventsView'));
+const CommunicationsView = lazy(() => import('./views/CommunicationsView'));
+const PaymentsView = lazy(() => import('./views/PaymentsView'));
+const SettingsView = lazy(() => import('./views/SettingsView'));
+const EventTemplateCreationModal = lazy(() => import('./components/modals/EventTemplateCreationModal'));
+const CreateEventModal = lazy(() => import('./components/modals/CreateEventModal'));
+const EditEventModal = lazy(() => import('./components/modals/EditEventModal'));
+const AddVolunteerModal = lazy(() => import('./components/modals/AddVolunteerModal'));
+const EventRegistrationModal = lazy(() => import('./components/modals/EventRegistrationModal'));
+const EditAttendeeModal = lazy(() => import('./components/modals/EditAttendeeModal'));
+const ManageEventModal = lazy(() => import('./components/modals/ManageEventModal'));
+const SendMessageModal = lazy(() => import('./components/modals/SendMessageModal'));
+const PaymentProcessingModal = lazy(() => import('./components/modals/PaymentProcessingModal'));
+const CreateTemplateModal = lazy(() => import('./components/modals/CreateTemplateModal'));
 
 const ChurchConnectDashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -1328,6 +1329,7 @@ const ChurchConnectDashboard = () => {
 
       {/* Main Content */}
       <main id="main-content" style={{ flex: 1, padding: '32px', overflowY: 'auto' }}>
+        <Suspense fallback={<div style={{ padding: '48px', textAlign: 'center', color: '#6b7280' }}>Loading...</div>}>
         {activeTab === 'dashboard' && (
           <div>
             <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Event Calendar</h2>
@@ -1773,8 +1775,10 @@ const ChurchConnectDashboard = () => {
             setShowCreateEventTemplate={setShowCreateEventTemplate}
           />
         )}
+        </Suspense>
       </main>
 
+      <Suspense fallback={null}>
       {/* Event Template Creation Modal */}
       {showCreateEventTemplate && (
         <EventTemplateCreationModal
@@ -1951,6 +1955,7 @@ const ChurchConnectDashboard = () => {
           addNotification={addNotification}
         />
       )}
+      </Suspense>
     </div>
   );
 };
