@@ -22,7 +22,8 @@ const EventsView = ({
   handleDeleteEvent,
   volunteers,
   communications,
-  sendVolunteerReminders
+  sendVolunteerReminders,
+  addNotification
 }) => {
   return (
           <div>
@@ -131,7 +132,8 @@ const EventsView = ({
             <div style={{ marginBottom: '20px' }}>
               <CalendarExport 
                 events={events.filter(e => e.status !== 'archived')} 
-                showBulkExport={true} 
+                showBulkExport={true}
+                onNotification={addNotification}
               />
             </div>
 
@@ -219,7 +221,7 @@ const EventsView = ({
 
                     {/* Calendar Export Component */}
                     <div style={{ marginBottom: '16px' }}>
-                      <CalendarExport event={event} />
+                      <CalendarExport event={event} onNotification={addNotification} />
                     </div>
 
                     {event.status === 'active' && (

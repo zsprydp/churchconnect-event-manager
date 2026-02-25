@@ -11,7 +11,7 @@ import {
 } from '../utils/calendarExport';
 import './CalendarExport.css';
 
-const CalendarExport = ({ event, events = [], showBulkExport = false }) => {
+const CalendarExport = ({ event, events = [], showBulkExport = false, onNotification }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedCalendar, setSelectedCalendar] = useState(null);
 
@@ -30,7 +30,7 @@ const CalendarExport = ({ event, events = [], showBulkExport = false }) => {
       console.log('ICS file downloaded successfully');
     } catch (error) {
       console.error('Failed to export event:', error);
-      alert('Failed to export event. Please check the console for details.');
+      if (onNotification) onNotification('Failed to export event. Please check the console for details.', 'error');
     }
   };
 
@@ -49,7 +49,7 @@ const CalendarExport = ({ event, events = [], showBulkExport = false }) => {
       console.log('Bulk ICS file downloaded successfully');
     } catch (error) {
       console.error('Failed to export bulk events:', error);
-      alert('Failed to export events. Please check the console for details.');
+      if (onNotification) onNotification('Failed to export events. Please check the console for details.', 'error');
     }
   };
 
@@ -78,7 +78,7 @@ const CalendarExport = ({ event, events = [], showBulkExport = false }) => {
       window.open(url, '_blank', 'noopener,noreferrer');
     } catch (error) {
       console.error(`Failed to generate ${service} calendar link:`, error);
-      alert(`Failed to open ${service} calendar. Please check the console for details.`);
+      if (onNotification) onNotification(`Failed to open ${service} calendar. Please check the console for details.`, 'error');
     }
   };
 

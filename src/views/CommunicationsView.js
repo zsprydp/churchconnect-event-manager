@@ -10,7 +10,8 @@ const CommunicationsView = ({
   toggleNotificationSetting,
   setShowSendMessage,
   setShowCreateTemplate,
-  setNewMessage
+  setNewMessage,
+  addNotification
 }) => {
   return (
           <div>
@@ -21,9 +22,9 @@ const CommunicationsView = ({
                   onClick={async () => {
                     try {
                       await mockEmailService.sendEmail('test@example.com', 'Test Email', 'This is a test email from ChurchConnect Event Manager.');
-                      alert('✅ Test email sent! Check the console for details.');
+                      addNotification('Test email sent!', 'success');
                     } catch (error) {
-                      alert('❌ Failed to send test email.');
+                      addNotification('Failed to send test email.', 'error');
                     }
                   }}
                   style={{ 
@@ -171,7 +172,8 @@ const CommunicationsView = ({
                         </button>
                         <button 
                           onClick={() => {
-                            alert(`Template Preview:\n\nSubject: ${template.subject}\n\nMessage:\n${template.message}`);
+                            console.log(`Template Preview:\n\nSubject: ${template.subject}\n\nMessage:\n${template.message}`);
+                            addNotification('Template preview shown in console.', 'info');
                           }}
                           style={{
                             backgroundColor: '#f3f4f6',

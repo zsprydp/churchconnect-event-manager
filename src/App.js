@@ -590,25 +590,25 @@ const ChurchConnectDashboard = () => {
   }, [donations]);
 
   const handleViewPaymentDetails = useCallback((payment) => {
-    alert(`Payment Details:\nEvent: ${payment.eventName}\nAttendee: ${payment.attendeeName}\nAmount: $${payment.amount}\nStatus: ${payment.status}`);
-  }, []);
+    addNotification(`Payment: $${payment.amount} for ${payment.eventName} by ${payment.attendeeName} (${payment.status})`, 'info');
+  }, [addNotification]);
 
   const handleRefundPayment = useCallback((paymentId) => {
     if (window.confirm('Are you sure you want to refund this payment?')) {
       setPayments(prev => prev.map(p => 
         p.id === paymentId ? { ...p, status: 'refunded' } : p
       ));
-      alert('Payment refunded successfully!');
+      addNotification('Payment refunded successfully!', 'success');
     }
-  }, []);
+  }, [addNotification]);
 
   const handleViewDonationDetails = useCallback((donation) => {
-    alert(`Donation Details:\nDonor: ${donation.donorName}\nAmount: $${donation.amount}\nCampaign: ${donation.campaign || 'General'}\nMessage: ${donation.message || 'None'}`);
-  }, []);
+    addNotification(`Donation: $${donation.amount} from ${donation.donorName} to ${donation.campaign || 'General'}`, 'info');
+  }, [addNotification]);
 
   const handleSendThankYou = useCallback((donation) => {
-    alert(`Thank you email sent to ${donation.donorName} for their generous donation of $${donation.amount}!`);
-  }, []);
+    addNotification(`Thank you email sent to ${donation.donorName} for their donation of $${donation.amount}!`, 'success');
+  }, [addNotification]);
 
   const exportPaymentsReport = useCallback(() => {
     const csv = 'Event,Attendee,Amount,Status,Date\n' +
@@ -623,8 +623,8 @@ const ChurchConnectDashboard = () => {
   }, [donations]);
 
   const exportFinancialSummary = useCallback(() => {
-    alert('Financial summary PDF export would be generated here with charts and detailed breakdowns.');
-  }, []);
+    addNotification('Financial summary PDF export would be generated here with charts and detailed breakdowns.', 'info');
+  }, [addNotification]);
 
   const downloadCSV = useCallback((csvContent, filename) => {
     const blob = new Blob([csvContent], { type: 'text/csv' });
@@ -666,7 +666,7 @@ const ChurchConnectDashboard = () => {
       setShowPaymentForm(false);
       setPaymentFormData({ amount: '', paymentMethod: 'stripe', description: '', recipientEmail: '' });
       
-      alert(`Payment processed successfully! Transaction ID: ${newPayment.transactionId}`);
+      addNotification(`Payment processed successfully! Transaction ID: ${newPayment.transactionId}`, 'success');
       
       // In real implementation, this would:
       // 1. Send payment to Stripe/PayPal/Square
@@ -675,18 +675,18 @@ const ChurchConnectDashboard = () => {
       
     } catch (error) {
       console.error('Payment processing failed:', error);
-      alert('Payment failed. Please try again.');
+      addNotification('Payment failed. Please try again.', 'error');
     }
-  }, []);
+  }, [addNotification]);
 
   const handlePaymentFormSubmit = useCallback((e) => {
     e.preventDefault();
     if (!paymentFormData.amount || !paymentFormData.description) {
-      alert('Please fill in all required fields');
+      addNotification('Please fill in all required fields', 'error');
       return;
     }
     processPayment(paymentFormData);
-  }, [paymentFormData, processPayment]);
+  }, [paymentFormData, processPayment, addNotification]);
 
   // Handle creating a new event
   const handleCreateEvent = useCallback(() => {
@@ -694,7 +694,7 @@ const ChurchConnectDashboard = () => {
     const errors = validateEventForm(newEvent);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
-      alert('Please fix the following errors:\n' + Object.values(errors).join('\n'));
+      addNotification('Please fix the following errors: ' + Object.values(errors).join(', '), 'error');
       return;
     }
     
@@ -731,7 +731,7 @@ const ChurchConnectDashboard = () => {
       setActiveTab('events');
       addNotification('Event created successfully!', 'success');
     } else {
-      alert('Please fill in at least the Event Name');
+      addNotification('Please fill in at least the Event Name', 'error');
     }
   }, [newEvent, addNotification]);
 
@@ -752,7 +752,7 @@ const ChurchConnectDashboard = () => {
     const errors = validateEventForm(editingEvent);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
-      alert('Please fix the following errors:\n' + Object.values(errors).join('\n'));
+      addNotification('Please fix the following errors: ' + Object.values(errors).join(', '), 'error');
       return;
     }
     
@@ -770,8 +770,8 @@ const ChurchConnectDashboard = () => {
     
     setShowEditEvent(false);
     setEditingEvent(null);
-    alert('Event updated successfully!');
-  }, [editingEvent]);
+    addNotification('Event updated successfully!', 'success');
+  }, [editingEvent, addNotification]);
 
   // Handle closing/archiving an event
   const handleEventStatusChange = useCallback((eventId, newStatus) => {
@@ -794,7 +794,7 @@ const ChurchConnectDashboard = () => {
     const errors = validateVolunteerForm(newVolunteer);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
-      alert('Please fix the following errors:\n' + Object.values(errors).join('\n'));
+      addNotification('Please fix the following errors: ' + Object.values(errors).join(', '), 'error');
       return;
     }
     
@@ -815,9 +815,9 @@ const ChurchConnectDashboard = () => {
       setShowAddVolunteer(false);
               addNotification('Volunteer added successfully!', 'success');
     } else {
-      alert('Please fill in the required fields: Name and Email');
+      addNotification('Please fill in the required fields: Name and Email', 'error');
     }
-  }, [newVolunteer]);
+  }, [newVolunteer, addNotification]);
 
   // Handle event registration with group members
   const handleEventRegistration = useCallback(async () => {
@@ -825,7 +825,7 @@ const ChurchConnectDashboard = () => {
     const errors = validateAttendeeForm(newAttendee);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
-      alert('Please fix the following errors:\n' + Object.values(errors).join('\n'));
+      addNotification('Please fix the following errors: ' + Object.values(errors).join(', '), 'error');
       return;
     }
     
@@ -837,7 +837,7 @@ const ChurchConnectDashboard = () => {
       const totalRegistered = eventAttendees.reduce((sum, a) => sum + 1 + a.groupMembers.length, 0);
       
       if (totalRegistered + totalPeopleInGroup > selectedEvent.capacity) {
-        alert(`Sorry, this event only has ${selectedEvent.capacity - totalRegistered} spots left!`);
+        addNotification(`Sorry, this event only has ${selectedEvent.capacity - totalRegistered} spots left!`, 'warning');
         return;
       }
 
@@ -859,7 +859,7 @@ const ChurchConnectDashboard = () => {
       setShowRegistration(false);
       
       const totalFee = selectedEvent.registrationFee * totalPeopleInGroup;
-      alert(`Successfully registered ${totalPeopleInGroup} person(s) for ${selectedEvent.name}!${selectedEvent.registrationFee > 0 ? ` Total payment of $${totalFee} required.` : ''}`);
+      addNotification(`Successfully registered ${totalPeopleInGroup} person(s) for ${selectedEvent.name}!${selectedEvent.registrationFee > 0 ? ` Total payment of $${totalFee} required.` : ''}`, 'success');
 
       // Send automated confirmation email if enabled
       if (notificationSettings.registrationConfirmation) {
@@ -880,9 +880,9 @@ const ChurchConnectDashboard = () => {
         }
       }
     } else {
-      alert('Please fill in the required fields: Name and Email');
+      addNotification('Please fill in the required fields: Name and Email', 'error');
     }
-  }, [newAttendee, selectedEvent, attendees, notificationSettings.registrationConfirmation]);
+  }, [newAttendee, selectedEvent, attendees, notificationSettings.registrationConfirmation, addNotification]);
 
   // Handle editing an attendee
   const handleEditAttendee = useCallback((attendee) => {
@@ -898,14 +898,14 @@ const ChurchConnectDashboard = () => {
       ));
       setShowEditAttendee(false);
       setSelectedAttendee(null);
-      alert('Attendee updated successfully!');
+      addNotification('Attendee updated successfully!', 'success');
     }
-  }, [selectedAttendee]);
+  }, [selectedAttendee, addNotification]);
 
   // Handle sending messages
   const handleSendMessage = useCallback(async () => {
     if (!newMessage.subject || !newMessage.message) {
-      alert('Please fill in the subject and message fields');
+      addNotification('Please fill in the subject and message fields', 'error');
       return;
     }
 
@@ -940,7 +940,7 @@ const ChurchConnectDashboard = () => {
     }
 
     if (recipientList.length === 0) {
-      alert('No recipients found for the selected criteria');
+      addNotification('No recipients found for the selected criteria', 'warning');
       return;
     }
 
@@ -1006,10 +1006,10 @@ const ChurchConnectDashboard = () => {
       });
       setShowSendMessage(false);
       
-      alert(`✅ Email sent successfully to ${recipientList.length} recipient(s)! Check the console for details.`);
+      addNotification(`Email sent successfully to ${recipientList.length} recipient(s)!`, 'success');
     } catch (error) {
       console.error('Failed to send emails:', error);
-      alert('❌ Failed to send some emails. Please try again.');
+      addNotification('Failed to send some emails. Please try again.', 'error');
     } finally {
       // Reset button
       if (sendButton) {
@@ -1017,7 +1017,7 @@ const ChurchConnectDashboard = () => {
         sendButton.textContent = 'Send Message';
       }
     }
-  }, [newMessage, volunteers, attendees, events]);
+  }, [newMessage, volunteers, attendees, events, addNotification]);
 
   // Apply message template
   const applyMessageTemplate = (templateKey) => {
@@ -1143,7 +1143,7 @@ const ChurchConnectDashboard = () => {
     const eventVolunteers = volunteers.filter(v => event.volunteers.includes(v.id));
     
     if (eventVolunteers.length === 0) {
-      alert('No volunteers assigned to this event');
+      addNotification('No volunteers assigned to this event', 'warning');
       return;
     }
 
@@ -1161,7 +1161,7 @@ const ChurchConnectDashboard = () => {
 
     try {
       await Promise.all(emailPromises);
-      alert(`✅ Volunteer reminders sent to ${eventVolunteers.length} volunteer(s)!`);
+      addNotification(`Volunteer reminders sent to ${eventVolunteers.length} volunteer(s)!`, 'success');
       
       // Add to communications history
       const communication = {
@@ -1180,9 +1180,9 @@ const ChurchConnectDashboard = () => {
       setCommunications(prev => [communication, ...prev]);
     } catch (error) {
       console.error('Failed to send volunteer reminders:', error);
-      alert('❌ Failed to send some volunteer reminders. Please try again.');
+      addNotification('Failed to send some volunteer reminders. Please try again.', 'error');
     }
-  }, [events, volunteers]);
+  }, [events, volunteers, addNotification]);
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', display: 'flex' }}>
@@ -1327,6 +1327,7 @@ const ChurchConnectDashboard = () => {
             volunteers={volunteers}
             communications={communications}
             sendVolunteerReminders={sendVolunteerReminders}
+            addNotification={addNotification}
           />
         )}
 
@@ -1682,6 +1683,7 @@ const ChurchConnectDashboard = () => {
             setShowSendMessage={setShowSendMessage}
             setShowCreateTemplate={setShowCreateTemplate}
             setNewMessage={setNewMessage}
+            addNotification={addNotification}
           />
         )}
 

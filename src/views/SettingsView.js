@@ -21,7 +21,7 @@ const SettingsView = ({ events, eventTemplates, addNotification, setShowCreateEv
                             const newTemplates = { ...eventTemplates };
                             delete newTemplates[key];
                             // In a real app, this would update state
-                            alert('Template deleted (in real app, this would persist)');
+                            addNotification('Template deleted', 'success');
                           }
                         }}
                         style={{
