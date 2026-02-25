@@ -15,6 +15,7 @@ import {
   Trash2,
   Shield,
   Search,
+  Home,
 } from 'lucide-react';
 import Calendar from './Calendar';
 import OfflineIndicator from './components/OfflineIndicator';
@@ -30,6 +31,7 @@ const EventsView = lazy(() => import('./views/EventsView'));
 const CommunicationsView = lazy(() => import('./views/CommunicationsView'));
 const PaymentsView = lazy(() => import('./views/PaymentsView'));
 const SettingsView = lazy(() => import('./views/SettingsView'));
+const FamiliesView = lazy(() => import('./views/FamiliesView'));
 const EventTemplateCreationModal = lazy(() => import('./components/modals/EventTemplateCreationModal'));
 const CreateEventModal = lazy(() => import('./components/modals/CreateEventModal'));
 const EditEventModal = lazy(() => import('./components/modals/EditEventModal'));
@@ -452,6 +454,28 @@ const ChurchConnectDashboard = () => {
     ])
   );
 
+  // State for families / households
+  const [families, setFamilies] = useState(() =>
+    loadFromLocalStorage('households', [
+      {
+        id: 1,
+        name: 'The Smith Family',
+        address: '123 Church Lane',
+        primaryContactId: null,
+        primaryContactName: 'John Smith',
+        primaryContactEmail: 'john@email.com',
+      },
+    ])
+  );
+
+  const [householdMembers, setHouseholdMembers] = useState(() =>
+    loadFromLocalStorage('household_members', [
+      { id: 1, householdId: 1, name: 'John Smith', relationship: 'head' },
+      { id: 2, householdId: 1, name: 'Jane Smith', relationship: 'spouse' },
+      { id: 3, householdId: 1, name: 'Tim Smith', relationship: 'child' },
+    ])
+  );
+
   // Message templates
   const messageTemplates = {
     'registration-confirmation': {
@@ -504,6 +528,18 @@ const ChurchConnectDashboard = () => {
       addNotification('Storage nearly full — donation data may not be saved.', 'warning');
     }
   }, [donations, addNotification]);
+
+  useEffect(() => {
+    if (!saveToLocalStorage('households', families)) {
+      addNotification('Storage nearly full — family data may not be saved.', 'warning');
+    }
+  }, [families, addNotification]);
+
+  useEffect(() => {
+    if (!saveToLocalStorage('household_members', householdMembers)) {
+      addNotification('Storage nearly full — household member data may not be saved.', 'warning');
+    }
+  }, [householdMembers, addNotification]);
 
   // Handle form input changes
   const handleEventInputChange = useCallback((field, value) => {
@@ -1461,6 +1497,7 @@ const ChurchConnectDashboard = () => {
             { id: 'events', name: 'Events', icon: CalendarIcon },
             { id: 'volunteers', name: 'Volunteers', icon: Users },
             { id: 'attendees', name: 'Attendees', icon: User },
+            { id: 'families', name: 'Families', icon: Home },
             { id: 'payments', name: 'Payments', icon: CreditCard },
             { id: 'communications', name: 'Communications', icon: Mail },
             { id: 'settings', name: 'Settings', icon: Settings },
@@ -1970,6 +2007,16 @@ const ChurchConnectDashboard = () => {
                 </div>
               )}
             </div>
+          )}
+
+          {activeTab === 'families' && (
+            <FamiliesView
+              families={families}
+              setFamilies={setFamilies}
+              householdMembers={householdMembers}
+              setHouseholdMembers={setHouseholdMembers}
+              addNotification={addNotification}
+            />
           )}
 
           {activeTab === 'communications' && (
