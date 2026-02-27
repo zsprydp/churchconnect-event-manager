@@ -7,14 +7,14 @@
 | 2 | Household / Family Profiles | ✅ Done |
 | 3 | Donation & Ticketing (Stripe) | ✅ Done |
 
-## Phase 2: Operational value + pastoral care ← NEXT
+## Phase 2: Operational value + pastoral care ✅ COMPLETE
 | # | Feature | Status |
 |---|---|---|
-| 4 | Volunteer Scheduling with Role Sign-ups | 🔲 Not started |
-| 5 | Automated Guest & Member Workflows | 🔲 Not started |
-| 6 | Smart Attendance Analytics + Care List | 🔲 Not started |
+| 4 | Volunteer Scheduling with Role Sign-ups | ✅ Done |
+| 5 | Automated Guest & Member Workflows | ✅ Done |
+| 6 | Smart Attendance Analytics + Care List | ✅ Done |
 
-## Phase 3: Scale without chaos
+## Phase 3: Scale without chaos ← NEXT
 | # | Feature | Status |
 |---|---|---|
 | 7 | Small Group / Ministry Hubs | 🔲 Not started |
