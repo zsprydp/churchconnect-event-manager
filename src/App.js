@@ -29,6 +29,22 @@ import { saveToLocalStorage, loadFromLocalStorage } from './utils/storage';
 import { validateEventForm, validateVolunteerForm, validateAttendeeForm } from './utils/validation';
 import { filterEvents, filterVolunteers, filterAttendees } from './utils/filters';
 import { mockEmailService, enhancedMessageTemplates } from './services/emailService';
+import {
+  SEED_EVENTS,
+  SEED_VOLUNTEERS,
+  SEED_ATTENDEES,
+  SEED_COMMUNICATIONS,
+  SEED_PAYMENTS,
+  SEED_DONATIONS,
+  SEED_HOUSEHOLDS,
+  SEED_HOUSEHOLD_MEMBERS,
+  SEED_MINISTRIES,
+  SEED_ROOMS,
+  SEED_RESOURCES,
+  SEED_ROOM_BOOKINGS,
+  SEED_PRAYER_POSTS,
+  SEED_MEDIA_ITEMS,
+} from './data/seedData';
 
 const EventsView = lazy(() => import('./views/EventsView'));
 const CommunicationsView = lazy(() => import('./views/CommunicationsView'));
@@ -129,105 +145,10 @@ const ChurchConnectDashboard = () => {
   });
 
   // State for events with enhanced date handling
-  const [events, setEvents] = useState(() =>
-    loadFromLocalStorage('events', [
-      {
-        id: 1,
-        name: 'Youth Summer Retreat',
-        dateType: 'single',
-        dates: ['2025-08-15'],
-        startTime: '08:00',
-        endTime: '22:00',
-        recurrencePattern: null,
-        location: 'Camp Pine Ridge',
-        capacity: 60,
-        registrationFee: 75,
-        donationGoal: 3000,
-        donations: 2850,
-        volunteers: [1, 2],
-        status: 'active',
-        eventType: 'retreat',
-        customQuestions: [
-          { id: 'roommate', question: 'Roommate preference?', type: 'text', required: false },
-          { id: 'transport', question: 'Need transportation?', type: 'yes/no', required: true },
-        ],
-      },
-      {
-        id: 2,
-        name: 'Community Food Drive',
-        dateType: 'recurring',
-        dates: [],
-        startTime: '09:00',
-        endTime: '17:00',
-        recurrencePattern: '4th Tuesday of each month',
-        location: 'Church Fellowship Hall',
-        capacity: 50,
-        registrationFee: 0,
-        donationGoal: 2000,
-        donations: 1200,
-        volunteers: [3],
-        status: 'active',
-        eventType: 'service',
-        customQuestions: [
-          {
-            id: 'shifts',
-            question: 'Preferred shift?',
-            type: 'select',
-            options: ['Morning', 'Afternoon', 'Evening'],
-            required: true,
-          },
-        ],
-      },
-      {
-        id: 3,
-        name: 'Easter Celebration',
-        dateType: 'single',
-        dates: ['2025-04-20'],
-        startTime: '10:00',
-        endTime: '14:00',
-        recurrencePattern: null,
-        location: 'Main Sanctuary',
-        capacity: 200,
-        registrationFee: 0,
-        donationGoal: 5000,
-        donations: 3200,
-        volunteers: [],
-        status: 'closed',
-        eventType: 'service',
-        customQuestions: [],
-      },
-    ])
-  );
+  const [events, setEvents] = useState(() => loadFromLocalStorage('events', SEED_EVENTS));
 
   // State for volunteers with security levels
-  const [volunteers, setVolunteers] = useState(() =>
-    loadFromLocalStorage('volunteers', [
-      {
-        id: 1,
-        name: 'Sarah Johnson',
-        email: 'sarah@email.com',
-        phone: '555-0123',
-        role: 'Event Coordinator',
-        securityLevel: 'admin',
-      },
-      {
-        id: 2,
-        name: 'Mike Chen',
-        email: 'mike@email.com',
-        phone: '555-0124',
-        role: 'Setup Team',
-        securityLevel: 'volunteer',
-      },
-      {
-        id: 3,
-        name: 'Lisa Brown',
-        email: 'lisa@email.com',
-        phone: '555-0125',
-        role: 'Registration',
-        securityLevel: 'volunteer',
-      },
-    ])
-  );
+  const [volunteers, setVolunteers] = useState(() => loadFromLocalStorage('volunteers', SEED_VOLUNTEERS));
 
   // Volunteer availability for scheduling
   const [volunteerAvailability, setVolunteerAvailability] = useState(() =>
@@ -235,82 +156,11 @@ const ChurchConnectDashboard = () => {
   );
 
   // Enhanced attendee registrations with groups and custom responses
-  const [attendees, setAttendees] = useState(() =>
-    loadFromLocalStorage('attendees', [
-      {
-        id: 1,
-        eventId: 1,
-        primaryName: 'John Smith',
-        email: 'john@email.com',
-        phone: '555-1001',
-        registrationDate: '2025-08-01',
-        checkedIn: false,
-        paymentStatus: 'paid',
-        groupMembers: [
-          { name: 'Jane Smith', relationship: 'Spouse', checkedIn: false },
-          { name: 'Tim Smith', relationship: 'Child', checkedIn: false },
-        ],
-        customResponses: {
-          roommate: 'No preference',
-          transport: 'yes',
-        },
-      },
-      {
-        id: 2,
-        eventId: 1,
-        primaryName: 'Mary Johnson',
-        email: 'mary@email.com',
-        phone: '555-1002',
-        registrationDate: '2025-08-02',
-        checkedIn: true,
-        paymentStatus: 'paid',
-        groupMembers: [],
-        customResponses: {
-          roommate: 'Lisa Brown',
-          transport: 'no',
-        },
-      },
-      {
-        id: 3,
-        eventId: 2,
-        primaryName: 'Robert Wilson',
-        email: 'robert@email.com',
-        phone: '555-1003',
-        registrationDate: '2025-08-03',
-        checkedIn: false,
-        paymentStatus: 'free',
-        groupMembers: [{ name: 'Emily Wilson', relationship: 'Spouse', checkedIn: false }],
-        customResponses: {
-          shifts: 'Morning',
-        },
-      },
-    ])
-  );
+  const [attendees, setAttendees] = useState(() => loadFromLocalStorage('attendees', SEED_ATTENDEES));
 
   // State for communications
   const [communications, setCommunications] = useState(() =>
-    loadFromLocalStorage('communications', [
-      {
-        id: 1,
-        type: 'announcement',
-        subject: 'Youth Retreat Registration Open',
-        message: 'Registration is now open for our Youth Summer Retreat! Sign up today.',
-        recipients: 'All Volunteers',
-        sentDate: '2025-08-01',
-        sentBy: 'Admin',
-        recipientCount: 3,
-      },
-      {
-        id: 2,
-        type: 'reminder',
-        subject: 'Food Drive Tomorrow',
-        message: "Don't forget about our monthly food drive tomorrow. Please arrive 30 minutes early.",
-        recipients: 'Food Drive Volunteers',
-        sentDate: '2025-08-05',
-        sentBy: 'Admin',
-        recipientCount: 1,
-      },
-    ])
+    loadFromLocalStorage('communications', SEED_COMMUNICATIONS)
   );
 
   // State for automated notifications settings
@@ -408,341 +258,35 @@ const ChurchConnectDashboard = () => {
   });
 
   // Sample payments data
-  const [payments, setPayments] = useState(() =>
-    loadFromLocalStorage('payments', [
-      {
-        id: 1,
-        eventId: 1,
-        eventName: 'Youth Summer Retreat',
-        attendeeId: 1,
-        attendeeName: 'John Smith',
-        attendeeCount: 2,
-        amount: 150.0,
-        paymentMethod: 'Credit Card',
-        status: 'completed',
-        date: '2025-01-15',
-        transactionId: 'txn_123456789',
-      },
-      {
-        id: 2,
-        eventId: 1,
-        eventName: 'Youth Summer Retreat',
-        attendeeId: 2,
-        attendeeName: 'Sarah Johnson',
-        attendeeCount: 1,
-        amount: 75.0,
-        paymentMethod: 'PayPal',
-        status: 'completed',
-        date: '2025-01-16',
-        transactionId: 'txn_123456790',
-      },
-    ])
-  );
+  const [payments, setPayments] = useState(() => loadFromLocalStorage('payments', SEED_PAYMENTS));
 
   // Sample donations data
-  const [donations, setDonations] = useState(() =>
-    loadFromLocalStorage('donations', [
-      {
-        id: 1,
-        donorName: 'Anonymous Donor',
-        amount: 500.0,
-        campaign: 'Building Fund',
-        paymentMethod: 'Credit Card',
-        recurring: false,
-        anonymous: true,
-        message: 'In memory of our beloved community',
-        date: '2025-01-10',
-        transactionId: 'don_123456789',
-      },
-      {
-        id: 2,
-        donorName: 'Michael Brown',
-        amount: 250.0,
-        campaign: 'Youth Ministry',
-        paymentMethod: 'Bank Transfer',
-        recurring: true,
-        anonymous: false,
-        message: 'Supporting our youth programs',
-        date: '2025-01-12',
-        transactionId: 'don_123456790',
-      },
-    ])
-  );
+  const [donations, setDonations] = useState(() => loadFromLocalStorage('donations', SEED_DONATIONS));
 
   // State for families / households
-  const [families, setFamilies] = useState(() =>
-    loadFromLocalStorage('households', [
-      {
-        id: 1,
-        name: 'The Smith Family',
-        address: '123 Church Lane',
-        primaryContactId: null,
-        primaryContactName: 'John Smith',
-        primaryContactEmail: 'john@email.com',
-      },
-    ])
-  );
+  const [families, setFamilies] = useState(() => loadFromLocalStorage('households', SEED_HOUSEHOLDS));
 
   const [householdMembers, setHouseholdMembers] = useState(() =>
-    loadFromLocalStorage('household_members', [
-      { id: 1, householdId: 1, name: 'John Smith', relationship: 'head' },
-      { id: 2, householdId: 1, name: 'Jane Smith', relationship: 'spouse' },
-      { id: 3, householdId: 1, name: 'Tim Smith', relationship: 'child' },
-    ])
+    loadFromLocalStorage('household_members', SEED_HOUSEHOLD_MEMBERS)
   );
 
   // State for ministries
-  const [ministries, setMinistries] = useState(() =>
-    loadFromLocalStorage('ministries', [
-      {
-        id: 1,
-        name: 'Youth Group',
-        description: 'Ages 13-18 weekly gatherings',
-        color: '#8b5cf6',
-        leader: 'Sarah Johnson',
-        leaderEmail: 'sarah@email.com',
-        members: ['John Smith', 'Mary Johnson'],
-        meetingDay: 'Wednesday',
-        meetingTime: '18:30',
-        events: [1],
-      },
-      {
-        id: 2,
-        name: "Women's Ministry",
-        description: 'Bible study and fellowship',
-        color: '#ec4899',
-        leader: 'Lisa Brown',
-        leaderEmail: 'lisa@email.com',
-        members: ['Jane Smith'],
-        meetingDay: 'Thursday',
-        meetingTime: '10:00',
-        events: [],
-      },
-      {
-        id: 3,
-        name: 'Life Groups',
-        description: 'Small group discipleship',
-        color: '#10b981',
-        leader: 'Mike Chen',
-        leaderEmail: 'mike@email.com',
-        members: ['Robert Wilson', 'Emily Wilson'],
-        meetingDay: 'Tuesday',
-        meetingTime: '19:00',
-        events: [2],
-      },
-      {
-        id: 4,
-        name: 'Missions Team',
-        description: 'Local and global outreach',
-        color: '#f59e0b',
-        leader: 'Admin',
-        leaderEmail: 'admin@church.com',
-        members: [],
-        meetingDay: 'Saturday',
-        meetingTime: '09:00',
-        events: [],
-      },
-    ])
-  );
+  const [ministries, setMinistries] = useState(() => loadFromLocalStorage('ministries', SEED_MINISTRIES));
 
   // State for rooms
-  const [rooms, setRooms] = useState(() =>
-    loadFromLocalStorage('rooms', [
-      {
-        id: 1,
-        name: 'Main Sanctuary',
-        capacity: 500,
-        floor: '1st',
-        amenities: ['Sound System', 'Projector', 'Stage'],
-        color: '#3b82f6',
-      },
-      {
-        id: 2,
-        name: 'Fellowship Hall',
-        capacity: 150,
-        floor: '1st',
-        amenities: ['Kitchen Access', 'Tables', 'Projector'],
-        color: '#10b981',
-      },
-      { id: 3, name: 'Room 102', capacity: 30, floor: '1st', amenities: ['Whiteboard', 'TV'], color: '#8b5cf6' },
-      {
-        id: 4,
-        name: 'Youth Room',
-        capacity: 50,
-        floor: '2nd',
-        amenities: ['Sound System', 'Gaming Console', 'Couches'],
-        color: '#f59e0b',
-      },
-      { id: 5, name: 'Prayer Chapel', capacity: 15, floor: '1st', amenities: ['Piano'], color: '#ec4899' },
-    ])
-  );
+  const [rooms, setRooms] = useState(() => loadFromLocalStorage('rooms', SEED_ROOMS));
 
   // State for resources
-  const [resources, setResources] = useState(() =>
-    loadFromLocalStorage('resources', [
-      { id: 1, name: 'Portable Projector', category: 'AV', quantity: 3, available: 3 },
-      { id: 2, name: 'Microphone Set', category: 'AV', quantity: 5, available: 5 },
-      { id: 3, name: 'Church Van (15-seat)', category: 'Vehicle', quantity: 2, available: 2 },
-      { id: 4, name: 'Folding Tables (set of 10)', category: 'Furniture', quantity: 4, available: 4 },
-      { id: 5, name: 'Coffee/Tea Station', category: 'Kitchen', quantity: 2, available: 2 },
-    ])
-  );
+  const [resources, setResources] = useState(() => loadFromLocalStorage('resources', SEED_RESOURCES));
 
   // State for room bookings
-  const [roomBookings, setRoomBookings] = useState(() =>
-    loadFromLocalStorage('room_bookings', [
-      {
-        id: 1,
-        roomId: 1,
-        eventId: 1,
-        eventName: 'Youth Summer Retreat',
-        date: '2025-08-15',
-        startTime: '08:00',
-        endTime: '22:00',
-        resources: [1, 2],
-      },
-    ])
-  );
+  const [roomBookings, setRoomBookings] = useState(() => loadFromLocalStorage('room_bookings', SEED_ROOM_BOOKINGS));
 
   // State for prayer posts
-  const [prayerPosts, setPrayerPosts] = useState(() =>
-    loadFromLocalStorage('prayer_posts', [
-      {
-        id: 1,
-        type: 'request',
-        author: 'Sarah Johnson',
-        content: 'Please pray for my mother who is having surgery next week.',
-        anonymous: false,
-        createdAt: '2026-02-20T10:00:00Z',
-        prayedCount: 12,
-        prayedBy: ['Mike Chen', 'Lisa Brown'],
-        status: 'active',
-        category: 'health',
-      },
-      {
-        id: 2,
-        type: 'praise',
-        author: 'Mike Chen',
-        content: 'Praise God! My son got accepted into college with a full scholarship!',
-        anonymous: false,
-        createdAt: '2026-02-22T14:30:00Z',
-        prayedCount: 8,
-        prayedBy: ['Sarah Johnson'],
-        status: 'active',
-        category: 'thanksgiving',
-      },
-      {
-        id: 3,
-        type: 'request',
-        author: 'Anonymous',
-        content: 'Struggling with anxiety. Please keep me in your prayers.',
-        anonymous: true,
-        createdAt: '2026-02-24T09:15:00Z',
-        prayedCount: 15,
-        prayedBy: ['Sarah Johnson', 'Mike Chen', 'Lisa Brown'],
-        status: 'active',
-        category: 'personal',
-      },
-      {
-        id: 4,
-        type: 'praise',
-        author: 'Lisa Brown',
-        content: 'Our small group raised $2,000 for the local food bank!',
-        anonymous: false,
-        createdAt: '2026-02-25T16:00:00Z',
-        prayedCount: 6,
-        prayedBy: [],
-        status: 'active',
-        category: 'community',
-      },
-    ])
-  );
+  const [prayerPosts, setPrayerPosts] = useState(() => loadFromLocalStorage('prayer_posts', SEED_PRAYER_POSTS));
 
   // State for media items
-  const [mediaItems, setMediaItems] = useState(() =>
-    loadFromLocalStorage('media_items', [
-      {
-        id: 1,
-        eventId: 3,
-        eventName: 'Easter Celebration',
-        title: 'The Resurrection Hope',
-        type: 'sermon',
-        speaker: 'Pastor David',
-        date: '2025-04-20',
-        description: 'A powerful message about the hope found in the resurrection of Jesus Christ.',
-        youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        audioUrl: '',
-        notesUrl: '',
-        tags: ['Easter', 'Hope', 'Resurrection'],
-        views: 142,
-        series: 'Easter 2025',
-      },
-      {
-        id: 2,
-        eventId: 1,
-        eventName: 'Youth Summer Retreat',
-        title: 'Finding Your Purpose',
-        type: 'sermon',
-        speaker: 'Youth Pastor Amy',
-        date: '2025-08-15',
-        description: "Discovering God's plan for your life through faith and action.",
-        youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        audioUrl: '',
-        notesUrl: '',
-        tags: ['Youth', 'Purpose', 'Faith'],
-        views: 87,
-        series: 'Summer Retreat 2025',
-      },
-      {
-        id: 3,
-        eventId: null,
-        eventName: null,
-        title: 'Sunday Worship - Week 1',
-        type: 'sermon',
-        speaker: 'Pastor David',
-        date: '2026-02-01',
-        description: 'Beginning a new series on the Beatitudes.',
-        youtubeUrl: '',
-        audioUrl: 'https://example.com/audio/week1.mp3',
-        notesUrl: '',
-        tags: ['Beatitudes', 'Sermon on the Mount'],
-        views: 56,
-        series: 'Beatitudes Series',
-      },
-      {
-        id: 4,
-        eventId: null,
-        eventName: null,
-        title: 'Worship Night Highlights',
-        type: 'video',
-        speaker: '',
-        date: '2026-02-14',
-        description: "Highlights from our Valentine's Day worship night.",
-        youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        audioUrl: '',
-        notesUrl: '',
-        tags: ['Worship', 'Community'],
-        views: 203,
-        series: '',
-      },
-      {
-        id: 5,
-        eventId: null,
-        eventName: null,
-        title: 'Church Budget Report 2025',
-        type: 'document',
-        speaker: 'Finance Team',
-        date: '2026-01-15',
-        description: 'Annual financial report and 2026 budget overview.',
-        youtubeUrl: '',
-        audioUrl: '',
-        notesUrl: 'https://example.com/docs/budget-2025.pdf',
-        tags: ['Finance', 'Annual Report'],
-        views: 34,
-        series: '',
-      },
-    ])
-  );
+  const [mediaItems, setMediaItems] = useState(() => loadFromLocalStorage('media_items', SEED_MEDIA_ITEMS));
 
   // Message templates
   const messageTemplates = {

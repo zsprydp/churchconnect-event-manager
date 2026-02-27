@@ -41,7 +41,7 @@ test('navigates to Events tab when clicked', async () => {
   renderApp();
   const eventsButtons = screen.getAllByText('Events');
   fireEvent.click(eventsButtons[0]);
-  expect(await screen.findByText('Youth Summer Retreat')).toBeInTheDocument();
+  expect(await screen.findByText('Youth Fall Retreat')).toBeInTheDocument();
 });
 
 test('navigates to Volunteers tab when clicked', async () => {
