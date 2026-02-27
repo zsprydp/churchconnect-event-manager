@@ -14,6 +14,7 @@ import {
   Edit2,
   Trash2,
   Home,
+  Zap,
 } from 'lucide-react';
 import Calendar from './Calendar';
 import OfflineIndicator from './components/OfflineIndicator';
@@ -31,6 +32,7 @@ const GivingView = lazy(() => import('./views/GivingView'));
 const SettingsView = lazy(() => import('./views/SettingsView'));
 const FamiliesView = lazy(() => import('./views/FamiliesView'));
 const VolunteersView = lazy(() => import('./views/VolunteersView'));
+const WorkflowsView = lazy(() => import('./views/WorkflowsView'));
 const EventTemplateCreationModal = lazy(() => import('./components/modals/EventTemplateCreationModal'));
 const CreateEventModal = lazy(() => import('./components/modals/CreateEventModal'));
 const EditEventModal = lazy(() => import('./components/modals/EditEventModal'));
@@ -1510,6 +1512,7 @@ const ChurchConnectDashboard = () => {
             { id: 'attendees', name: 'Attendees', icon: User },
             { id: 'families', name: 'Families', icon: Home },
             { id: 'payments', name: 'Giving', icon: Heart },
+            { id: 'workflows', name: 'Automations', icon: Zap },
             { id: 'communications', name: 'Communications', icon: Mail },
             { id: 'settings', name: 'Settings', icon: Settings },
           ].map((item) => (
@@ -1856,6 +1859,15 @@ const ChurchConnectDashboard = () => {
               householdMembers={householdMembers}
               setHouseholdMembers={setHouseholdMembers}
               addNotification={addNotification}
+            />
+          )}
+
+          {activeTab === 'workflows' && (
+            <WorkflowsView
+              addNotification={addNotification}
+              attendees={attendees}
+              events={events}
+              volunteers={volunteers}
             />
           )}
 
