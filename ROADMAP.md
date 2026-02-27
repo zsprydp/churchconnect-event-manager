@@ -14,13 +14,13 @@
 | 5 | Automated Guest & Member Workflows | ✅ Done |
 | 6 | Smart Attendance Analytics + Care List | ✅ Done |
 
-## Phase 3: Scale without chaos ← NEXT
+## Phase 3: Scale without chaos ✅ COMPLETE
 | # | Feature | Status |
 |---|---|---|
-| 7 | Small Group / Ministry Hubs | 🔲 Not started |
-| 8 | Room & Resource Booking | 🔲 Not started |
+| 7 | Small Group / Ministry Hubs | ✅ Done |
+| 8 | Room & Resource Booking | ✅ Done |
 
-## Phase 4: Daily engagement beyond Sundays
+## Phase 4: Daily engagement beyond Sundays ← NEXT
 | # | Feature | Status |
 |---|---|---|
 | 9 | Prayer Requests & Praise Board | 🔲 Not started |
