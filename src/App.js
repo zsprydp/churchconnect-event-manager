@@ -3,6 +3,7 @@ import logger from './utils/logger';
 import {
   Calendar as CalendarIcon,
   Users,
+  UsersRound,
   Mail,
   Settings,
   BarChart3,
@@ -35,6 +36,7 @@ const FamiliesView = lazy(() => import('./views/FamiliesView'));
 const VolunteersView = lazy(() => import('./views/VolunteersView'));
 const WorkflowsView = lazy(() => import('./views/WorkflowsView'));
 const AnalyticsView = lazy(() => import('./views/AnalyticsView'));
+const MinistriesView = lazy(() => import('./views/MinistriesView'));
 const EventTemplateCreationModal = lazy(() => import('./components/modals/EventTemplateCreationModal'));
 const CreateEventModal = lazy(() => import('./components/modals/CreateEventModal'));
 const EditEventModal = lazy(() => import('./components/modals/EditEventModal'));
@@ -484,6 +486,60 @@ const ChurchConnectDashboard = () => {
     ])
   );
 
+  // State for ministries
+  const [ministries, setMinistries] = useState(() =>
+    loadFromLocalStorage('ministries', [
+      {
+        id: 1,
+        name: 'Youth Group',
+        description: 'Ages 13-18 weekly gatherings',
+        color: '#8b5cf6',
+        leader: 'Sarah Johnson',
+        leaderEmail: 'sarah@email.com',
+        members: ['John Smith', 'Mary Johnson'],
+        meetingDay: 'Wednesday',
+        meetingTime: '18:30',
+        events: [1],
+      },
+      {
+        id: 2,
+        name: "Women's Ministry",
+        description: 'Bible study and fellowship',
+        color: '#ec4899',
+        leader: 'Lisa Brown',
+        leaderEmail: 'lisa@email.com',
+        members: ['Jane Smith'],
+        meetingDay: 'Thursday',
+        meetingTime: '10:00',
+        events: [],
+      },
+      {
+        id: 3,
+        name: 'Life Groups',
+        description: 'Small group discipleship',
+        color: '#10b981',
+        leader: 'Mike Chen',
+        leaderEmail: 'mike@email.com',
+        members: ['Robert Wilson', 'Emily Wilson'],
+        meetingDay: 'Tuesday',
+        meetingTime: '19:00',
+        events: [2],
+      },
+      {
+        id: 4,
+        name: 'Missions Team',
+        description: 'Local and global outreach',
+        color: '#f59e0b',
+        leader: 'Admin',
+        leaderEmail: 'admin@church.com',
+        members: [],
+        meetingDay: 'Saturday',
+        meetingTime: '09:00',
+        events: [],
+      },
+    ])
+  );
+
   // Message templates
   const messageTemplates = {
     'registration-confirmation': {
@@ -554,6 +610,12 @@ const ChurchConnectDashboard = () => {
       addNotification('Storage nearly full — household member data may not be saved.', 'warning');
     }
   }, [householdMembers, addNotification]);
+
+  useEffect(() => {
+    if (!saveToLocalStorage('ministries', ministries)) {
+      addNotification('Storage nearly full — ministry data may not be saved.', 'warning');
+    }
+  }, [ministries, addNotification]);
 
   // Handle form input changes
   const handleEventInputChange = useCallback((field, value) => {
@@ -1514,6 +1576,7 @@ const ChurchConnectDashboard = () => {
             { id: 'volunteers', name: 'Volunteers', icon: Users },
             { id: 'attendees', name: 'Attendees', icon: User },
             { id: 'families', name: 'Families', icon: Home },
+            { id: 'ministries', name: 'Ministries', icon: UsersRound },
             { id: 'payments', name: 'Giving', icon: Heart },
             { id: 'workflows', name: 'Automations', icon: Zap },
             { id: 'communications', name: 'Communications', icon: Mail },
@@ -1872,6 +1935,15 @@ const ChurchConnectDashboard = () => {
               setFamilies={setFamilies}
               householdMembers={householdMembers}
               setHouseholdMembers={setHouseholdMembers}
+              addNotification={addNotification}
+            />
+          )}
+
+          {activeTab === 'ministries' && (
+            <MinistriesView
+              ministries={ministries}
+              setMinistries={setMinistries}
+              events={events}
               addNotification={addNotification}
             />
           )}
