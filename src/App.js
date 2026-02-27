@@ -39,6 +39,7 @@ const WorkflowsView = lazy(() => import('./views/WorkflowsView'));
 const AnalyticsView = lazy(() => import('./views/AnalyticsView'));
 const MinistriesView = lazy(() => import('./views/MinistriesView'));
 const BookingsView = lazy(() => import('./views/BookingsView'));
+const PrayerView = lazy(() => import('./views/PrayerView'));
 const EventTemplateCreationModal = lazy(() => import('./components/modals/EventTemplateCreationModal'));
 const CreateEventModal = lazy(() => import('./components/modals/CreateEventModal'));
 const EditEventModal = lazy(() => import('./components/modals/EditEventModal'));
@@ -601,6 +602,60 @@ const ChurchConnectDashboard = () => {
     ])
   );
 
+  // State for prayer posts
+  const [prayerPosts, setPrayerPosts] = useState(() =>
+    loadFromLocalStorage('prayer_posts', [
+      {
+        id: 1,
+        type: 'request',
+        author: 'Sarah Johnson',
+        content: 'Please pray for my mother who is having surgery next week.',
+        anonymous: false,
+        createdAt: '2026-02-20T10:00:00Z',
+        prayedCount: 12,
+        prayedBy: ['Mike Chen', 'Lisa Brown'],
+        status: 'active',
+        category: 'health',
+      },
+      {
+        id: 2,
+        type: 'praise',
+        author: 'Mike Chen',
+        content: 'Praise God! My son got accepted into college with a full scholarship!',
+        anonymous: false,
+        createdAt: '2026-02-22T14:30:00Z',
+        prayedCount: 8,
+        prayedBy: ['Sarah Johnson'],
+        status: 'active',
+        category: 'thanksgiving',
+      },
+      {
+        id: 3,
+        type: 'request',
+        author: 'Anonymous',
+        content: 'Struggling with anxiety. Please keep me in your prayers.',
+        anonymous: true,
+        createdAt: '2026-02-24T09:15:00Z',
+        prayedCount: 15,
+        prayedBy: ['Sarah Johnson', 'Mike Chen', 'Lisa Brown'],
+        status: 'active',
+        category: 'personal',
+      },
+      {
+        id: 4,
+        type: 'praise',
+        author: 'Lisa Brown',
+        content: 'Our small group raised $2,000 for the local food bank!',
+        anonymous: false,
+        createdAt: '2026-02-25T16:00:00Z',
+        prayedCount: 6,
+        prayedBy: [],
+        status: 'active',
+        category: 'community',
+      },
+    ])
+  );
+
   // Message templates
   const messageTemplates = {
     'registration-confirmation': {
@@ -695,6 +750,12 @@ const ChurchConnectDashboard = () => {
       addNotification('Storage nearly full — booking data may not be saved.', 'warning');
     }
   }, [roomBookings, addNotification]);
+
+  useEffect(() => {
+    if (!saveToLocalStorage('prayer_posts', prayerPosts)) {
+      addNotification('Storage nearly full — prayer data may not be saved.', 'warning');
+    }
+  }, [prayerPosts, addNotification]);
 
   // Handle form input changes
   const handleEventInputChange = useCallback((field, value) => {
@@ -1658,6 +1719,7 @@ const ChurchConnectDashboard = () => {
             { id: 'ministries', name: 'Ministries', icon: UsersRound },
             { id: 'bookings', name: 'Bookings', icon: Building },
             { id: 'payments', name: 'Giving', icon: Heart },
+            { id: 'prayer', name: 'Prayer', icon: Heart },
             { id: 'workflows', name: 'Automations', icon: Zap },
             { id: 'communications', name: 'Communications', icon: Mail },
             { id: 'settings', name: 'Settings', icon: Settings },
@@ -2073,6 +2135,10 @@ const ChurchConnectDashboard = () => {
               events={events}
               addNotification={addNotification}
             />
+          )}
+
+          {activeTab === 'prayer' && (
+            <PrayerView prayerPosts={prayerPosts} setPrayerPosts={setPrayerPosts} addNotification={addNotification} />
           )}
 
           {activeTab === 'settings' && (
