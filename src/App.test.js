@@ -44,10 +44,10 @@ test('navigates to Events tab when clicked', async () => {
   expect(await screen.findByText('Youth Summer Retreat')).toBeInTheDocument();
 });
 
-test('navigates to Volunteers tab when clicked', () => {
+test('navigates to Volunteers tab when clicked', async () => {
   renderApp();
   fireEvent.click(screen.getByText('Volunteers'));
-  expect(screen.getByText('Sarah Johnson')).toBeInTheDocument();
+  expect(await screen.findByText('Sarah Johnson')).toBeInTheDocument();
 });
 
 test('navigates to Settings tab when clicked', async () => {

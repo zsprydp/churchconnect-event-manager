@@ -4,7 +4,6 @@ import {
   Calendar as CalendarIcon,
   Users,
   Mail,
-  Plus,
   Settings,
   BarChart3,
   CreditCard,
@@ -14,8 +13,6 @@ import {
   CheckCircle,
   Edit2,
   Trash2,
-  Shield,
-  Search,
   Home,
 } from 'lucide-react';
 import Calendar from './Calendar';
@@ -33,6 +30,7 @@ const CommunicationsView = lazy(() => import('./views/CommunicationsView'));
 const GivingView = lazy(() => import('./views/GivingView'));
 const SettingsView = lazy(() => import('./views/SettingsView'));
 const FamiliesView = lazy(() => import('./views/FamiliesView'));
+const VolunteersView = lazy(() => import('./views/VolunteersView'));
 const EventTemplateCreationModal = lazy(() => import('./components/modals/EventTemplateCreationModal'));
 const CreateEventModal = lazy(() => import('./components/modals/CreateEventModal'));
 const EditEventModal = lazy(() => import('./components/modals/EditEventModal'));
@@ -218,6 +216,11 @@ const ChurchConnectDashboard = () => {
         securityLevel: 'volunteer',
       },
     ])
+  );
+
+  // Volunteer availability for scheduling
+  const [volunteerAvailability, setVolunteerAvailability] = useState(() =>
+    loadFromLocalStorage('volunteer_availability', {})
   );
 
   // Enhanced attendee registrations with groups and custom responses
@@ -505,6 +508,12 @@ const ChurchConnectDashboard = () => {
       addNotification('Storage nearly full — volunteer data may not be saved.', 'warning');
     }
   }, [volunteers, addNotification]);
+
+  useEffect(() => {
+    if (!saveToLocalStorage('volunteer_availability', volunteerAvailability)) {
+      addNotification('Storage nearly full — availability data may not be saved.', 'warning');
+    }
+  }, [volunteerAvailability, addNotification]);
 
   useEffect(() => {
     if (!saveToLocalStorage('attendees', attendees)) {
@@ -869,6 +878,7 @@ const ChurchConnectDashboard = () => {
         status: 'active',
         eventType: newEvent.eventType,
         customQuestions: newEvent.customQuestions,
+        requiredRoles: [],
       };
 
       setEvents((prev) => [...prev, event]);
@@ -1579,190 +1589,19 @@ const ChurchConnectDashboard = () => {
           )}
 
           {activeTab === 'volunteers' && (
-            <div>
-              <div
-                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}
-              >
-                <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0 }}>Volunteers</h2>
-                <button
-                  onClick={() => setShowAddVolunteer(true)}
-                  style={{
-                    backgroundColor: '#3b82f6',
-                    color: 'white',
-                    padding: '10px 16px',
-                    borderRadius: '6px',
-                    border: 'none',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  <Plus style={{ height: '16px', width: '16px' }} />
-                  Add Volunteer
-                </button>
-              </div>
-
-              {/* Search Section */}
-              <div style={{ marginBottom: '20px' }}>
-                <div style={{ position: 'relative', maxWidth: '400px' }}>
-                  <Search
-                    style={{
-                      position: 'absolute',
-                      left: '12px',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      height: '16px',
-                      width: '16px',
-                      color: '#6b7280',
-                    }}
-                  />
-                  <input
-                    type="text"
-                    aria-label="Search volunteers"
-                    placeholder="Search volunteers by name, email, or role..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '8px 12px 8px 40px',
-                      border: '1px solid #d1d5db',
-                      borderRadius: '6px',
-                      fontSize: '14px',
-                      boxSizing: 'border-box',
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div style={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                {filterVolunteers(volunteers, searchTerm).map((volunteer, index) => {
-                  const volunteerEvents = events.filter((event) => event.volunteers.includes(volunteer.id));
-                  return (
-                    <div
-                      key={volunteer.id}
-                      style={{
-                        padding: '20px',
-                        borderBottom: index < volunteers.length - 1 ? '1px solid #e5e7eb' : 'none',
-                      }}
-                    >
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
-                        <div style={{ flex: 1 }}>
-                          <h3 style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 0 4px 0' }}>
-                            {volunteer.name}
-                          </h3>
-                          <p style={{ fontSize: '14px', color: '#6b7280', margin: '0 0 2px 0' }}>{volunteer.email}</p>
-                          {volunteer.phone && (
-                            <p style={{ fontSize: '14px', color: '#6b7280', margin: '0 0 8px 0' }}>{volunteer.phone}</p>
-                          )}
-                          <div style={{ display: 'flex', gap: '8px' }}>
-                            <span
-                              style={{
-                                backgroundColor: '#dbeafe',
-                                color: '#1d4ed8',
-                                padding: '2px 8px',
-                                borderRadius: '12px',
-                                fontSize: '12px',
-                                fontWeight: 'bold',
-                              }}
-                            >
-                              {volunteer.role}
-                            </span>
-                            <span
-                              style={{
-                                backgroundColor: volunteer.securityLevel === 'admin' ? '#fef3c7' : '#f3f4f6',
-                                color: volunteer.securityLevel === 'admin' ? '#d97706' : '#6b7280',
-                                padding: '2px 8px',
-                                borderRadius: '12px',
-                                fontSize: '12px',
-                                fontWeight: 'bold',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '4px',
-                              }}
-                            >
-                              {volunteer.securityLevel === 'admin' && (
-                                <Shield style={{ height: '10px', width: '10px' }} />
-                              )}
-                              {volunteer.securityLevel}
-                            </span>
-                          </div>
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                          <div style={{ textAlign: 'right' }}>
-                            <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#3b82f6' }}>
-                              {volunteerEvents.length}
-                            </p>
-                            <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Events</p>
-                          </div>
-                          <div style={{ display: 'flex', gap: '4px' }}>
-                            <button
-                              onClick={() => {
-                                const newName = prompt('Edit volunteer name:', volunteer.name);
-                                if (newName) {
-                                  setVolunteers((prev) =>
-                                    prev.map((v) => (v.id === volunteer.id ? { ...v, name: newName } : v))
-                                  );
-                                }
-                              }}
-                              style={{
-                                backgroundColor: '#3b82f6',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '4px',
-                                padding: '6px 8px',
-                                cursor: 'pointer',
-                                fontSize: '12px',
-                              }}
-                              title="Edit Volunteer"
-                            >
-                              <Edit2 style={{ height: '14px', width: '14px' }} />
-                            </button>
-                            <button
-                              onClick={() => {
-                                if (window.confirm(`Remove volunteer ${volunteer.name}?`)) {
-                                  setVolunteers((prev) => prev.filter((v) => v.id !== volunteer.id));
-                                  // Also remove from events
-                                  setEvents((prev) =>
-                                    prev.map((event) => ({
-                                      ...event,
-                                      volunteers: event.volunteers.filter((vId) => vId !== volunteer.id),
-                                    }))
-                                  );
-                                }
-                              }}
-                              style={{
-                                backgroundColor: '#dc2626',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '4px',
-                                padding: '6px 8px',
-                                cursor: 'pointer',
-                                fontSize: '12px',
-                              }}
-                              title="Remove Volunteer"
-                            >
-                              <Trash2 style={{ height: '14px', width: '14px' }} />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      {volunteerEvents.length > 0 && (
-                        <div style={{ marginTop: '12px' }}>
-                          <p style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '4px' }}>Assigned Events:</p>
-                          {volunteerEvents.map((event) => (
-                            <div key={event.id} style={{ fontSize: '12px', color: '#6b7280', marginBottom: '2px' }}>
-                              {event.name} - {formatEventDates(event)}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            <VolunteersView
+              volunteers={volunteers}
+              setVolunteers={setVolunteers}
+              events={events}
+              setEvents={setEvents}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              filterVolunteers={filterVolunteers}
+              setShowAddVolunteer={setShowAddVolunteer}
+              addNotification={addNotification}
+              volunteerAvailability={volunteerAvailability}
+              setVolunteerAvailability={setVolunteerAvailability}
+            />
           )}
 
           {activeTab === 'attendees' && (
