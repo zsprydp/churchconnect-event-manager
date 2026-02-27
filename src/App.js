@@ -18,6 +18,7 @@ import {
   Zap,
   TrendingUp,
   Building,
+  PlayCircle,
 } from 'lucide-react';
 import Calendar from './Calendar';
 import OfflineIndicator from './components/OfflineIndicator';
@@ -40,6 +41,7 @@ const AnalyticsView = lazy(() => import('./views/AnalyticsView'));
 const MinistriesView = lazy(() => import('./views/MinistriesView'));
 const BookingsView = lazy(() => import('./views/BookingsView'));
 const PrayerView = lazy(() => import('./views/PrayerView'));
+const MediaView = lazy(() => import('./views/MediaView'));
 const EventTemplateCreationModal = lazy(() => import('./components/modals/EventTemplateCreationModal'));
 const CreateEventModal = lazy(() => import('./components/modals/CreateEventModal'));
 const EditEventModal = lazy(() => import('./components/modals/EditEventModal'));
@@ -656,6 +658,92 @@ const ChurchConnectDashboard = () => {
     ])
   );
 
+  // State for media items
+  const [mediaItems, setMediaItems] = useState(() =>
+    loadFromLocalStorage('media_items', [
+      {
+        id: 1,
+        eventId: 3,
+        eventName: 'Easter Celebration',
+        title: 'The Resurrection Hope',
+        type: 'sermon',
+        speaker: 'Pastor David',
+        date: '2025-04-20',
+        description: 'A powerful message about the hope found in the resurrection of Jesus Christ.',
+        youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        audioUrl: '',
+        notesUrl: '',
+        tags: ['Easter', 'Hope', 'Resurrection'],
+        views: 142,
+        series: 'Easter 2025',
+      },
+      {
+        id: 2,
+        eventId: 1,
+        eventName: 'Youth Summer Retreat',
+        title: 'Finding Your Purpose',
+        type: 'sermon',
+        speaker: 'Youth Pastor Amy',
+        date: '2025-08-15',
+        description: "Discovering God's plan for your life through faith and action.",
+        youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        audioUrl: '',
+        notesUrl: '',
+        tags: ['Youth', 'Purpose', 'Faith'],
+        views: 87,
+        series: 'Summer Retreat 2025',
+      },
+      {
+        id: 3,
+        eventId: null,
+        eventName: null,
+        title: 'Sunday Worship - Week 1',
+        type: 'sermon',
+        speaker: 'Pastor David',
+        date: '2026-02-01',
+        description: 'Beginning a new series on the Beatitudes.',
+        youtubeUrl: '',
+        audioUrl: 'https://example.com/audio/week1.mp3',
+        notesUrl: '',
+        tags: ['Beatitudes', 'Sermon on the Mount'],
+        views: 56,
+        series: 'Beatitudes Series',
+      },
+      {
+        id: 4,
+        eventId: null,
+        eventName: null,
+        title: 'Worship Night Highlights',
+        type: 'video',
+        speaker: '',
+        date: '2026-02-14',
+        description: "Highlights from our Valentine's Day worship night.",
+        youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        audioUrl: '',
+        notesUrl: '',
+        tags: ['Worship', 'Community'],
+        views: 203,
+        series: '',
+      },
+      {
+        id: 5,
+        eventId: null,
+        eventName: null,
+        title: 'Church Budget Report 2025',
+        type: 'document',
+        speaker: 'Finance Team',
+        date: '2026-01-15',
+        description: 'Annual financial report and 2026 budget overview.',
+        youtubeUrl: '',
+        audioUrl: '',
+        notesUrl: 'https://example.com/docs/budget-2025.pdf',
+        tags: ['Finance', 'Annual Report'],
+        views: 34,
+        series: '',
+      },
+    ])
+  );
+
   // Message templates
   const messageTemplates = {
     'registration-confirmation': {
@@ -756,6 +844,12 @@ const ChurchConnectDashboard = () => {
       addNotification('Storage nearly full — prayer data may not be saved.', 'warning');
     }
   }, [prayerPosts, addNotification]);
+
+  useEffect(() => {
+    if (!saveToLocalStorage('media_items', mediaItems)) {
+      addNotification('Storage nearly full — media data may not be saved.', 'warning');
+    }
+  }, [mediaItems, addNotification]);
 
   // Handle form input changes
   const handleEventInputChange = useCallback((field, value) => {
@@ -1720,6 +1814,7 @@ const ChurchConnectDashboard = () => {
             { id: 'bookings', name: 'Bookings', icon: Building },
             { id: 'payments', name: 'Giving', icon: Heart },
             { id: 'prayer', name: 'Prayer', icon: Heart },
+            { id: 'media', name: 'Media', icon: PlayCircle },
             { id: 'workflows', name: 'Automations', icon: Zap },
             { id: 'communications', name: 'Communications', icon: Mail },
             { id: 'settings', name: 'Settings', icon: Settings },
@@ -2139,6 +2234,15 @@ const ChurchConnectDashboard = () => {
 
           {activeTab === 'prayer' && (
             <PrayerView prayerPosts={prayerPosts} setPrayerPosts={setPrayerPosts} addNotification={addNotification} />
+          )}
+
+          {activeTab === 'media' && (
+            <MediaView
+              mediaItems={mediaItems}
+              setMediaItems={setMediaItems}
+              events={events}
+              addNotification={addNotification}
+            />
           )}
 
           {activeTab === 'settings' && (
