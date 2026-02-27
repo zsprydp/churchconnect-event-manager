@@ -14,7 +14,7 @@ This is a **Create React App** project (ChurchConnect Event Manager) — a purel
 ### Project structure
 
 - `src/App.js` — main component (~1900 lines), state management and layout
-- `src/views/` — tab view components (EventsView, GivingView, CommunicationsView, SettingsView, FamiliesView, MinistriesView, WorkflowsView)
+- `src/views/` — tab view components (EventsView, GivingView, CommunicationsView, SettingsView, FamiliesView, MinistriesView, WorkflowsView, BookingsView)
 - `src/components/modals/` — 10 modal components extracted from App.js
 - `src/components/` — shared components (ErrorBoundary, CalendarExport, OfflineIndicator)
 - `src/utils/` — pure utility functions (storage, validation, filters, calendarExport)
