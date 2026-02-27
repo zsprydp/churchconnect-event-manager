@@ -17,6 +17,7 @@ import {
   Home,
   Zap,
   TrendingUp,
+  Building,
 } from 'lucide-react';
 import Calendar from './Calendar';
 import OfflineIndicator from './components/OfflineIndicator';
@@ -37,6 +38,7 @@ const VolunteersView = lazy(() => import('./views/VolunteersView'));
 const WorkflowsView = lazy(() => import('./views/WorkflowsView'));
 const AnalyticsView = lazy(() => import('./views/AnalyticsView'));
 const MinistriesView = lazy(() => import('./views/MinistriesView'));
+const BookingsView = lazy(() => import('./views/BookingsView'));
 const EventTemplateCreationModal = lazy(() => import('./components/modals/EventTemplateCreationModal'));
 const CreateEventModal = lazy(() => import('./components/modals/CreateEventModal'));
 const EditEventModal = lazy(() => import('./components/modals/EditEventModal'));
@@ -540,6 +542,65 @@ const ChurchConnectDashboard = () => {
     ])
   );
 
+  // State for rooms
+  const [rooms, setRooms] = useState(() =>
+    loadFromLocalStorage('rooms', [
+      {
+        id: 1,
+        name: 'Main Sanctuary',
+        capacity: 500,
+        floor: '1st',
+        amenities: ['Sound System', 'Projector', 'Stage'],
+        color: '#3b82f6',
+      },
+      {
+        id: 2,
+        name: 'Fellowship Hall',
+        capacity: 150,
+        floor: '1st',
+        amenities: ['Kitchen Access', 'Tables', 'Projector'],
+        color: '#10b981',
+      },
+      { id: 3, name: 'Room 102', capacity: 30, floor: '1st', amenities: ['Whiteboard', 'TV'], color: '#8b5cf6' },
+      {
+        id: 4,
+        name: 'Youth Room',
+        capacity: 50,
+        floor: '2nd',
+        amenities: ['Sound System', 'Gaming Console', 'Couches'],
+        color: '#f59e0b',
+      },
+      { id: 5, name: 'Prayer Chapel', capacity: 15, floor: '1st', amenities: ['Piano'], color: '#ec4899' },
+    ])
+  );
+
+  // State for resources
+  const [resources, setResources] = useState(() =>
+    loadFromLocalStorage('resources', [
+      { id: 1, name: 'Portable Projector', category: 'AV', quantity: 3, available: 3 },
+      { id: 2, name: 'Microphone Set', category: 'AV', quantity: 5, available: 5 },
+      { id: 3, name: 'Church Van (15-seat)', category: 'Vehicle', quantity: 2, available: 2 },
+      { id: 4, name: 'Folding Tables (set of 10)', category: 'Furniture', quantity: 4, available: 4 },
+      { id: 5, name: 'Coffee/Tea Station', category: 'Kitchen', quantity: 2, available: 2 },
+    ])
+  );
+
+  // State for room bookings
+  const [roomBookings, setRoomBookings] = useState(() =>
+    loadFromLocalStorage('room_bookings', [
+      {
+        id: 1,
+        roomId: 1,
+        eventId: 1,
+        eventName: 'Youth Summer Retreat',
+        date: '2025-08-15',
+        startTime: '08:00',
+        endTime: '22:00',
+        resources: [1, 2],
+      },
+    ])
+  );
+
   // Message templates
   const messageTemplates = {
     'registration-confirmation': {
@@ -616,6 +677,24 @@ const ChurchConnectDashboard = () => {
       addNotification('Storage nearly full — ministry data may not be saved.', 'warning');
     }
   }, [ministries, addNotification]);
+
+  useEffect(() => {
+    if (!saveToLocalStorage('rooms', rooms)) {
+      addNotification('Storage nearly full — room data may not be saved.', 'warning');
+    }
+  }, [rooms, addNotification]);
+
+  useEffect(() => {
+    if (!saveToLocalStorage('resources', resources)) {
+      addNotification('Storage nearly full — resource data may not be saved.', 'warning');
+    }
+  }, [resources, addNotification]);
+
+  useEffect(() => {
+    if (!saveToLocalStorage('room_bookings', roomBookings)) {
+      addNotification('Storage nearly full — booking data may not be saved.', 'warning');
+    }
+  }, [roomBookings, addNotification]);
 
   // Handle form input changes
   const handleEventInputChange = useCallback((field, value) => {
@@ -1577,6 +1656,7 @@ const ChurchConnectDashboard = () => {
             { id: 'attendees', name: 'Attendees', icon: User },
             { id: 'families', name: 'Families', icon: Home },
             { id: 'ministries', name: 'Ministries', icon: UsersRound },
+            { id: 'bookings', name: 'Bookings', icon: Building },
             { id: 'payments', name: 'Giving', icon: Heart },
             { id: 'workflows', name: 'Automations', icon: Zap },
             { id: 'communications', name: 'Communications', icon: Mail },
@@ -1943,6 +2023,19 @@ const ChurchConnectDashboard = () => {
             <MinistriesView
               ministries={ministries}
               setMinistries={setMinistries}
+              events={events}
+              addNotification={addNotification}
+            />
+          )}
+
+          {activeTab === 'bookings' && (
+            <BookingsView
+              rooms={rooms}
+              setRooms={setRooms}
+              resources={resources}
+              setResources={setResources}
+              roomBookings={roomBookings}
+              setRoomBookings={setRoomBookings}
               events={events}
               addNotification={addNotification}
             />
