@@ -20,11 +20,11 @@
 | 7 | Small Group / Ministry Hubs | ✅ Done |
 | 8 | Room & Resource Booking | ✅ Done |
 
-## Phase 4: Daily engagement beyond Sundays ← NEXT
+## Phase 4: Daily engagement beyond Sundays ✅ COMPLETE
 | # | Feature | Status |
 |---|---|---|
-| 9 | Prayer Requests & Praise Board | 🔲 Not started |
-| 10 | Media Library on Past Events | 🔲 Not started |
+| 9 | Prayer Requests & Praise Board | ✅ Done |
+| 10 | Media Library on Past Events | ✅ Done |
 
 ---
 
