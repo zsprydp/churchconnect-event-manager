@@ -29,3 +29,4 @@ This is a **Create React App** project (ChurchConnect Event Manager) — a purel
 - **No backend required:** `env.example` references `REACT_APP_API_BASE_URL` and `REACT_APP_REDIS_URL`, but these are placeholders for future features. The app runs fully client-side.
 - **Windows-oriented scripts:** `clean`, `reinstall`, and related npm scripts use Windows `rmdir` syntax and won't work on Linux. Use `rm -rf node_modules && npm install` instead.
 - **Dev server restart:** After significant file changes, the webpack dev server may serve stale bundles. Kill and restart with `npm start` if you see blank pages.
+- **Seed data:** All default/seed data lives in `src/data/seedData.js` and is imported into `src/App.js`. When seed data changes, users must clear localStorage in the browser (`localStorage.clear()` in console, or Application → Storage → Clear site data) for fresh data to load.
