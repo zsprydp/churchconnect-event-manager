@@ -14,11 +14,12 @@ This is a **Create React App** project (ChurchConnect Event Manager) — a purel
 ### Project structure
 
 - `src/App.js` — main component (~1900 lines), state management and layout
-- `src/views/` — tab view components (EventsView, GivingView, CommunicationsView, SettingsView, FamiliesView)
+- `src/views/` — tab view components (EventsView, GivingView, CommunicationsView, SettingsView, FamiliesView, WorkflowsView)
 - `src/components/modals/` — 10 modal components extracted from App.js
 - `src/components/` — shared components (ErrorBoundary, CalendarExport, OfflineIndicator)
 - `src/utils/` — pure utility functions (storage, validation, filters, calendarExport)
 - `src/services/emailService.js` — EmailJS integration with fallback
+- `src/services/workflowService.js` — workflow automation engine (localStorage-backed)
 - `src/services/stripeService.js` — Stripe integration (simulated in demo mode when `REACT_APP_STRIPE_PUBLISHABLE_KEY` is not set)
 - `.github/workflows/ci.yml` — CI pipeline (lint, test, build)
 
