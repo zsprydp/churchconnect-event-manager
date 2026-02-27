@@ -15,6 +15,7 @@ import {
   Trash2,
   Home,
   Zap,
+  TrendingUp,
 } from 'lucide-react';
 import Calendar from './Calendar';
 import OfflineIndicator from './components/OfflineIndicator';
@@ -33,6 +34,7 @@ const SettingsView = lazy(() => import('./views/SettingsView'));
 const FamiliesView = lazy(() => import('./views/FamiliesView'));
 const VolunteersView = lazy(() => import('./views/VolunteersView'));
 const WorkflowsView = lazy(() => import('./views/WorkflowsView'));
+const AnalyticsView = lazy(() => import('./views/AnalyticsView'));
 const EventTemplateCreationModal = lazy(() => import('./components/modals/EventTemplateCreationModal'));
 const CreateEventModal = lazy(() => import('./components/modals/CreateEventModal'));
 const EditEventModal = lazy(() => import('./components/modals/EditEventModal'));
@@ -1507,6 +1509,7 @@ const ChurchConnectDashboard = () => {
         <nav aria-label="Primary" style={{ marginTop: '24px' }}>
           {[
             { id: 'dashboard', name: 'Dashboard', icon: BarChart3 },
+            { id: 'analytics', name: 'Analytics', icon: TrendingUp },
             { id: 'events', name: 'Events', icon: CalendarIcon },
             { id: 'volunteers', name: 'Volunteers', icon: Users },
             { id: 'attendees', name: 'Attendees', icon: User },
@@ -1563,6 +1566,17 @@ const ChurchConnectDashboard = () => {
                 }}
               />
             </div>
+          )}
+
+          {activeTab === 'analytics' && (
+            <AnalyticsView
+              events={events}
+              attendees={attendees}
+              volunteers={volunteers}
+              donations={donations}
+              payments={payments}
+              addNotification={addNotification}
+            />
           )}
 
           {activeTab === 'events' && (
