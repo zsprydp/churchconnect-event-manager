@@ -32,14 +32,14 @@ test('renders all sidebar navigation items', () => {
   expect(screen.getByText('Communications')).toBeInTheDocument();
 });
 
-test('shows dashboard (Event Calendar) by default', () => {
+test('shows dashboard greeting by default', () => {
   renderApp();
-  expect(screen.getAllByText('Event Calendar').length).toBeGreaterThan(0);
+  expect(screen.getAllByText('Good morning').length).toBeGreaterThan(0);
 });
 
 test('navigates to Events tab when clicked', async () => {
   renderApp();
-  const eventsButtons = screen.getAllByText('Events');
+  const eventsButtons = screen.getAllByText('Gatherings');
   fireEvent.click(eventsButtons[0]);
   expect(await screen.findByText('Youth Fall Retreat')).toBeInTheDocument();
 });

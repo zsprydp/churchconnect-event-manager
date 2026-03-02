@@ -537,9 +537,9 @@ const ChurchConnectDashboard = () => {
       case 'failed':
         return '#dc2626';
       case 'refunded':
-        return '#6b7280';
+        return '#9B9590';
       default:
-        return '#6b7280';
+        return '#9B9590';
     }
   }, []);
 
@@ -1221,10 +1221,10 @@ const ChurchConnectDashboard = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#f9fafb',
+          backgroundColor: '#FAF5EF',
         }}
       >
-        <p style={{ color: '#6b7280', fontSize: '16px' }}>Loading...</p>
+        <p style={{ color: '#9B9590', fontSize: '16px' }}>Loading...</p>
       </div>
     );
   }
@@ -1234,7 +1234,7 @@ const ChurchConnectDashboard = () => {
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb', display: 'flex' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#FAF5EF', display: 'flex' }}>
       {/* Skip to content link */}
       <a
         href="#main-content"
@@ -1244,7 +1244,7 @@ const ChurchConnectDashboard = () => {
           top: '0',
           zIndex: 9999,
           padding: '8px 16px',
-          backgroundColor: '#2563eb',
+          backgroundColor: '#7B2D4E',
           color: 'white',
           textDecoration: 'none',
           fontSize: '14px',
@@ -1286,7 +1286,7 @@ const ChurchConnectDashboard = () => {
                     ? '#fef2f2'
                     : notification.type === 'warning'
                       ? '#fef3c7'
-                      : '#dbeafe',
+                      : '#FAF5EF',
               color:
                 notification.type === 'success'
                   ? '#166534'
@@ -1294,7 +1294,7 @@ const ChurchConnectDashboard = () => {
                     ? '#dc2626'
                     : notification.type === 'warning'
                       ? '#d97706'
-                      : '#1d4ed8',
+                      : '#7B2D4E',
               border: `1px solid ${
                 notification.type === 'success'
                   ? '#bbf7d0'
@@ -1302,7 +1302,7 @@ const ChurchConnectDashboard = () => {
                     ? '#fecaca'
                     : notification.type === 'warning'
                       ? '#fed7aa'
-                      : '#bfdbfe'
+                      : '#E8E0D8'
               }`,
               borderRadius: '8px',
               padding: '12px 16px',
@@ -1338,28 +1338,123 @@ const ChurchConnectDashboard = () => {
 
       {/* Sidebar */}
       <aside
-        style={{ width: '256px', backgroundColor: 'white', borderRight: '1px solid #e5e7eb' }}
+        style={{ width: '256px', backgroundColor: '#FFFDFB', borderRight: '1px solid #E8E0D8' }}
         aria-label="Main navigation"
       >
         <header style={{ padding: '24px' }}>
-          <h1 style={{ fontSize: '20px', fontWeight: 'bold', color: '#111827' }}>Coveyly</h1>
-          <p style={{ fontSize: '14px', color: '#6b7280' }}>Gathering your community</p>
+          <h1 style={{ fontSize: '20px', fontWeight: 'bold', color: '#2D2A26', fontFamily: "'Lora', Georgia, serif" }}>
+            Coveyly
+          </h1>
+          <p style={{ fontSize: '14px', color: '#9B9590' }}>Gathering your community</p>
         </header>
 
         <nav aria-label="Primary" style={{ marginTop: '24px' }}>
+          {/* Sidebar nav with grouped sections */}
+          <div
+            style={{
+              fontSize: '10px',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '1.5px',
+              color: '#9B9590',
+              padding: '20px 24px 8px',
+            }}
+          >
+            Community
+          </div>
           {[
             { id: 'dashboard', name: 'Dashboard', icon: BarChart3 },
-            { id: 'analytics', name: 'Analytics', icon: TrendingUp },
-            { id: 'events', name: 'Events', icon: CalendarIcon },
+            { id: 'events', name: 'Gatherings', icon: CalendarIcon },
             { id: 'volunteers', name: 'Volunteers', icon: Users },
             { id: 'attendees', name: 'Attendees', icon: User },
             { id: 'families', name: 'Families', icon: Home },
-            { id: 'ministries', name: 'Ministries', icon: UsersRound },
-            { id: 'bookings', name: 'Bookings', icon: Building },
-            { id: 'payments', name: 'Giving', icon: Heart },
             { id: 'prayer', name: 'Prayer', icon: Heart },
-            { id: 'media', name: 'Media', icon: PlayCircle },
+          ].map((item) => (
+            <button
+              key={item.id}
+              onClick={() => {
+                setActiveTab(item.id);
+                setSearchTerm('');
+                setFilterStatus('all');
+              }}
+              aria-current={activeTab === item.id ? 'page' : undefined}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '12px 24px',
+                textAlign: 'left',
+                background: activeTab === item.id ? 'linear-gradient(90deg, #7B2D4E 3px, #FAF5EF 3px)' : 'transparent',
+                color: activeTab === item.id ? '#7B2D4E' : '#6B6560',
+                fontWeight: activeTab === item.id ? 600 : 'normal',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+            >
+              <item.icon style={{ height: '20px', width: '20px', marginRight: '12px' }} aria-hidden="true" />
+              {item.name}
+            </button>
+          ))}
+
+          <div
+            style={{
+              fontSize: '10px',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '1.5px',
+              color: '#9B9590',
+              padding: '20px 24px 8px',
+            }}
+          >
+            Operations
+          </div>
+          {[
+            { id: 'payments', name: 'Giving', icon: Heart },
+            { id: 'bookings', name: 'Bookings', icon: Building },
             { id: 'workflows', name: 'Automations', icon: Zap },
+          ].map((item) => (
+            <button
+              key={item.id}
+              onClick={() => {
+                setActiveTab(item.id);
+                setSearchTerm('');
+                setFilterStatus('all');
+              }}
+              aria-current={activeTab === item.id ? 'page' : undefined}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '12px 24px',
+                textAlign: 'left',
+                background: activeTab === item.id ? 'linear-gradient(90deg, #7B2D4E 3px, #FAF5EF 3px)' : 'transparent',
+                color: activeTab === item.id ? '#7B2D4E' : '#6B6560',
+                fontWeight: activeTab === item.id ? 600 : 'normal',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+            >
+              <item.icon style={{ height: '20px', width: '20px', marginRight: '12px' }} aria-hidden="true" />
+              {item.name}
+            </button>
+          ))}
+
+          <div
+            style={{
+              fontSize: '10px',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '1.5px',
+              color: '#9B9590',
+              padding: '20px 24px 8px',
+            }}
+          >
+            Content
+          </div>
+          {[
+            { id: 'media', name: 'Media', icon: PlayCircle },
             { id: 'communications', name: 'Communications', icon: Mail },
             { id: 'settings', name: 'Settings', icon: Settings },
           ].map((item) => (
@@ -1377,8 +1472,9 @@ const ChurchConnectDashboard = () => {
                 alignItems: 'center',
                 padding: '12px 24px',
                 textAlign: 'left',
-                backgroundColor: activeTab === item.id ? '#dbeafe' : 'transparent',
-                color: activeTab === item.id ? '#1d4ed8' : '#374151',
+                background: activeTab === item.id ? 'linear-gradient(90deg, #7B2D4E 3px, #FAF5EF 3px)' : 'transparent',
+                color: activeTab === item.id ? '#7B2D4E' : '#6B6560',
+                fontWeight: activeTab === item.id ? 600 : 'normal',
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'all 0.2s',
@@ -1393,11 +1489,32 @@ const ChurchConnectDashboard = () => {
       </aside>
 
       {/* Main Content */}
-      <main id="main-content" style={{ flex: 1, padding: '32px', overflowY: 'auto' }}>
-        <Suspense fallback={<div style={{ padding: '48px', textAlign: 'center', color: '#6b7280' }}>Loading...</div>}>
+      <main id="main-content" style={{ flex: 1, padding: '48px 56px', overflowY: 'auto' }}>
+        <Suspense fallback={<div style={{ padding: '48px', textAlign: 'center', color: '#9B9590' }}>Loading...</div>}>
           {activeTab === 'dashboard' && (
             <div>
-              <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' }}>Event Calendar</h2>
+              <h2
+                style={{
+                  fontFamily: "'Lora', Georgia, serif",
+                  fontSize: '28px',
+                  fontWeight: 700,
+                  color: '#2D2A26',
+                  marginBottom: '6px',
+                }}
+              >
+                Good morning
+              </h2>
+              <p
+                style={{
+                  fontSize: '14px',
+                  color: '#9B9590',
+                  fontStyle: 'italic',
+                  fontFamily: "'Lora', Georgia, serif",
+                  marginBottom: '24px',
+                }}
+              >
+                Here's what's happening in your community
+              </p>
 
               {/* Event Calendar - Main Focus */}
               <Calendar
@@ -1470,8 +1587,10 @@ const ChurchConnectDashboard = () => {
               <div
                 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}
               >
-                <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0 }}>All Attendees</h2>
-                <div style={{ fontSize: '14px', color: '#6b7280' }}>
+                <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, fontFamily: "'Lora', Georgia, serif" }}>
+                  All Attendees
+                </h2>
+                <div style={{ fontSize: '14px', color: '#9B9590' }}>
                   {attendees.reduce((sum, a) => sum + 1 + a.groupMembers.length, 0)} total people •{' '}
                   {attendees.filter((a) => a.checkedIn).length +
                     attendees.reduce((sum, a) => sum + a.groupMembers.filter((m) => m.checkedIn).length, 0)}{' '}
@@ -1495,9 +1614,9 @@ const ChurchConnectDashboard = () => {
                         marginBottom: '20px',
                       }}
                     >
-                      <div style={{ padding: '20px', borderBottom: '1px solid #e5e7eb' }}>
+                      <div style={{ padding: '20px', borderBottom: '1px solid #E8E0D8' }}>
                         <h3 style={{ fontSize: '18px', fontWeight: 'bold', margin: '0 0 4px 0' }}>{event.name}</h3>
-                        <p style={{ fontSize: '14px', color: '#6b7280', margin: '0' }}>
+                        <p style={{ fontSize: '14px', color: '#9B9590', margin: '0' }}>
                           {formatEventDates(event)} • {getTotalPeopleCount(event.id)}/{event.capacity} registered
                         </p>
                       </div>
@@ -1506,7 +1625,7 @@ const ChurchConnectDashboard = () => {
                           key={attendee.id}
                           style={{
                             padding: '16px 20px',
-                            borderBottom: index < eventAttendees.length - 1 ? '1px solid #e5e7eb' : 'none',
+                            borderBottom: index < eventAttendees.length - 1 ? '1px solid #E8E0D8' : 'none',
                             backgroundColor: attendee.checkedIn ? '#f0f9ff' : 'white',
                           }}
                         >
@@ -1520,23 +1639,23 @@ const ChurchConnectDashboard = () => {
                                   <CheckCircle style={{ height: '16px', width: '16px', color: '#10b981' }} />
                                 )}
                               </div>
-                              <p style={{ fontSize: '14px', color: '#6b7280', margin: '0 0 2px 0' }}>
+                              <p style={{ fontSize: '14px', color: '#9B9590', margin: '0 0 2px 0' }}>
                                 {attendee.email}
                               </p>
                               {attendee.phone && (
-                                <p style={{ fontSize: '14px', color: '#6b7280', margin: '0 0 4px 0' }}>
+                                <p style={{ fontSize: '14px', color: '#9B9590', margin: '0 0 4px 0' }}>
                                   {attendee.phone}
                                 </p>
                               )}
 
                               {/* Group Members */}
                               {attendee.groupMembers.length > 0 && (
-                                <div style={{ marginTop: '8px', paddingLeft: '16px', borderLeft: '2px solid #e5e7eb' }}>
+                                <div style={{ marginTop: '8px', paddingLeft: '16px', borderLeft: '2px solid #E8E0D8' }}>
                                   <p
                                     style={{
                                       fontSize: '12px',
                                       fontWeight: 'bold',
-                                      color: '#6b7280',
+                                      color: '#9B9590',
                                       marginBottom: '4px',
                                     }}
                                   >
@@ -1554,7 +1673,7 @@ const ChurchConnectDashboard = () => {
                                     >
                                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                                         <span style={{ fontSize: '14px' }}>{member.name}</span>
-                                        <span style={{ fontSize: '12px', color: '#6b7280' }}>
+                                        <span style={{ fontSize: '12px', color: '#9B9590' }}>
                                           ({member.relationship})
                                         </span>
                                         {member.checkedIn && (
@@ -1587,7 +1706,7 @@ const ChurchConnectDashboard = () => {
                                   style={{
                                     marginTop: '8px',
                                     padding: '8px',
-                                    backgroundColor: '#f9fafb',
+                                    backgroundColor: '#FAF5EF',
                                     borderRadius: '4px',
                                   }}
                                 >
@@ -1595,7 +1714,7 @@ const ChurchConnectDashboard = () => {
                                     style={{
                                       fontSize: '12px',
                                       fontWeight: 'bold',
-                                      color: '#6b7280',
+                                      color: '#9B9590',
                                       marginBottom: '4px',
                                     }}
                                   >
@@ -1605,7 +1724,7 @@ const ChurchConnectDashboard = () => {
                                     const question = event.customQuestions?.find((q) => q.id === key);
                                     return (
                                       <p key={key} style={{ fontSize: '12px', margin: '2px 0' }}>
-                                        <span style={{ color: '#6b7280' }}>{question?.question || key}:</span> {value}
+                                        <span style={{ color: '#9B9590' }}>{question?.question || key}:</span> {value}
                                       </p>
                                     );
                                   })}
@@ -1613,7 +1732,7 @@ const ChurchConnectDashboard = () => {
                               )}
 
                               <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginTop: '8px' }}>
-                                <span style={{ fontSize: '12px', color: '#6b7280' }}>
+                                <span style={{ fontSize: '12px', color: '#9B9590' }}>
                                   Registered: {new Date(attendee.registrationDate).toLocaleDateString()}
                                 </span>
                                 <span
@@ -1623,13 +1742,13 @@ const ChurchConnectDashboard = () => {
                                         ? '#dcfce7'
                                         : attendee.paymentStatus === 'pending'
                                           ? '#fef3c7'
-                                          : '#f3f4f6',
+                                          : '#F0E8DD',
                                     color:
                                       attendee.paymentStatus === 'paid'
                                         ? '#16a34a'
                                         : attendee.paymentStatus === 'pending'
                                           ? '#d97706'
-                                          : '#6b7280',
+                                          : '#9B9590',
                                     padding: '2px 8px',
                                     borderRadius: '12px',
                                     fontSize: '12px',
@@ -1644,7 +1763,7 @@ const ChurchConnectDashboard = () => {
                               <button
                                 onClick={() => handleEditAttendee(attendee)}
                                 style={{
-                                  backgroundColor: '#3b82f6',
+                                  backgroundColor: '#7B2D4E',
                                   color: 'white',
                                   border: 'none',
                                   borderRadius: '6px',
@@ -1702,9 +1821,9 @@ const ChurchConnectDashboard = () => {
 
               {attendees.length === 0 && (
                 <div style={{ textAlign: 'center', paddingTop: '48px' }}>
-                  <User style={{ height: '48px', width: '48px', color: '#6b7280', margin: '0 auto 16px' }} />
+                  <User style={{ height: '48px', width: '48px', color: '#9B9590', margin: '0 auto 16px' }} />
                   <h3 style={{ fontSize: '18px', marginBottom: '8px' }}>No Attendees Yet</h3>
-                  <p style={{ color: '#6b7280' }}>Attendees will appear here once people register for events</p>
+                  <p style={{ color: '#9B9590' }}>Attendees will appear here once people register for events</p>
                 </div>
               )}
             </div>
