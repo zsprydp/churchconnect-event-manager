@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coveyly — Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --burgundy: #7B2D4E;
+    --burgundy-light: #9B4D6E;
+    --rust: #C75B12;
+    --rust-light: #E8A87C;
+    --cream: #FAF5EF;
+    --cream-dark: #F0E8DD;
+    --card-bg: #FFFDFB;
+    --text-primary: #2D2A26;
+    --text-secondary: #6B6560;
+    --text-muted: #9B9590;
+    --border: #E8E0D8;
+    --sage: #6B8F71;
+    --gold: #C4A35A;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--text-primary);
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* Sidebar */
+  aside {
+    width: 260px;
+    background: var(--card-bg);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .brand {
+    padding: 32px 28px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand h1 {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--burgundy);
+    letter-spacing: 0.5px;
+  }
+
+  .brand p {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    letter-spacing: 0.3px;
+  }
+
+  .nav-section {
+    padding: 20px 0 8px;
+  }
+
+  .nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    padding: 0 28px 8px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 28px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+  }
+
+  .nav-item:hover {
+    background: var(--cream);
+    color: var(--text-primary);
+  }
+
+  .nav-item.active {
+    background: linear-gradient(90deg, var(--burgundy) 3px, var(--cream) 3px);
+    color: var(--burgundy);
+    font-weight: 600;
+  }
+
+  .nav-item svg {
+    width: 18px;
+    height: 18px;
+    margin-right: 14px;
+    opacity: 0.6;
+  }
+
+  .nav-item.active svg { opacity: 1; }
+
+  .user-card {
+    margin-top: auto;
+    padding: 20px 28px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--cream-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lora', serif;
+    font-size: 14px;
+    color: var(--burgundy);
+    font-weight: 700;
+  }
+
+  .user-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .user-role { font-size: 11px; color: var(--text-muted); }
+
+  /* Main content */
+  main {
+    flex: 1;
+    padding: 48px 56px;
+    overflow-y: auto;
+  }
+
+  .page-header {
+    margin-bottom: 40px;
+  }
+
+  .page-header h2 {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .page-header p {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-style: italic;
+    font-family: 'Lora', Georgia, serif;
+  }
+
+  /* Stat cards */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(45, 42, 38, 0.06);
+  }
+
+  .stat-number {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--burgundy);
+    line-height: 1;
+  }
+
+  .stat-number.rust { color: var(--rust); }
+  .stat-number.sage { color: var(--sage); }
+  .stat-number.gold { color: var(--gold); }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* Event cards */
+  .section-title {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+  }
+
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+
+  .event-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--burgundy);
+    border-radius: 12px;
+    padding: 24px 28px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .event-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(45, 42, 38, 0.06);
+  }
+
+  .event-card.featured {
+    background: var(--burgundy);
+    border-color: var(--burgundy);
+    color: white;
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .event-card.featured h3 { color: white; }
+  .event-card.featured .event-meta { color: rgba(255,255,255,0.7); }
+
+  .event-card h3 {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .event-meta {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .event-stats {
+    display: flex;
+    gap: 20px;
+    margin-top: 14px;
+  }
+
+  .event-stat {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .event-stat strong {
+    color: var(--rust);
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  .badge-active { background: #E8F5E9; color: var(--sage); }
+  .badge-closed { background: var(--cream-dark); color: var(--text-muted); }
+
+  /* Action button */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 0.2px;
+  }
+
+  .btn-primary {
+    background: var(--burgundy);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--burgundy-light);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--burgundy);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--burgundy);
+    background: var(--cream);
+  }
+
+  .btn-rust {
+    background: var(--rust);
+    color: white;
+  }
+
+  /* Prayer card */
+  .prayer-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 16px;
+    transition: transform 0.2s ease;
+  }
+
+  .prayer-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 12px rgba(45, 42, 38, 0.04);
+  }
+
+  .prayer-card.answered {
+    border-left: 4px solid var(--sage);
+    background: #FAFDF5;
+  }
+
+  .prayer-author {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .prayer-time {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .prayer-content {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin: 10px 0 14px;
+  }
+
+  .prayer-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--burgundy);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .prayer-action:hover {
+    background: var(--cream);
+    border-color: var(--burgundy-light);
+  }
+
+  .category-tag {
+    font-size: 11px;
+    color: var(--rust);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* Divider */
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside>
+  <div class="brand">
+    <h1>Coveyly</h1>
+    <p>Gathering your community</p>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Community</div>
+    <button class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18"/><path d="M8 2v4"/><path d="M16 2v4"/></svg>
+      Dashboard
+    </button>
+    <button class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Gatherings
+    </button>
+    <button class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Families
+    </button>
+    <button class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      Prayer Wall
+    </button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Operations</div>
+    <button class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/></svg>
+      Servants
+    </button>
+    <button class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      Giving
+    </button>
+    <button class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+      Spaces
+    </button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Content</div>
+    <button class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Library
+    </button>
+    <button class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
+    </button>
+  </div>
+
+  <div class="user-card">
+    <div class="user-avatar">PD</div>
+    <div>
+      <div class="user-name">Pastor David</div>
+      <div class="user-role">Administrator</div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main>
+  <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+    <div>
+      <h2>Good morning, David</h2>
+      <p>Sunday is 5 days away. 7 registered for Christmas Eve.</p>
+    </div>
+    <button class="btn btn-primary">Plan a Gathering</button>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">12</div>
+      <div class="stat-label">Gatherings this season</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number rust">$4,225</div>
+      <div class="stat-label">Given this quarter</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number sage">14</div>
+      <div class="stat-label">Active servants</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number gold">8</div>
+      <div class="stat-label">Families connected</div>
+    </div>
+  </div>
+
+  <!-- Featured Event -->
+  <div class="section-title">Upcoming</div>
+  <div class="events-grid">
+    <div class="event-card featured">
+      <div>
+        <span class="badge" style="background:rgba(255,255,255,0.15);color:white;margin-bottom:10px;display:inline-block;">This Sunday</span>
+        <h3 style="font-size:22px;">Christmas Eve Candlelight Service</h3>
+        <div class="event-meta" style="margin-top:8px;">December 24 &middot; 7:00 &ndash; 9:00 PM &middot; Main Sanctuary</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:'Lora',serif;font-size:36px;font-weight:700;">7</div>
+        <div style="font-size:12px;opacity:0.7;">of 500 registered</div>
+        <button class="btn" style="background:rgba(255,255,255,0.15);color:white;margin-top:12px;border:1px solid rgba(255,255,255,0.3);">View Details</button>
+      </div>
+    </div>
+
+    <div class="event-card">
+      <div style="display:flex;justify-content:space-between;align-items:start;">
+        <div>
+          <h3>Youth Fall Retreat</h3>
+          <div class="event-meta">Oct 18&ndash;20 &middot; Camp Pine Ridge</div>
+        </div>
+        <span class="badge badge-active">Active</span>
+      </div>
+      <div class="event-stats">
+        <div class="event-stat"><strong>4</strong> registered</div>
+        <div class="event-stat"><strong>3</strong> servants</div>
+        <div class="event-stat"><strong>$75</strong> per person</div>
+      </div>
+    </div>
+
+    <div class="event-card">
+      <div style="display:flex;justify-content:space-between;align-items:start;">
+        <div>
+          <h3>Valentine's Dinner</h3>
+          <div class="event-meta">Feb 14 &middot; Fellowship Hall</div>
+        </div>
+        <span class="badge badge-active">Active</span>
+      </div>
+      <div class="event-stats">
+        <div class="event-stat"><strong>3</strong> registered</div>
+        <div class="event-stat"><strong>4</strong> servants</div>
+        <div class="event-stat"><strong>$25</strong> per couple</div>
+      </div>
+    </div>
+
+    <div class="event-card">
+      <div style="display:flex;justify-content:space-between;align-items:start;">
+        <div>
+          <h3>New Year Prayer Night</h3>
+          <div class="event-meta">Dec 31 &middot; Chapel</div>
+        </div>
+        <span class="badge badge-active">Active</span>
+      </div>
+      <div class="event-stats">
+        <div class="event-stat"><strong>3</strong> of 40</div>
+        <div class="event-stat"><strong>2</strong> servants</div>
+      </div>
+    </div>
+
+    <div class="event-card">
+      <div style="display:flex;justify-content:space-between;align-items:start;">
+        <div>
+          <h3>Harvest Festival</h3>
+          <div class="event-meta">Nov 8 &middot; Church Grounds</div>
+        </div>
+        <span class="badge badge-closed">Past</span>
+      </div>
+      <div class="event-stats">
+        <div class="event-stat"><strong>6</strong> attended</div>
+        <div class="event-stat"><strong>5</strong> servants</div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Prayer Wall -->
+  <div class="section-title">From the Prayer Wall</div>
+
+  <div class="prayer-card answered">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+      <div>
+        <span class="prayer-author">Derek Brown</span>
+        <span class="prayer-time">&middot; 4 days ago</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span class="category-tag">Health</span>
+        <span class="badge badge-active" style="background:#E8F5E9;color:#2E7D32;">Answered</span>
+      </div>
+    </div>
+    <p class="prayer-content">After 8 months, my wife Angela is now cancer-free. Thank you all for your prayers.</p>
+    <button class="prayer-action">&#10084; Amen (32)</button>
+  </div>
+
+  <div class="prayer-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+      <div>
+        <span class="prayer-author">Sarah Johnson</span>
+        <span class="prayer-time">&middot; 12 hours ago</span>
+      </div>
+      <span class="category-tag">Community</span>
+    </div>
+    <p class="prayer-content">Pray for the upcoming mission trip planning &mdash; that God would prepare hearts and open doors.</p>
+    <button class="prayer-action">&#128591; I prayed for this (8)</button>
+  </div>
+
+  <div class="prayer-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+      <div>
+        <span class="prayer-author" style="color:var(--text-muted);font-style:italic;">Anonymous</span>
+        <span class="prayer-time">&middot; 6 days ago</span>
+      </div>
+      <span class="category-tag">Personal</span>
+    </div>
+    <p class="prayer-content">Battling depression. Some days are really hard. Please pray for healing and hope.</p>
+    <button class="prayer-action">&#128591; I prayed for this (22)</button>
+  </div>
+
+</main>
+
+</body>
+</html>

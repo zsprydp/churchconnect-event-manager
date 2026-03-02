@@ -48,8 +48,18 @@ const AuthScreen = () => {
         }}
       >
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <Church style={{ height: '48px', width: '48px', color: '#2563eb', marginBottom: '12px' }} />
-          <h1 style={{ fontSize: '24px', fontWeight: '700', color: '#111827', margin: '0 0 4px' }}>ChurchConnect</h1>
+          <Church style={{ height: '48px', width: '48px', color: '#7B2D4E', marginBottom: '12px' }} />
+          <h1
+            style={{
+              fontSize: '24px',
+              fontWeight: '700',
+              color: '#111827',
+              margin: '0 0 4px',
+              fontFamily: "'Lora', Georgia, serif",
+            }}
+          >
+            Coveyly
+          </h1>
           <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
             {mode === 'login' ? 'Sign in to your account' : 'Create a new account'}
           </p>
@@ -150,7 +160,7 @@ const AuthScreen = () => {
             style={{
               width: '100%',
               padding: '12px',
-              backgroundColor: '#2563eb',
+              backgroundColor: '#7B2D4E',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
@@ -187,7 +197,7 @@ const AuthScreen = () => {
             style={{
               background: 'none',
               border: 'none',
-              color: '#2563eb',
+              color: '#7B2D4E',
               fontSize: '14px',
               cursor: 'pointer',
               textDecoration: 'underline',

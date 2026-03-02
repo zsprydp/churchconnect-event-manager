@@ -3,8 +3,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { LogOut, Shield, User } from 'lucide-react';
 
 const roleColors = {
-  admin: '#dc2626',
-  coordinator: '#2563eb',
+  admin: '#7B2D4E',
+  coordinator: '#C75B12',
   volunteer: '#16a34a',
   member: '#6b7280',
 };

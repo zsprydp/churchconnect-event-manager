@@ -1342,8 +1342,8 @@ const ChurchConnectDashboard = () => {
         aria-label="Main navigation"
       >
         <header style={{ padding: '24px' }}>
-          <h1 style={{ fontSize: '20px', fontWeight: 'bold', color: '#111827' }}>ChurchConnect</h1>
-          <p style={{ fontSize: '14px', color: '#6b7280' }}>Event Manager</p>
+          <h1 style={{ fontSize: '20px', fontWeight: 'bold', color: '#111827' }}>Coveyly</h1>
+          <p style={{ fontSize: '14px', color: '#6b7280' }}>Gathering your community</p>
         </header>
 
         <nav aria-label="Primary" style={{ marginTop: '24px' }}>

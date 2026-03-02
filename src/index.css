@@ -1,8 +1,28 @@
+:root {
+  --burgundy: #7b2d4e;
+  --burgundy-light: #9b4d6e;
+  --rust: #c75b12;
+  --rust-light: #e8a87c;
+  --cream: #faf5ef;
+  --cream-dark: #f0e8dd;
+  --card-bg: #fffdfb;
+  --text-primary: #2d2a26;
+  --text-secondary: #6b6560;
+  --text-muted: #9b9590;
+  --border: #e8e0d8;
+  --sage: #6b8f71;
+  --gold: #c4a35a;
+  --font-heading: 'Lora', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+body {
+  font-family: var(--font-body);
+  background-color: var(--cream);
+  color: var(--text-primary);
+}
+
 body {
   margin: 0;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-    'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

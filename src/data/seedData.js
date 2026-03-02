@@ -1,5 +1,5 @@
 /**
- * Seed data for Grace Community Church — a realistic mid-size church
+ * Seed data for Grace Community — a realistic mid-size church
  * with ~6 months of activity (2025-06 through 2026-03).
  *
  * ID ranges (to avoid collisions):
@@ -744,9 +744,9 @@ export const SEED_COMMUNICATIONS = [
   {
     id: 4000,
     type: 'announcement',
-    subject: 'Welcome to Grace Community Church!',
+    subject: 'Welcome to Grace Community!',
     message:
-      'We are so glad you are part of our church family. Stay connected through ChurchConnect for all upcoming events and announcements.',
+      'We are so glad you are part of our church family. Stay connected through Coveyly for all upcoming events and announcements.',
     recipients: 'All Members',
     sentDate: '2025-06-15',
     sentBy: 'Admin',
@@ -809,8 +809,7 @@ export const SEED_COMMUNICATIONS = [
     id: 4006,
     type: 'announcement',
     subject: 'Harvest Festival Volunteers Needed',
-    message:
-      'We need volunteers for setup, booths, and cleanup at the Harvest Festival on Nov 8. Sign up in ChurchConnect!',
+    message: 'We need volunteers for setup, booths, and cleanup at the Harvest Festival on Nov 8. Sign up in Coveyly!',
     recipients: 'All Volunteers',
     sentDate: '2025-10-15',
     sentBy: 'Admin',

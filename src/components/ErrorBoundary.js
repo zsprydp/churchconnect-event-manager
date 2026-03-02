@@ -84,7 +84,7 @@ class ErrorBoundary extends React.Component {
             <button
               onClick={this.handleReset}
               style={{
-                backgroundColor: '#2563eb',
+                backgroundColor: '#7B2D4E',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',

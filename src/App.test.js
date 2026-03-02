@@ -9,15 +9,15 @@ const renderApp = () =>
     </AuthProvider>
   );
 
-test('renders ChurchConnect heading', () => {
+test('renders Coveyly heading', () => {
   renderApp();
-  const heading = screen.getByText(/ChurchConnect/i);
+  const heading = screen.getByText(/Coveyly/i);
   expect(heading).toBeInTheDocument();
 });
 
-test('renders Event Manager subtitle', () => {
+test('renders Gathering your community subtitle', () => {
   renderApp();
-  const subtitle = screen.getByText(/Event Manager/i);
+  const subtitle = screen.getByText(/Gathering your community/i);
   expect(subtitle).toBeInTheDocument();
 });
 

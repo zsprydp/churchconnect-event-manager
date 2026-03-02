@@ -1,7 +1,7 @@
 {
-  "short_name": "ChurchConnect",
-  "name": "ChurchConnect Event Manager",
-  "description": "Manage church events, announcements, and member engagement",
+  "short_name": "Coveyly",
+  "name": "Coveyly",
+  "description": "Gathering your community",
   "icons": [
     {
       "src": "favicon.ico",
@@ -24,7 +24,7 @@
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "theme_color": "#2563eb",
+  "theme_color": "#7B2D4E",
   "background_color": "#ffffff",
   "scope": "/",
   "lang": "en",
