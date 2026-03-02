@@ -1,3 +1,5 @@
+import logger from './utils/logger';
+
 // PWA Service Worker Registration and Utilities
 class PWAManager {
   constructor() {
@@ -29,7 +31,7 @@ class PWAManager {
     if ('serviceWorker' in navigator) {
       try {
         this.serviceWorker = await navigator.serviceWorker.register('/sw.js');
-        console.log('Service Worker registered successfully:', this.serviceWorker);
+        logger.log('Service Worker registered successfully:', this.serviceWorker);
 
         // Handle service worker updates
         this.serviceWorker.addEventListener('updatefound', () => {
@@ -45,9 +47,8 @@ class PWAManager {
         navigator.serviceWorker.addEventListener('controllerchange', () => {
           this.dispatchEvent('sw-controller-change');
         });
-
       } catch (error) {
-        console.error('Service Worker registration failed:', error);
+        logger.error('Service Worker registration failed:', error);
       }
     }
   }
@@ -70,7 +71,7 @@ class PWAManager {
       this.deferredPrompt.prompt();
       const { outcome } = await this.deferredPrompt.userChoice;
       this.deferredPrompt = null;
-      
+
       if (outcome === 'accepted') {
         this.dispatchEvent('install-accepted');
       } else {
@@ -97,22 +98,20 @@ class PWAManager {
       const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: this.urlBase64ToUint8Array(process.env.REACT_APP_VAPID_PUBLIC_KEY || '')
+        applicationServerKey: this.urlBase64ToUint8Array(process.env.REACT_APP_VAPID_PUBLIC_KEY || ''),
       });
 
       this.dispatchEvent('push-subscription', { subscription });
       return subscription;
     } catch (error) {
-      console.error('Failed to subscribe to push notifications:', error);
+      logger.error('Failed to subscribe to push notifications:', error);
       throw error;
     }
   }
 
   urlBase64ToUint8Array(base64String) {
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
-    const base64 = (base64String + padding)
-      .replace(/-/g, '+')
-      .replace(/_/g, '/');
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
 
     const rawData = window.atob(base64);
     const outputArray = new Uint8Array(rawData.length);
@@ -125,7 +124,7 @@ class PWAManager {
 
   dispatchEvent(eventName, detail = {}) {
     const event = new CustomEvent(`pwa:${eventName}`, {
-      detail: { ...detail, timestamp: Date.now() }
+      detail: { ...detail, timestamp: Date.now() },
     });
     window.dispatchEvent(event);
   }
@@ -147,9 +146,7 @@ class PWAManager {
   async clearCache() {
     if ('caches' in window) {
       const cacheNames = await caches.keys();
-      await Promise.all(
-        cacheNames.map(cacheName => caches.delete(cacheName))
-      );
+      await Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)));
       this.dispatchEvent('cache-cleared');
     }
   }
@@ -158,11 +155,11 @@ class PWAManager {
     if ('caches' in window) {
       const cacheNames = await caches.keys();
       let totalSize = 0;
-      
+
       for (const cacheName of cacheNames) {
         const cache = await caches.open(cacheName);
         const keys = await cache.keys();
-        
+
         for (const request of keys) {
           const response = await cache.match(request);
           if (response) {
@@ -171,7 +168,7 @@ class PWAManager {
           }
         }
       }
-      
+
       return totalSize;
     }
     return 0;
@@ -192,5 +189,5 @@ export const {
   clearCache,
   getCacheSize,
   isOnline,
-  canInstall
+  canInstall,
 } = pwaManager;

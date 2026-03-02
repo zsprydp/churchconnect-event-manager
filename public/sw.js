@@ -1,37 +1,20 @@
-const CACHE_NAME = 'churchconnect-v1';
 const STATIC_CACHE = 'churchconnect-static-v1';
 const DYNAMIC_CACHE = 'churchconnect-dynamic-v1';
 
-// Files to cache immediately
 const STATIC_FILES = [
   '/',
   '/index.html',
-  '/static/js/bundle.js',
-  '/static/css/main.css',
   '/manifest.json',
   '/logo192.png',
   '/logo512.png',
   '/favicon.ico'
 ];
 
-// API endpoints to cache
-const API_CACHE_PATTERNS = [
-  '/api/events',
-  '/api/announcements',
-  '/api/members'
-];
-
 // Install event - cache static files
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(STATIC_CACHE)
-      .then((cache) => {
-        console.log('Opened static cache');
-        return cache.addAll(STATIC_FILES);
-      })
-      .catch((error) => {
-        console.error('Error caching static files:', error);
-      })
+      .then((cache) => cache.addAll(STATIC_FILES))
   );
 });
 
@@ -40,114 +23,36 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
-            console.log('Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
+        cacheNames
+          .filter((name) => name !== STATIC_CACHE && name !== DYNAMIC_CACHE)
+          .map((name) => caches.delete(name))
       );
     })
   );
 });
 
-// Fetch event - serve from cache when offline
+// Fetch event - cache-first for static, network-first for navigation
 self.addEventListener('fetch', (event) => {
-  const { request } = event;
-  const url = new URL(request.url);
-
-  // Handle API requests
-  if (url.pathname.startsWith('/api/')) {
-    event.respondWith(handleApiRequest(request));
-    return;
-  }
-
-  // Handle static files
-  if (request.method === 'GET') {
-    event.respondWith(handleStaticRequest(request));
-    return;
-  }
+  if (event.request.method !== 'GET') return;
+  event.respondWith(handleRequest(event.request));
 });
 
-async function handleApiRequest(request) {
-  try {
-    // Try network first
-    const networkResponse = await fetch(request);
-    
-    // Cache successful responses
-    if (networkResponse.ok) {
-      const cache = await caches.open(DYNAMIC_CACHE);
-      cache.put(request, networkResponse.clone());
-    }
-    
-    return networkResponse;
-  } catch (error) {
-    // Network failed, try cache
-    const cachedResponse = await caches.match(request);
-    if (cachedResponse) {
-      return cachedResponse;
-    }
-    
-    // Return offline fallback
-    return new Response(
-      JSON.stringify({ 
-        error: 'You are offline. Please check your connection and try again.',
-        offline: true 
-      }),
-      {
-        status: 503,
-        statusText: 'Service Unavailable',
-        headers: { 'Content-Type': 'application/json' }
-      }
-    );
-  }
-}
-
-async function handleStaticRequest(request) {
-  // Check cache first
-  const cachedResponse = await caches.match(request);
-  if (cachedResponse) {
-    return cachedResponse;
-  }
+async function handleRequest(request) {
+  const cached = await caches.match(request);
+  if (cached) return cached;
 
   try {
-    // Try network
-    const networkResponse = await fetch(request);
-    
-    // Cache successful responses
-    if (networkResponse.ok) {
+    const response = await fetch(request);
+    if (response.ok) {
       const cache = await caches.open(DYNAMIC_CACHE);
-      cache.put(request, networkResponse.clone());
+      cache.put(request, response.clone());
     }
-    
-    return networkResponse;
+    return response;
   } catch (error) {
-    // Return offline page for navigation requests
     if (request.mode === 'navigate') {
       return caches.match('/index.html');
     }
-    
     throw error;
-  }
-}
-
-// Background sync for offline actions
-self.addEventListener('sync', (event) => {
-  if (event.tag === 'background-sync') {
-    event.waitUntil(doBackgroundSync());
-  }
-});
-
-async function doBackgroundSync() {
-  try {
-    // Sync any pending offline actions
-    console.log('Performing background sync');
-    
-    // You can implement specific sync logic here
-    // For example, syncing offline form submissions
-    
-  } catch (error) {
-    console.error('Background sync failed:', error);
   }
 }
 
@@ -163,16 +68,8 @@ self.addEventListener('push', (event) => {
       primaryKey: 1
     },
     actions: [
-      {
-        action: 'explore',
-        title: 'View',
-        icon: '/logo192.png'
-      },
-      {
-        action: 'close',
-        title: 'Close',
-        icon: '/logo192.png'
-      }
+      { action: 'explore', title: 'View', icon: '/logo192.png' },
+      { action: 'close', title: 'Close', icon: '/logo192.png' }
     ]
   };
 
@@ -184,10 +81,7 @@ self.addEventListener('push', (event) => {
 // Notification click
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-
   if (event.action === 'explore') {
-    event.waitUntil(
-      clients.openWindow('/')
-    );
+    event.waitUntil(clients.openWindow('/'));
   }
 });

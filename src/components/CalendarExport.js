@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import logger from '../utils/logger';
 import { Calendar, Download, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import {
   generateICSContent,
@@ -7,57 +8,57 @@ import {
   generateGoogleCalendarLink,
   generateOutlookCalendarLink,
   generateAppleCalendarLink,
-  getAllCalendarLinks
+  getAllCalendarLinks,
 } from '../utils/calendarExport';
 import './CalendarExport.css';
 
-const CalendarExport = ({ event, events = [], showBulkExport = false }) => {
+const CalendarExport = ({ event, events = [], showBulkExport = false, onNotification }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedCalendar, setSelectedCalendar] = useState(null);
 
   const handleSingleEventExport = () => {
     if (!event) {
-      console.error('No event provided for export');
+      logger.error('No event provided for export');
       return;
     }
-    
-    console.log('Exporting single event:', event);
-    
+
+    logger.log('Exporting single event:', event);
+
     try {
       const icsContent = generateICSContent(event);
       const filename = `${event.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.ics`;
       downloadICSFile(icsContent, filename);
-      console.log('ICS file downloaded successfully');
+      logger.log('ICS file downloaded successfully');
     } catch (error) {
-      console.error('Failed to export event:', error);
-      alert('Failed to export event. Please check the console for details.');
+      logger.error('Failed to export event:', error);
+      if (onNotification) onNotification('Failed to export event. Please check the console for details.', 'error');
     }
   };
 
   const handleBulkExport = () => {
     if (!events || events.length === 0) {
-      console.error('No events provided for bulk export');
+      logger.error('No events provided for bulk export');
       return;
     }
-    
-    console.log('Exporting bulk events:', events);
-    
+
+    logger.log('Exporting bulk events:', events);
+
     try {
       const icsContent = generateBulkICSContent(events);
       const filename = `churchconnect_events_${new Date().toISOString().slice(0, 10)}.ics`;
       downloadICSFile(icsContent, filename);
-      console.log('Bulk ICS file downloaded successfully');
+      logger.log('Bulk ICS file downloaded successfully');
     } catch (error) {
-      console.error('Failed to export bulk events:', error);
-      alert('Failed to export events. Please check the console for details.');
+      logger.error('Failed to export bulk events:', error);
+      if (onNotification) onNotification('Failed to export events. Please check the console for details.', 'error');
     }
   };
 
   const handleCalendarServiceClick = (service, eventData) => {
-    console.log(`Opening ${service} calendar for event:`, eventData);
-    
+    logger.log(`Opening ${service} calendar for event:`, eventData);
+
     let url;
-    
+
     try {
       switch (service) {
         case 'google':
@@ -70,15 +71,16 @@ const CalendarExport = ({ event, events = [], showBulkExport = false }) => {
           url = generateAppleCalendarLink(eventData);
           break;
         default:
-          console.error('Unknown calendar service:', service);
+          logger.error('Unknown calendar service:', service);
           return;
       }
-      
-      console.log(`${service} calendar URL:`, url);
+
+      logger.log(`${service} calendar URL:`, url);
       window.open(url, '_blank', 'noopener,noreferrer');
     } catch (error) {
-      console.error(`Failed to generate ${service} calendar link:`, error);
-      alert(`Failed to open ${service} calendar. Please check the console for details.`);
+      logger.error(`Failed to generate ${service} calendar link:`, error);
+      if (onNotification)
+        onNotification(`Failed to open ${service} calendar. Please check the console for details.`, 'error');
     }
   };
 
@@ -124,15 +126,15 @@ const CalendarExport = ({ event, events = [], showBulkExport = false }) => {
   // Debug logging
   React.useEffect(() => {
     if (event) {
-      console.log('CalendarExport component received event:', event);
+      logger.log('CalendarExport component received event:', event);
     }
     if (events && events.length > 0) {
-      console.log('CalendarExport component received events:', events);
+      logger.log('CalendarExport component received events:', events);
     }
   }, [event, events]);
 
   if (!event && (!events || events.length === 0)) {
-    console.log('CalendarExport: No event or events provided');
+    logger.log('CalendarExport: No event or events provided');
     return null;
   }
 
@@ -157,18 +159,15 @@ const CalendarExport = ({ event, events = [], showBulkExport = false }) => {
             <div className="export-section">
               <h4>Export Single Event</h4>
               <div className="export-options">
-                <button
-                  className="export-btn primary"
-                  onClick={handleSingleEventExport}
-                >
+                <button className="export-btn primary" onClick={handleSingleEventExport}>
                   <Download size={16} />
                   Download .ics File
                 </button>
-                
+
                 <div className="calendar-services">
                   <span>Quick Add to:</span>
                   <div className="service-buttons">
-                    {['google', 'outlook', 'apple'].map(service => (
+                    {['google', 'outlook', 'apple'].map((service) => (
                       <button
                         key={service}
                         className="service-btn"
@@ -191,10 +190,7 @@ const CalendarExport = ({ event, events = [], showBulkExport = false }) => {
             <div className="export-section">
               <h4>Export All Events</h4>
               <div className="export-options">
-                <button
-                  className="export-btn secondary"
-                  onClick={handleBulkExport}
-                >
+                <button className="export-btn secondary" onClick={handleBulkExport}>
                   <Download size={16} />
                   Download All Events (.ics)
                 </button>
@@ -236,8 +232,8 @@ const CalendarExport = ({ event, events = [], showBulkExport = false }) => {
           {/* Help Text */}
           <div className="help-text">
             <p>
-              <strong>Tip:</strong> Use the .ics file to import events into any calendar application.
-              Most calendar apps support this standard format.
+              <strong>Tip:</strong> Use the .ics file to import events into any calendar application. Most calendar apps
+              support this standard format.
             </p>
           </div>
         </div>
