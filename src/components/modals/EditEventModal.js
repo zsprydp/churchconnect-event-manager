@@ -155,7 +155,7 @@ const EditEventModal = ({ editingEvent, setEditingEvent, formErrors, onClose, on
             <button
               onClick={() => setEditingEvent((prev) => ({ ...prev, dates: [...prev.dates, ''] }))}
               style={{
-                backgroundColor: '#3b82f6',
+                backgroundColor: '#7B2D4E',
                 color: 'white',
                 border: 'none',
                 borderRadius: '4px',
@@ -305,7 +305,7 @@ const EditEventModal = ({ editingEvent, setEditingEvent, formErrors, onClose, on
             style={{
               flex: 1,
               backgroundColor: 'white',
-              color: '#374151',
+              color: '#6B6560',
               padding: '10px',
               border: '1px solid #d1d5db',
               borderRadius: '4px',

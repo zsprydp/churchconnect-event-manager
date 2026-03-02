@@ -125,7 +125,7 @@ const FamiliesView = ({ families, setFamilies, householdMembers, setHouseholdMem
             setShowAddFamily(true);
           }}
           style={{
-            backgroundColor: '#3b82f6',
+            backgroundColor: '#7B2D4E',
             color: 'white',
             padding: '10px 16px',
             borderRadius: '6px',
@@ -153,7 +153,7 @@ const FamiliesView = ({ families, setFamilies, householdMembers, setHouseholdMem
               transform: 'translateY(-50%)',
               height: '16px',
               width: '16px',
-              color: '#6b7280',
+              color: '#9B9590',
             }}
           />
           <input
@@ -193,7 +193,7 @@ const FamiliesView = ({ families, setFamilies, householdMembers, setHouseholdMem
               onClick={resetForm}
               style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }}
             >
-              <X style={{ height: '20px', width: '20px', color: '#6b7280' }} />
+              <X style={{ height: '20px', width: '20px', color: '#9B9590' }} />
             </button>
           </div>
 
@@ -277,7 +277,7 @@ const FamiliesView = ({ families, setFamilies, householdMembers, setHouseholdMem
           </div>
 
           {/* Members Section */}
-          <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '16px', marginTop: '8px' }}>
+          <div style={{ borderTop: '1px solid #E8E0D8', paddingTop: '16px', marginTop: '8px' }}>
             <h4 style={{ fontSize: '16px', fontWeight: '600', margin: '0 0 12px 0' }}>Members</h4>
 
             {newMembers.length > 0 && (
@@ -290,7 +290,7 @@ const FamiliesView = ({ families, setFamilies, householdMembers, setHouseholdMem
                       alignItems: 'center',
                       gap: '8px',
                       padding: '8px 12px',
-                      backgroundColor: '#f9fafb',
+                      backgroundColor: '#FAF5EF',
                       borderRadius: '6px',
                       marginBottom: '4px',
                     }}
@@ -298,8 +298,8 @@ const FamiliesView = ({ families, setFamilies, householdMembers, setHouseholdMem
                     <span style={{ flex: 1, fontSize: '14px' }}>{member.name}</span>
                     <span
                       style={{
-                        backgroundColor: '#dbeafe',
-                        color: '#1d4ed8',
+                        backgroundColor: '#FAF5EF',
+                        color: '#7B2D4E',
                         padding: '2px 8px',
                         borderRadius: '12px',
                         fontSize: '12px',
@@ -410,7 +410,7 @@ const FamiliesView = ({ families, setFamilies, householdMembers, setHouseholdMem
             <button
               onClick={handleSaveFamily}
               style={{
-                backgroundColor: '#3b82f6',
+                backgroundColor: '#7B2D4E',
                 color: 'white',
                 padding: '10px 20px',
                 borderRadius: '6px',
@@ -429,9 +429,9 @@ const FamiliesView = ({ families, setFamilies, householdMembers, setHouseholdMem
       {/* Family Cards */}
       {filteredFamilies.length === 0 && !showAddFamily && (
         <div style={{ textAlign: 'center', paddingTop: '48px' }}>
-          <Home style={{ height: '48px', width: '48px', color: '#6b7280', margin: '0 auto 16px' }} />
+          <Home style={{ height: '48px', width: '48px', color: '#9B9590', margin: '0 auto 16px' }} />
           <h3 style={{ fontSize: '18px', marginBottom: '8px' }}>No Families Yet</h3>
-          <p style={{ color: '#6b7280' }}>Click "Add Family" to create your first household profile.</p>
+          <p style={{ color: '#9B9590' }}>Click "Add Family" to create your first household profile.</p>
         </div>
       )}
 
@@ -451,17 +451,17 @@ const FamiliesView = ({ families, setFamilies, householdMembers, setHouseholdMem
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
               <div style={{ flex: 1 }}>
                 <h3 style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 0 4px 0' }}>{family.name}</h3>
-                <p style={{ fontSize: '14px', color: '#6b7280', margin: '0 0 2px 0' }}>
+                <p style={{ fontSize: '14px', color: '#9B9590', margin: '0 0 2px 0' }}>
                   {family.primaryContactName} &bull; {family.primaryContactEmail}
                 </p>
                 {family.address && (
-                  <p style={{ fontSize: '14px', color: '#6b7280', margin: '0 0 8px 0' }}>{family.address}</p>
+                  <p style={{ fontSize: '14px', color: '#9B9590', margin: '0 0 8px 0' }}>{family.address}</p>
                 )}
                 <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
                   <span
                     style={{
-                      backgroundColor: '#dbeafe',
-                      color: '#1d4ed8',
+                      backgroundColor: '#FAF5EF',
+                      color: '#7B2D4E',
                       padding: '2px 8px',
                       borderRadius: '12px',
                       fontSize: '12px',
@@ -475,9 +475,9 @@ const FamiliesView = ({ families, setFamilies, householdMembers, setHouseholdMem
                 {members.length > 0 && (
                   <div style={{ marginTop: '4px' }}>
                     {members.map((member) => (
-                      <div key={member.id} style={{ fontSize: '14px', color: '#374151', marginBottom: '2px' }}>
+                      <div key={member.id} style={{ fontSize: '14px', color: '#6B6560', marginBottom: '2px' }}>
                         {member.name}{' '}
-                        <span style={{ color: '#6b7280', fontSize: '12px' }}>
+                        <span style={{ color: '#9B9590', fontSize: '12px' }}>
                           ({relationshipLabel(member.relationship)})
                         </span>
                       </div>
@@ -490,7 +490,7 @@ const FamiliesView = ({ families, setFamilies, householdMembers, setHouseholdMem
                 <button
                   onClick={() => handleEditFamily(family)}
                   style={{
-                    backgroundColor: '#3b82f6',
+                    backgroundColor: '#7B2D4E',
                     color: 'white',
                     border: 'none',
                     borderRadius: '4px',

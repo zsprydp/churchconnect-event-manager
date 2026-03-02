@@ -197,7 +197,7 @@ const SendMessageModal = ({ newMessage, handleMessageInputChange, volunteers, at
             style={{
               flex: 1,
               backgroundColor: 'white',
-              color: '#374151',
+              color: '#6B6560',
               padding: '10px',
               border: '1px solid #d1d5db',
               borderRadius: '4px',

@@ -21,7 +21,7 @@ const PRESET_COLORS = [
   '#ec4899',
   '#10b981',
   '#f59e0b',
-  '#3b82f6',
+  '#7B2D4E',
   '#ef4444',
   '#06b6d4',
   '#f97316',
@@ -219,7 +219,7 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
               transform: 'translateY(-50%)',
               height: '16px',
               width: '16px',
-              color: '#6b7280',
+              color: '#9B9590',
             }}
           />
           <input
@@ -239,7 +239,7 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
           />
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Filter style={{ height: '16px', width: '16px', color: '#6b7280' }} />
+          <Filter style={{ height: '16px', width: '16px', color: '#9B9590' }} />
           <select
             aria-label="Filter by ministry"
             value={filterMinistry}
@@ -288,7 +288,7 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
               onClick={resetForm}
               style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }}
             >
-              <X style={{ height: '20px', width: '20px', color: '#6b7280' }} />
+              <X style={{ height: '20px', width: '20px', color: '#9B9590' }} />
             </button>
           </div>
 
@@ -484,7 +484,7 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
                     height: '32px',
                     borderRadius: '50%',
                     backgroundColor: color,
-                    border: form.color === color ? '3px solid #111827' : '2px solid transparent',
+                    border: form.color === color ? '3px solid #2D2A26' : '2px solid transparent',
                     cursor: 'pointer',
                     outline: form.color === color ? '2px solid white' : 'none',
                     outlineOffset: '-4px',
@@ -499,7 +499,7 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
           {/* Members */}
           <div
             style={{
-              borderTop: '1px solid #e5e7eb',
+              borderTop: '1px solid #E8E0D8',
               paddingTop: '16px',
               marginBottom: '16px',
             }}
@@ -515,7 +515,7 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
                       alignItems: 'center',
                       gap: '8px',
                       padding: '6px 12px',
-                      backgroundColor: '#f9fafb',
+                      backgroundColor: '#FAF5EF',
                       borderRadius: '6px',
                       marginBottom: '4px',
                     }}
@@ -583,14 +583,14 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
           {/* Link Events */}
           <div
             style={{
-              borderTop: '1px solid #e5e7eb',
+              borderTop: '1px solid #E8E0D8',
               paddingTop: '16px',
               marginBottom: '16px',
             }}
           >
             <h4 style={{ fontSize: '16px', fontWeight: '600', margin: '0 0 12px 0' }}>Linked Events</h4>
             {events.length === 0 ? (
-              <p style={{ fontSize: '14px', color: '#6b7280' }}>No events available to link.</p>
+              <p style={{ fontSize: '14px', color: '#9B9590' }}>No events available to link.</p>
             ) : (
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                 {events.map((event) => {
@@ -602,9 +602,9 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
                       style={{
                         padding: '6px 12px',
                         borderRadius: '20px',
-                        border: isLinked ? '2px solid #3b82f6' : '1px solid #d1d5db',
-                        backgroundColor: isLinked ? '#dbeafe' : 'white',
-                        color: isLinked ? '#1d4ed8' : '#374151',
+                        border: isLinked ? '2px solid #7B2D4E' : '1px solid #d1d5db',
+                        backgroundColor: isLinked ? '#FAF5EF' : 'white',
+                        color: isLinked ? '#7B2D4E' : '#6B6560',
                         cursor: 'pointer',
                         fontSize: '13px',
                         fontWeight: isLinked ? '600' : '400',
@@ -663,12 +663,12 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
             style={{
               height: '48px',
               width: '48px',
-              color: '#6b7280',
+              color: '#9B9590',
               margin: '0 auto 16px',
             }}
           />
           <h3 style={{ fontSize: '18px', marginBottom: '8px' }}>No Ministries Yet</h3>
-          <p style={{ color: '#6b7280' }}>Click &quot;Create Ministry&quot; to add your first ministry group.</p>
+          <p style={{ color: '#9B9590' }}>Click &quot;Create Ministry&quot; to add your first ministry group.</p>
         </div>
       )}
 
@@ -710,20 +710,20 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
                         fontSize: '16px',
                         fontWeight: 'bold',
                         margin: '0 0 4px 0',
-                        color: '#111827',
+                        color: '#2D2A26',
                       }}
                     >
                       {ministry.name}
                     </h3>
                     {ministry.description && (
-                      <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>{ministry.description}</p>
+                      <p style={{ fontSize: '14px', color: '#9B9590', margin: 0 }}>{ministry.description}</p>
                     )}
                   </div>
                   <div style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
                     <button
                       onClick={() => handleEdit(ministry)}
                       style={{
-                        backgroundColor: '#3b82f6',
+                        backgroundColor: '#7B2D4E',
                         color: 'white',
                         border: 'none',
                         borderRadius: '4px',
@@ -765,10 +765,10 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
                     gap: '6px',
                     marginBottom: '8px',
                     fontSize: '14px',
-                    color: '#374151',
+                    color: '#6B6560',
                   }}
                 >
-                  <Users style={{ height: '14px', width: '14px', color: '#6b7280' }} />
+                  <Users style={{ height: '14px', width: '14px', color: '#9B9590' }} />
                   <span style={{ fontWeight: '500' }}>{ministry.leader}</span>
                   {ministry.leaderEmail && (
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -776,10 +776,10 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
                         style={{
                           height: '12px',
                           width: '12px',
-                          color: '#6b7280',
+                          color: '#9B9590',
                         }}
                       />
-                      <span style={{ color: '#6b7280', fontSize: '13px' }}>{ministry.leaderEmail}</span>
+                      <span style={{ color: '#9B9590', fontSize: '13px' }}>{ministry.leaderEmail}</span>
                     </span>
                   )}
                 </div>
@@ -792,12 +792,12 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
                     gap: '6px',
                     marginBottom: '12px',
                     fontSize: '14px',
-                    color: '#374151',
+                    color: '#6B6560',
                   }}
                 >
-                  <Calendar style={{ height: '14px', width: '14px', color: '#6b7280' }} />
+                  <Calendar style={{ height: '14px', width: '14px', color: '#9B9590' }} />
                   <span>{ministry.meetingDay}</span>
-                  <Clock style={{ height: '14px', width: '14px', color: '#6b7280' }} />
+                  <Clock style={{ height: '14px', width: '14px', color: '#9B9590' }} />
                   <span>{ministry.meetingTime}</span>
                 </div>
 
@@ -824,8 +824,8 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
                   </span>
                   <span
                     style={{
-                      backgroundColor: '#dbeafe',
-                      color: '#1d4ed8',
+                      backgroundColor: '#FAF5EF',
+                      color: '#7B2D4E',
                       padding: '2px 10px',
                       borderRadius: '12px',
                       fontSize: '12px',
@@ -866,7 +866,7 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
 
                 {/* Expandable member list */}
                 {(ministry.members || []).length > 0 && (
-                  <div style={{ borderTop: '1px solid #f3f4f6', paddingTop: '8px' }}>
+                  <div style={{ borderTop: '1px solid #F0E8DD', paddingTop: '8px' }}>
                     <button
                       onClick={() => toggleExpandMembers(ministry.id)}
                       style={{
@@ -877,7 +877,7 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
                         alignItems: 'center',
                         gap: '4px',
                         fontSize: '13px',
-                        color: '#6b7280',
+                        color: '#9B9590',
                         padding: '4px 0',
                         fontWeight: '500',
                       }}
@@ -896,7 +896,7 @@ const MinistriesView = ({ ministries, setMinistries, events, addNotification }) 
                             key={idx}
                             style={{
                               fontSize: '14px',
-                              color: '#374151',
+                              color: '#6B6560',
                               padding: '4px 0 4px 8px',
                               borderLeft: `2px solid ${ministry.color || '#8b5cf6'}`,
                               marginBottom: '4px',

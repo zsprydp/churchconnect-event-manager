@@ -52,7 +52,7 @@ const BookingsView = ({
     capacity: '',
     floor: '1st',
     amenities: [],
-    color: '#3b82f6',
+    color: '#7B2D4E',
   });
 
   const [newResource, setNewResource] = useState({
@@ -120,7 +120,7 @@ const BookingsView = ({
       color: newRoom.color,
     };
     setRooms((prev) => [...prev, room]);
-    setNewRoom({ name: '', capacity: '', floor: '1st', amenities: [], color: '#3b82f6' });
+    setNewRoom({ name: '', capacity: '', floor: '1st', amenities: [], color: '#7B2D4E' });
     setShowAddRoom(false);
     addNotification('Room added successfully!', 'success');
   }, [newRoom, setRooms, addNotification]);
@@ -289,7 +289,7 @@ const BookingsView = ({
   };
 
   const utilizationColor = (available, total) => {
-    if (total === 0) return '#6b7280';
+    if (total === 0) return '#9B9590';
     const ratio = available / total;
     if (ratio > 0.5) return '#10b981';
     if (ratio > 0) return '#f59e0b';
@@ -299,7 +299,7 @@ const BookingsView = ({
   const categoryBadgeColor = (cat) => {
     switch (cat) {
       case 'AV':
-        return { bg: '#dbeafe', text: '#1d4ed8' };
+        return { bg: '#FAF5EF', text: '#7B2D4E' };
       case 'Vehicle':
         return { bg: '#fef3c7', text: '#d97706' };
       case 'Furniture':
@@ -307,18 +307,18 @@ const BookingsView = ({
       case 'Kitchen':
         return { bg: '#fce7f3', text: '#be185d' };
       default:
-        return { bg: '#f3f4f6', text: '#374151' };
+        return { bg: '#F0E8DD', text: '#6B6560' };
     }
   };
 
-  const ROOM_COLORS = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ec4899', '#ef4444', '#06b6d4', '#f97316'];
+  const ROOM_COLORS = ['#7B2D4E', '#10b981', '#8b5cf6', '#f59e0b', '#ec4899', '#ef4444', '#06b6d4', '#f97316'];
 
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
         <div>
           <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: '0 0 4px 0' }}>Room &amp; Resource Booking</h2>
-          <p style={{ color: '#6b7280', margin: 0, fontSize: '14px' }}>
+          <p style={{ color: '#9B9590', margin: 0, fontSize: '14px' }}>
             {rooms.length} rooms • {resources.length} resources • {roomBookings.length} bookings
           </p>
         </div>
@@ -330,7 +330,7 @@ const BookingsView = ({
           display: 'flex',
           gap: '4px',
           marginBottom: '24px',
-          borderBottom: '2px solid #e5e7eb',
+          borderBottom: '2px solid #E8E0D8',
           paddingBottom: '0',
         }}
       >
@@ -348,9 +348,9 @@ const BookingsView = ({
               gap: '6px',
               padding: '10px 20px',
               border: 'none',
-              borderBottom: subTab === tab.id ? '2px solid #2563eb' : '2px solid transparent',
+              borderBottom: subTab === tab.id ? '2px solid #7B2D4E' : '2px solid transparent',
               backgroundColor: 'transparent',
-              color: subTab === tab.id ? '#2563eb' : '#6b7280',
+              color: subTab === tab.id ? '#7B2D4E' : '#9B9590',
               fontWeight: subTab === tab.id ? '600' : '400',
               cursor: 'pointer',
               fontSize: '14px',
@@ -373,7 +373,7 @@ const BookingsView = ({
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                backgroundColor: '#2563eb',
+                backgroundColor: '#7B2D4E',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',
@@ -397,7 +397,7 @@ const BookingsView = ({
                 padding: '20px',
                 marginBottom: '20px',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                border: '1px solid #e5e7eb',
+                border: '1px solid #E8E0D8',
               }}
             >
               <div
@@ -406,7 +406,7 @@ const BookingsView = ({
                 <h3 style={{ fontSize: '16px', fontWeight: 'bold', margin: 0 }}>New Room</h3>
                 <button
                   onClick={() => setShowAddRoom(false)}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280' }}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#9B9590' }}
                 >
                   <X style={{ height: '20px', width: '20px' }} />
                 </button>
@@ -419,7 +419,7 @@ const BookingsView = ({
                       fontSize: '13px',
                       fontWeight: '600',
                       marginBottom: '4px',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Name *
@@ -445,7 +445,7 @@ const BookingsView = ({
                       fontSize: '13px',
                       fontWeight: '600',
                       marginBottom: '4px',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Capacity *
@@ -473,7 +473,7 @@ const BookingsView = ({
                       fontSize: '13px',
                       fontWeight: '600',
                       marginBottom: '4px',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Floor
@@ -504,7 +504,7 @@ const BookingsView = ({
                     fontSize: '13px',
                     fontWeight: '600',
                     marginBottom: '4px',
-                    color: '#374151',
+                    color: '#6B6560',
                   }}
                 >
                   Color
@@ -519,7 +519,7 @@ const BookingsView = ({
                         height: '28px',
                         borderRadius: '50%',
                         backgroundColor: c,
-                        border: newRoom.color === c ? '3px solid #111827' : '2px solid #e5e7eb',
+                        border: newRoom.color === c ? '3px solid #2D2A26' : '2px solid #E8E0D8',
                         cursor: 'pointer',
                       }}
                     />
@@ -533,7 +533,7 @@ const BookingsView = ({
                     fontSize: '13px',
                     fontWeight: '600',
                     marginBottom: '6px',
-                    color: '#374151',
+                    color: '#6B6560',
                   }}
                 >
                   Amenities
@@ -547,9 +547,9 @@ const BookingsView = ({
                         padding: '4px 12px',
                         borderRadius: '16px',
                         border: '1px solid',
-                        borderColor: newRoom.amenities.includes(a) ? '#2563eb' : '#d1d5db',
-                        backgroundColor: newRoom.amenities.includes(a) ? '#dbeafe' : 'white',
-                        color: newRoom.amenities.includes(a) ? '#1d4ed8' : '#374151',
+                        borderColor: newRoom.amenities.includes(a) ? '#7B2D4E' : '#d1d5db',
+                        backgroundColor: newRoom.amenities.includes(a) ? '#FAF5EF' : 'white',
+                        color: newRoom.amenities.includes(a) ? '#7B2D4E' : '#6B6560',
                         cursor: 'pointer',
                         fontSize: '13px',
                         fontWeight: '500',
@@ -563,7 +563,7 @@ const BookingsView = ({
               <button
                 onClick={handleAddRoom}
                 style={{
-                  backgroundColor: '#2563eb',
+                  backgroundColor: '#7B2D4E',
                   color: 'white',
                   border: 'none',
                   borderRadius: '8px',
@@ -591,7 +591,7 @@ const BookingsView = ({
                     borderRadius: '12px',
                     overflow: 'hidden',
                     boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                    border: conflict ? '1px solid #fca5a5' : '1px solid #e5e7eb',
+                    border: conflict ? '1px solid #fca5a5' : '1px solid #E8E0D8',
                   }}
                 >
                   <div style={{ height: '4px', backgroundColor: room.color }} />
@@ -633,7 +633,7 @@ const BookingsView = ({
                       </button>
                     </div>
                     <div
-                      style={{ display: 'flex', gap: '12px', marginBottom: '10px', color: '#6b7280', fontSize: '13px' }}
+                      style={{ display: 'flex', gap: '12px', marginBottom: '10px', color: '#9B9590', fontSize: '13px' }}
                     >
                       <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                         <Users style={{ height: '14px', width: '14px' }} />
@@ -665,7 +665,7 @@ const BookingsView = ({
                     )}
                     {bookings.length > 0 ? (
                       <div>
-                        <p style={{ fontSize: '12px', fontWeight: '600', color: '#374151', marginBottom: '6px' }}>
+                        <p style={{ fontSize: '12px', fontWeight: '600', color: '#6B6560', marginBottom: '6px' }}>
                           Bookings ({bookings.length})
                         </p>
                         {bookings.slice(0, 3).map((b) => (
@@ -674,7 +674,7 @@ const BookingsView = ({
                             style={{
                               fontSize: '12px',
                               padding: '4px 8px',
-                              backgroundColor: '#f9fafb',
+                              backgroundColor: '#FAF5EF',
                               borderRadius: '4px',
                               marginBottom: '4px',
                               display: 'flex',
@@ -701,7 +701,7 @@ const BookingsView = ({
                           </div>
                         ))}
                         {bookings.length > 3 && (
-                          <p style={{ fontSize: '11px', color: '#6b7280', marginTop: '4px' }}>
+                          <p style={{ fontSize: '11px', color: '#9B9590', marginTop: '4px' }}>
                             +{bookings.length - 3} more
                           </p>
                         )}
@@ -735,7 +735,7 @@ const BookingsView = ({
           </div>
 
           {rooms.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '48px', color: '#6b7280' }}>
+            <div style={{ textAlign: 'center', padding: '48px', color: '#9B9590' }}>
               <Building style={{ height: '48px', width: '48px', margin: '0 auto 16px', color: '#9ca3af' }} />
               <h3 style={{ fontSize: '18px', marginBottom: '8px' }}>No Rooms Yet</h3>
               <p>Add your first room to start managing bookings</p>
@@ -749,7 +749,7 @@ const BookingsView = ({
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Filter style={{ height: '16px', width: '16px', color: '#6b7280' }} />
+              <Filter style={{ height: '16px', width: '16px', color: '#9B9590' }} />
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
@@ -775,7 +775,7 @@ const BookingsView = ({
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                backgroundColor: '#2563eb',
+                backgroundColor: '#7B2D4E',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',
@@ -799,7 +799,7 @@ const BookingsView = ({
                 padding: '20px',
                 marginBottom: '20px',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                border: '1px solid #e5e7eb',
+                border: '1px solid #E8E0D8',
               }}
             >
               <div
@@ -808,7 +808,7 @@ const BookingsView = ({
                 <h3 style={{ fontSize: '16px', fontWeight: 'bold', margin: 0 }}>New Resource</h3>
                 <button
                   onClick={() => setShowAddResource(false)}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280' }}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#9B9590' }}
                 >
                   <X style={{ height: '20px', width: '20px' }} />
                 </button>
@@ -821,7 +821,7 @@ const BookingsView = ({
                       fontSize: '13px',
                       fontWeight: '600',
                       marginBottom: '4px',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Name *
@@ -847,7 +847,7 @@ const BookingsView = ({
                       fontSize: '13px',
                       fontWeight: '600',
                       marginBottom: '4px',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Category
@@ -878,7 +878,7 @@ const BookingsView = ({
                       fontSize: '13px',
                       fontWeight: '600',
                       marginBottom: '4px',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Quantity
@@ -902,7 +902,7 @@ const BookingsView = ({
               <button
                 onClick={handleAddResource}
                 style={{
-                  backgroundColor: '#2563eb',
+                  backgroundColor: '#7B2D4E',
                   color: 'white',
                   border: 'none',
                   borderRadius: '8px',
@@ -924,19 +924,19 @@ const BookingsView = ({
               borderRadius: '12px',
               overflow: 'hidden',
               boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-              border: '1px solid #e5e7eb',
+              border: '1px solid #E8E0D8',
             }}
           >
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ backgroundColor: '#f9fafb' }}>
+                <tr style={{ backgroundColor: '#FAF5EF' }}>
                   <th
                     style={{
                       textAlign: 'left',
                       padding: '12px 16px',
                       fontSize: '13px',
                       fontWeight: '600',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Name
@@ -947,7 +947,7 @@ const BookingsView = ({
                       padding: '12px 16px',
                       fontSize: '13px',
                       fontWeight: '600',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Category
@@ -958,7 +958,7 @@ const BookingsView = ({
                       padding: '12px 16px',
                       fontSize: '13px',
                       fontWeight: '600',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Total
@@ -969,7 +969,7 @@ const BookingsView = ({
                       padding: '12px 16px',
                       fontSize: '13px',
                       fontWeight: '600',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Available
@@ -980,7 +980,7 @@ const BookingsView = ({
                       padding: '12px 16px',
                       fontSize: '13px',
                       fontWeight: '600',
-                      color: '#374151',
+                      color: '#6B6560',
                       minWidth: '120px',
                     }}
                   >
@@ -992,7 +992,7 @@ const BookingsView = ({
                       padding: '12px 16px',
                       fontSize: '13px',
                       fontWeight: '600',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Actions
@@ -1005,7 +1005,7 @@ const BookingsView = ({
                   const pct = resource.quantity > 0 ? (used / resource.quantity) * 100 : 0;
                   const badge = categoryBadgeColor(resource.category);
                   return (
-                    <tr key={resource.id} style={{ borderTop: '1px solid #e5e7eb' }}>
+                    <tr key={resource.id} style={{ borderTop: '1px solid #E8E0D8' }}>
                       <td style={{ padding: '12px 16px', fontSize: '14px', fontWeight: '500' }}>{resource.name}</td>
                       <td style={{ padding: '12px 16px' }}>
                         <span
@@ -1041,7 +1041,7 @@ const BookingsView = ({
                             style={{
                               flex: 1,
                               height: '8px',
-                              backgroundColor: '#e5e7eb',
+                              backgroundColor: '#E8E0D8',
                               borderRadius: '4px',
                               overflow: 'hidden',
                             }}
@@ -1056,7 +1056,7 @@ const BookingsView = ({
                               }}
                             />
                           </div>
-                          <span style={{ fontSize: '12px', color: '#6b7280', minWidth: '32px' }}>
+                          <span style={{ fontSize: '12px', color: '#9B9590', minWidth: '32px' }}>
                             {Math.round(pct)}%
                           </span>
                         </div>
@@ -1070,7 +1070,7 @@ const BookingsView = ({
                               padding: '4px 10px',
                               border: 'none',
                               borderRadius: '6px',
-                              backgroundColor: resource.available > 0 ? '#2563eb' : '#e5e7eb',
+                              backgroundColor: resource.available > 0 ? '#7B2D4E' : '#E8E0D8',
                               color: resource.available > 0 ? 'white' : '#9ca3af',
                               cursor: resource.available > 0 ? 'pointer' : 'not-allowed',
                               fontSize: '12px',
@@ -1085,10 +1085,10 @@ const BookingsView = ({
                             style={{
                               padding: '4px 10px',
                               border: '1px solid',
-                              borderColor: resource.available < resource.quantity ? '#d1d5db' : '#e5e7eb',
+                              borderColor: resource.available < resource.quantity ? '#d1d5db' : '#E8E0D8',
                               borderRadius: '6px',
                               backgroundColor: 'white',
-                              color: resource.available < resource.quantity ? '#374151' : '#9ca3af',
+                              color: resource.available < resource.quantity ? '#6B6560' : '#9ca3af',
                               cursor: resource.available < resource.quantity ? 'pointer' : 'not-allowed',
                               fontSize: '12px',
                               fontWeight: '600',
@@ -1104,7 +1104,7 @@ const BookingsView = ({
               </tbody>
             </table>
             {filteredResources.length === 0 && (
-              <div style={{ textAlign: 'center', padding: '32px', color: '#6b7280' }}>
+              <div style={{ textAlign: 'center', padding: '32px', color: '#9B9590' }}>
                 <Package style={{ height: '36px', width: '36px', margin: '0 auto 12px', color: '#9ca3af' }} />
                 <p style={{ margin: 0 }}>No resources found</p>
               </div>
@@ -1156,7 +1156,7 @@ const BookingsView = ({
                     backgroundColor: 'white',
                     cursor: 'pointer',
                     fontSize: '13px',
-                    color: '#374151',
+                    color: '#6B6560',
                   }}
                 >
                   Today
@@ -1169,7 +1169,7 @@ const BookingsView = ({
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                backgroundColor: '#2563eb',
+                backgroundColor: '#7B2D4E',
                 color: 'white',
                 border: 'none',
                 borderRadius: '8px',
@@ -1193,7 +1193,7 @@ const BookingsView = ({
                 padding: '20px',
                 marginBottom: '20px',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                border: '1px solid #e5e7eb',
+                border: '1px solid #E8E0D8',
               }}
             >
               <div
@@ -1202,7 +1202,7 @@ const BookingsView = ({
                 <h3 style={{ fontSize: '16px', fontWeight: 'bold', margin: 0 }}>New Booking</h3>
                 <button
                   onClick={() => setShowAddBooking(false)}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280' }}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#9B9590' }}
                 >
                   <X style={{ height: '20px', width: '20px' }} />
                 </button>
@@ -1222,7 +1222,7 @@ const BookingsView = ({
                       fontSize: '13px',
                       fontWeight: '600',
                       marginBottom: '4px',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Room *
@@ -1254,7 +1254,7 @@ const BookingsView = ({
                       fontSize: '13px',
                       fontWeight: '600',
                       marginBottom: '4px',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Event *
@@ -1286,7 +1286,7 @@ const BookingsView = ({
                       fontSize: '13px',
                       fontWeight: '600',
                       marginBottom: '4px',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Date *
@@ -1312,7 +1312,7 @@ const BookingsView = ({
                       fontSize: '13px',
                       fontWeight: '600',
                       marginBottom: '4px',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Start
@@ -1338,7 +1338,7 @@ const BookingsView = ({
                       fontSize: '13px',
                       fontWeight: '600',
                       marginBottom: '4px',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     End
@@ -1366,7 +1366,7 @@ const BookingsView = ({
                       fontSize: '13px',
                       fontWeight: '600',
                       marginBottom: '6px',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Resources (optional)
@@ -1380,9 +1380,9 @@ const BookingsView = ({
                           padding: '4px 12px',
                           borderRadius: '16px',
                           border: '1px solid',
-                          borderColor: newBooking.resources.includes(r.id) ? '#2563eb' : '#d1d5db',
-                          backgroundColor: newBooking.resources.includes(r.id) ? '#dbeafe' : 'white',
-                          color: newBooking.resources.includes(r.id) ? '#1d4ed8' : '#374151',
+                          borderColor: newBooking.resources.includes(r.id) ? '#7B2D4E' : '#d1d5db',
+                          backgroundColor: newBooking.resources.includes(r.id) ? '#FAF5EF' : 'white',
+                          color: newBooking.resources.includes(r.id) ? '#7B2D4E' : '#6B6560',
                           cursor: 'pointer',
                           fontSize: '13px',
                           fontWeight: '500',
@@ -1397,7 +1397,7 @@ const BookingsView = ({
               <button
                 onClick={handleAddBooking}
                 style={{
-                  backgroundColor: '#2563eb',
+                  backgroundColor: '#7B2D4E',
                   color: 'white',
                   border: 'none',
                   borderRadius: '8px',
@@ -1419,21 +1419,21 @@ const BookingsView = ({
               borderRadius: '12px',
               overflow: 'hidden',
               boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-              border: '1px solid #e5e7eb',
+              border: '1px solid #E8E0D8',
             }}
           >
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ backgroundColor: '#f9fafb' }}>
+                <tr style={{ backgroundColor: '#FAF5EF' }}>
                   <th
                     style={{
                       textAlign: 'left',
                       padding: '12px 16px',
                       fontSize: '13px',
                       fontWeight: '600',
-                      color: '#374151',
+                      color: '#6B6560',
                       width: '120px',
-                      borderRight: '1px solid #e5e7eb',
+                      borderRight: '1px solid #E8E0D8',
                     }}
                   >
                     Room
@@ -1448,13 +1448,13 @@ const BookingsView = ({
                           padding: '12px 8px',
                           fontSize: '13px',
                           fontWeight: '600',
-                          color: isToday ? '#2563eb' : '#374151',
-                          backgroundColor: isToday ? '#eff6ff' : '#f9fafb',
-                          borderRight: i < 6 ? '1px solid #e5e7eb' : 'none',
+                          color: isToday ? '#7B2D4E' : '#6B6560',
+                          backgroundColor: isToday ? '#eff6ff' : '#FAF5EF',
+                          borderRight: i < 6 ? '1px solid #E8E0D8' : 'none',
                         }}
                       >
                         <div>{dayNames[i]}</div>
-                        <div style={{ fontSize: '11px', fontWeight: '400', color: isToday ? '#2563eb' : '#6b7280' }}>
+                        <div style={{ fontSize: '11px', fontWeight: '400', color: isToday ? '#7B2D4E' : '#9B9590' }}>
                           {d.getDate()}
                         </div>
                       </th>
@@ -1464,14 +1464,14 @@ const BookingsView = ({
               </thead>
               <tbody>
                 {rooms.map((room) => (
-                  <tr key={room.id} style={{ borderTop: '1px solid #e5e7eb' }}>
+                  <tr key={room.id} style={{ borderTop: '1px solid #E8E0D8' }}>
                     <td
                       style={{
                         padding: '10px 16px',
                         fontSize: '13px',
                         fontWeight: '600',
-                        color: '#374151',
-                        borderRight: '1px solid #e5e7eb',
+                        color: '#6B6560',
+                        borderRight: '1px solid #E8E0D8',
                         backgroundColor: 'white',
                         verticalAlign: 'top',
                       }}
@@ -1499,7 +1499,7 @@ const BookingsView = ({
                           style={{
                             padding: '6px',
                             verticalAlign: 'top',
-                            borderRight: i < 6 ? '1px solid #e5e7eb' : 'none',
+                            borderRight: i < 6 ? '1px solid #E8E0D8' : 'none',
                             backgroundColor: conflict ? '#fef2f2' : 'white',
                             minHeight: '60px',
                           }}
@@ -1534,7 +1534,7 @@ const BookingsView = ({
                                   {b.eventName}
                                 </span>
                               </div>
-                              <div style={{ color: '#6b7280', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                              <div style={{ color: '#9B9590', display: 'flex', alignItems: 'center', gap: '2px' }}>
                                 <Clock style={{ height: '9px', width: '9px' }} />
                                 {b.startTime}-{b.endTime}
                               </div>
@@ -1548,7 +1548,7 @@ const BookingsView = ({
               </tbody>
             </table>
             {rooms.length === 0 && (
-              <div style={{ textAlign: 'center', padding: '32px', color: '#6b7280' }}>
+              <div style={{ textAlign: 'center', padding: '32px', color: '#9B9590' }}>
                 <Calendar style={{ height: '36px', width: '36px', margin: '0 auto 12px', color: '#9ca3af' }} />
                 <p style={{ margin: 0 }}>Add rooms to see the availability calendar</p>
               </div>
@@ -1564,14 +1564,14 @@ const BookingsView = ({
                 gap: '16px',
                 marginTop: '16px',
                 padding: '12px',
-                backgroundColor: '#f9fafb',
+                backgroundColor: '#FAF5EF',
                 borderRadius: '8px',
               }}
             >
               {rooms.map((r) => (
                 <div
                   key={r.id}
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#374151' }}
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#6B6560' }}
                 >
                   <span
                     style={{

@@ -1283,7 +1283,7 @@ export const SEED_MINISTRIES = [
     id: 9002,
     name: "Men's Fellowship",
     description: 'Bi-weekly Bible study and monthly service projects',
-    color: '#3b82f6',
+    color: '#7B2D4E',
     leader: 'James Wilson',
     leaderEmail: 'james.wilson@gracecc.org',
     members: ['John Smith', 'Michael Johnson', 'Wei Chen', 'Derek Brown', 'Carlos Garcia', 'Marcus Thompson'],
@@ -1339,7 +1339,7 @@ export const SEED_ROOMS = [
     capacity: 500,
     floor: '1st',
     amenities: ['Sound System', 'Projector', 'Stage', 'Baptismal', 'Piano'],
-    color: '#3b82f6',
+    color: '#7B2D4E',
   },
   {
     id: 9101,
@@ -1379,7 +1379,7 @@ export const SEED_ROOMS = [
     capacity: 30,
     floor: '1st',
     amenities: ['Commercial Oven', 'Refrigerator', 'Dishwasher', 'Prep Tables'],
-    color: '#6b7280',
+    color: '#9B9590',
   },
 ];
 

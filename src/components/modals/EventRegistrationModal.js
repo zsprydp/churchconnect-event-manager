@@ -60,13 +60,13 @@ const EventRegistrationModal = ({
           </button>
         </div>
 
-        <div style={{ marginBottom: '24px', padding: '16px', backgroundColor: '#f9fafb', borderRadius: '8px' }}>
-          <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#6b7280' }}>
+        <div style={{ marginBottom: '24px', padding: '16px', backgroundColor: '#FAF5EF', borderRadius: '8px' }}>
+          <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#9B9590' }}>
             <CalendarIcon style={{ height: '16px', width: '16px', display: 'inline', marginRight: '6px' }} />
             {formatEventDates(selectedEvent)}
           </p>
           {selectedEvent.location && (
-            <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#6b7280' }}>
+            <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#9B9590' }}>
               <MapPin style={{ height: '16px', width: '16px', display: 'inline', marginRight: '6px' }} />
               {selectedEvent.location}
             </p>
@@ -157,7 +157,7 @@ const EventRegistrationModal = ({
                 gap: '8px',
                 marginBottom: '8px',
                 padding: '8px',
-                backgroundColor: '#f9fafb',
+                backgroundColor: '#FAF5EF',
                 borderRadius: '4px',
               }}
             >
@@ -205,7 +205,7 @@ const EventRegistrationModal = ({
             <button
               onClick={addGroupMember}
               style={{
-                backgroundColor: '#3b82f6',
+                backgroundColor: '#7B2D4E',
                 color: 'white',
                 border: 'none',
                 borderRadius: '4px',
@@ -359,7 +359,7 @@ const EventRegistrationModal = ({
             style={{
               flex: 1,
               backgroundColor: 'white',
-              color: '#374151',
+              color: '#6B6560',
               padding: '10px',
               border: '1px solid #d1d5db',
               borderRadius: '4px',

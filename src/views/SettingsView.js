@@ -81,7 +81,7 @@ const SettingsView = ({ events, eventTemplates, addNotification, setShowCreateEv
           }}
         >
           {Object.entries(eventTemplates).map(([key, template]) => (
-            <div key={key} style={{ border: '1px solid #e5e7eb', borderRadius: '8px', padding: '16px' }}>
+            <div key={key} style={{ border: '1px solid #E8E0D8', borderRadius: '8px', padding: '16px' }}>
               <div
                 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '8px' }}
               >
@@ -108,12 +108,12 @@ const SettingsView = ({ events, eventTemplates, addNotification, setShowCreateEv
                   Delete
                 </button>
               </div>
-              <p style={{ fontSize: '12px', color: '#6b7280', marginBottom: '8px' }}>Type: {template.eventType}</p>
+              <p style={{ fontSize: '12px', color: '#9B9590', marginBottom: '8px' }}>Type: {template.eventType}</p>
               {template.customQuestions && template.customQuestions.length > 0 && (
                 <div>
                   <p style={{ fontSize: '12px', fontWeight: 'bold', marginBottom: '4px' }}>Questions:</p>
                   {template.customQuestions.map((q, index) => (
-                    <p key={index} style={{ fontSize: '11px', color: '#6b7280', marginLeft: '8px' }}>
+                    <p key={index} style={{ fontSize: '11px', color: '#9B9590', marginLeft: '8px' }}>
                       • {q.question} ({q.type})
                     </p>
                   ))}
@@ -126,7 +126,7 @@ const SettingsView = ({ events, eventTemplates, addNotification, setShowCreateEv
         <button
           onClick={() => setShowCreateEventTemplate(true)}
           style={{
-            backgroundColor: '#3b82f6',
+            backgroundColor: '#7B2D4E',
             color: 'white',
             border: 'none',
             borderRadius: '6px',
@@ -172,7 +172,7 @@ const SettingsView = ({ events, eventTemplates, addNotification, setShowCreateEv
               addNotification(`${archivedCount} events currently archived`, 'info');
             }}
             style={{
-              backgroundColor: '#6b7280',
+              backgroundColor: '#9B9590',
               color: 'white',
               border: 'none',
               borderRadius: '6px',
@@ -201,12 +201,12 @@ const SettingsView = ({ events, eventTemplates, addNotification, setShowCreateEv
         {/* Storage usage bar */}
         <div style={{ marginBottom: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <HardDrive style={{ height: '16px', width: '16px', color: '#6b7280' }} aria-hidden="true" />
-            <span style={{ fontSize: '14px', color: '#374151' }}>
+            <HardDrive style={{ height: '16px', width: '16px', color: '#9B9590' }} aria-hidden="true" />
+            <span style={{ fontSize: '14px', color: '#6B6560' }}>
               Storage: {formatBytes(storageUsed)} / {formatBytes(4.5 * 1024 * 1024)}
             </span>
           </div>
-          <div style={{ height: '8px', backgroundColor: '#e5e7eb', borderRadius: '4px', overflow: 'hidden' }}>
+          <div style={{ height: '8px', backgroundColor: '#E8E0D8', borderRadius: '4px', overflow: 'hidden' }}>
             <div
               style={{
                 height: '100%',
@@ -223,7 +223,7 @@ const SettingsView = ({ events, eventTemplates, addNotification, setShowCreateEv
           <button
             onClick={handleExport}
             style={{
-              backgroundColor: '#2563eb',
+              backgroundColor: '#7B2D4E',
               color: 'white',
               border: 'none',
               borderRadius: '6px',

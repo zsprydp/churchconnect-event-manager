@@ -49,7 +49,7 @@ const CreateTemplateModal = ({ newTemplate, setNewTemplate, onClose, onCreate, a
               padding: '8px',
             }}
           >
-            <X style={{ height: '20px', width: '20px', color: '#6b7280' }} />
+            <X style={{ height: '20px', width: '20px', color: '#9B9590' }} />
           </button>
         </div>
 
@@ -128,7 +128,7 @@ const CreateTemplateModal = ({ newTemplate, setNewTemplate, onClose, onCreate, a
               resize: 'vertical',
             }}
           />
-          <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px' }}>
+          <p style={{ fontSize: '12px', color: '#9B9590', marginTop: '4px' }}>
             Available variables: {'{name}'}, {'{event}'}, {'{date}'}, {'{location}'}, {'{time}'}
           </p>
         </div>
@@ -137,8 +137,8 @@ const CreateTemplateModal = ({ newTemplate, setNewTemplate, onClose, onCreate, a
           <button
             onClick={onClose}
             style={{
-              backgroundColor: '#f3f4f6',
-              color: '#374151',
+              backgroundColor: '#F0E8DD',
+              color: '#6B6560',
               border: 'none',
               borderRadius: '6px',
               padding: '12px 24px',

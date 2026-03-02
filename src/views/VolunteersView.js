@@ -172,7 +172,7 @@ const VolunteersView = ({
         <button
           onClick={() => setShowAddVolunteer(true)}
           style={{
-            backgroundColor: '#3b82f6',
+            backgroundColor: '#7B2D4E',
             color: 'white',
             padding: '10px 16px',
             borderRadius: '6px',
@@ -191,7 +191,7 @@ const VolunteersView = ({
 
       {/* Sub-tabs */}
       <div style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'flex', borderBottom: '1px solid #e5e7eb' }}>
+        <div style={{ display: 'flex', borderBottom: '1px solid #E8E0D8' }}>
           {[
             { id: 'roster', label: 'Roster', icon: Users },
             { id: 'scheduling', label: 'Scheduling', icon: Calendar },
@@ -207,8 +207,8 @@ const VolunteersView = ({
                   border: 'none',
                   backgroundColor: 'transparent',
                   cursor: 'pointer',
-                  borderBottom: activeSubTab === tab.id ? '2px solid #3b82f6' : 'none',
-                  color: activeSubTab === tab.id ? '#3b82f6' : '#6b7280',
+                  borderBottom: activeSubTab === tab.id ? '2px solid #7B2D4E' : 'none',
+                  color: activeSubTab === tab.id ? '#7B2D4E' : '#9B9590',
                   fontWeight: activeSubTab === tab.id ? 'bold' : 'normal',
                   display: 'flex',
                   alignItems: 'center',
@@ -238,7 +238,7 @@ const VolunteersView = ({
                   transform: 'translateY(-50%)',
                   height: '16px',
                   width: '16px',
-                  color: '#6b7280',
+                  color: '#9B9590',
                 }}
               />
               <input
@@ -275,7 +275,7 @@ const VolunteersView = ({
                   key={volunteer.id}
                   style={{
                     padding: '20px',
-                    borderBottom: index < volunteers.length - 1 ? '1px solid #e5e7eb' : 'none',
+                    borderBottom: index < volunteers.length - 1 ? '1px solid #E8E0D8' : 'none',
                   }}
                 >
                   <div
@@ -319,7 +319,7 @@ const VolunteersView = ({
                       <p
                         style={{
                           fontSize: '14px',
-                          color: '#6b7280',
+                          color: '#9B9590',
                           margin: '0 0 2px 0',
                         }}
                       >
@@ -329,7 +329,7 @@ const VolunteersView = ({
                         <p
                           style={{
                             fontSize: '14px',
-                            color: '#6b7280',
+                            color: '#9B9590',
                             margin: '0 0 8px 0',
                           }}
                         >
@@ -339,8 +339,8 @@ const VolunteersView = ({
                       <div style={{ display: 'flex', gap: '8px' }}>
                         <span
                           style={{
-                            backgroundColor: '#dbeafe',
-                            color: '#1d4ed8',
+                            backgroundColor: '#FAF5EF',
+                            color: '#7B2D4E',
                             padding: '2px 8px',
                             borderRadius: '12px',
                             fontSize: '12px',
@@ -351,8 +351,8 @@ const VolunteersView = ({
                         </span>
                         <span
                           style={{
-                            backgroundColor: volunteer.securityLevel === 'admin' ? '#fef3c7' : '#f3f4f6',
-                            color: volunteer.securityLevel === 'admin' ? '#d97706' : '#6b7280',
+                            backgroundColor: volunteer.securityLevel === 'admin' ? '#fef3c7' : '#F0E8DD',
+                            color: volunteer.securityLevel === 'admin' ? '#d97706' : '#9B9590',
                             padding: '2px 8px',
                             borderRadius: '12px',
                             fontSize: '12px',
@@ -380,7 +380,7 @@ const VolunteersView = ({
                             fontSize: '18px',
                             fontWeight: 'bold',
                             margin: '0',
-                            color: '#3b82f6',
+                            color: '#7B2D4E',
                           }}
                         >
                           {volunteerEvents.length}
@@ -388,7 +388,7 @@ const VolunteersView = ({
                         <p
                           style={{
                             fontSize: '12px',
-                            color: '#6b7280',
+                            color: '#9B9590',
                             margin: '2px 0 0 0',
                           }}
                         >
@@ -406,7 +406,7 @@ const VolunteersView = ({
                             }
                           }}
                           style={{
-                            backgroundColor: '#3b82f6',
+                            backgroundColor: '#7B2D4E',
                             color: 'white',
                             border: 'none',
                             borderRadius: '4px',
@@ -462,7 +462,7 @@ const VolunteersView = ({
                           key={event.id}
                           style={{
                             fontSize: '12px',
-                            color: '#6b7280',
+                            color: '#9B9590',
                             marginBottom: '2px',
                           }}
                         >
@@ -541,7 +541,7 @@ const VolunteersView = ({
                     <div
                       style={{
                         padding: '16px 20px',
-                        borderBottom: '1px solid #e5e7eb',
+                        borderBottom: '1px solid #E8E0D8',
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
@@ -560,7 +560,7 @@ const VolunteersView = ({
                         <p
                           style={{
                             fontSize: '13px',
-                            color: '#6b7280',
+                            color: '#9B9590',
                             margin: 0,
                           }}
                         >
@@ -585,7 +585,7 @@ const VolunteersView = ({
                         <button
                           onClick={() => handleAddRequiredRole(event.id)}
                           style={{
-                            backgroundColor: '#3b82f6',
+                            backgroundColor: '#7B2D4E',
                             color: 'white',
                             border: 'none',
                             borderRadius: '4px',
@@ -630,7 +630,7 @@ const VolunteersView = ({
                               <div
                                 key={roleIndex}
                                 style={{
-                                  border: '1px solid #e5e7eb',
+                                  border: '1px solid #E8E0D8',
                                   borderRadius: '6px',
                                   padding: '12px',
                                   borderLeft: `4px solid ${staffColor}`,
@@ -662,7 +662,7 @@ const VolunteersView = ({
                                     <span
                                       style={{
                                         fontSize: '12px',
-                                        color: '#6b7280',
+                                        color: '#9B9590',
                                       }}
                                     >
                                       ({assignedCount}/{role.needed} filled)
@@ -702,8 +702,8 @@ const VolunteersView = ({
                                       <span
                                         key={vid}
                                         style={{
-                                          backgroundColor: '#dbeafe',
-                                          color: '#1d4ed8',
+                                          backgroundColor: '#FAF5EF',
+                                          color: '#7B2D4E',
                                           padding: '4px 10px',
                                           borderRadius: '12px',
                                           fontSize: '12px',
@@ -724,7 +724,7 @@ const VolunteersView = ({
                                           style={{
                                             background: 'none',
                                             border: 'none',
-                                            color: '#1d4ed8',
+                                            color: '#7B2D4E',
                                             cursor: 'pointer',
                                             padding: '0 0 0 2px',
                                             fontSize: '14px',
@@ -769,7 +769,7 @@ const VolunteersView = ({
                                         border: '1px solid #d1d5db',
                                         borderRadius: '4px',
                                         fontSize: '12px',
-                                        color: '#374151',
+                                        color: '#6B6560',
                                       }}
                                     >
                                       <option value="" disabled>
@@ -813,14 +813,14 @@ const VolunteersView = ({
             <div
               style={{
                 padding: '16px 20px',
-                borderBottom: '1px solid #e5e7eb',
+                borderBottom: '1px solid #E8E0D8',
               }}
             >
               <h3 style={{ fontSize: '16px', fontWeight: 'bold', margin: 0 }}>Weekly Availability</h3>
               <p
                 style={{
                   fontSize: '13px',
-                  color: '#6b7280',
+                  color: '#9B9590',
                   margin: '4px 0 0 0',
                 }}
               >
@@ -844,9 +844,9 @@ const VolunteersView = ({
                         textAlign: 'left',
                         fontSize: '13px',
                         fontWeight: 'bold',
-                        color: '#374151',
-                        borderBottom: '1px solid #e5e7eb',
-                        backgroundColor: '#f9fafb',
+                        color: '#6B6560',
+                        borderBottom: '1px solid #E8E0D8',
+                        backgroundColor: '#FAF5EF',
                       }}
                     >
                       Volunteer
@@ -859,9 +859,9 @@ const VolunteersView = ({
                           textAlign: 'center',
                           fontSize: '13px',
                           fontWeight: 'bold',
-                          color: '#374151',
-                          borderBottom: '1px solid #e5e7eb',
-                          backgroundColor: '#f9fafb',
+                          color: '#6B6560',
+                          borderBottom: '1px solid #E8E0D8',
+                          backgroundColor: '#FAF5EF',
                           minWidth: '60px',
                         }}
                       >
@@ -880,7 +880,7 @@ const VolunteersView = ({
                             padding: '12px 16px',
                             fontSize: '14px',
                             fontWeight: '500',
-                            borderBottom: '1px solid #e5e7eb',
+                            borderBottom: '1px solid #E8E0D8',
                           }}
                         >
                           {volunteer.name}
@@ -894,9 +894,9 @@ const VolunteersView = ({
                               style={{
                                 padding: '12px 16px',
                                 textAlign: 'center',
-                                borderBottom: '1px solid #e5e7eb',
+                                borderBottom: '1px solid #E8E0D8',
                                 cursor: 'pointer',
-                                backgroundColor: isAvailable ? '#d1fae5' : '#f3f4f6',
+                                backgroundColor: isAvailable ? '#d1fae5' : '#F0E8DD',
                                 transition: 'background-color 0.2s',
                               }}
                               title={isAvailable ? 'Available' : 'Unavailable'}

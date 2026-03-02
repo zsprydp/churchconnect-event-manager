@@ -53,14 +53,14 @@ const AuthScreen = () => {
             style={{
               fontSize: '24px',
               fontWeight: '700',
-              color: '#111827',
+              color: '#2D2A26',
               margin: '0 0 4px',
               fontFamily: "'Lora', Georgia, serif",
             }}
           >
             Coveyly
           </h1>
-          <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
+          <p style={{ fontSize: '14px', color: '#9B9590', margin: 0 }}>
             {mode === 'login' ? 'Sign in to your account' : 'Create a new account'}
           </p>
         </div>
@@ -69,7 +69,7 @@ const AuthScreen = () => {
           {mode === 'register' && (
             <div style={{ marginBottom: '16px' }}>
               <label
-                style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '6px', color: '#374151' }}
+                style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '6px', color: '#6B6560' }}
               >
                 Full Name
               </label>
@@ -93,7 +93,7 @@ const AuthScreen = () => {
 
           <div style={{ marginBottom: '16px' }}>
             <label
-              style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '6px', color: '#374151' }}
+              style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '6px', color: '#6B6560' }}
             >
               Email
             </label>
@@ -116,7 +116,7 @@ const AuthScreen = () => {
 
           <div style={{ marginBottom: '24px' }}>
             <label
-              style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '6px', color: '#374151' }}
+              style={{ display: 'block', fontSize: '14px', fontWeight: '500', marginBottom: '6px', color: '#6B6560' }}
             >
               Password
             </label>

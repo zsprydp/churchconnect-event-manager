@@ -4,7 +4,7 @@ import { PlayCircle, Search, Plus, Eye, X, Youtube, Headphones, FileText, Film, 
 const TYPE_COLORS = {
   sermon: { bg: '#f3e8ff', text: '#7c3aed', border: '#ddd6fe', accent: '#8b5cf6' },
   video: { bg: '#fef2f2', text: '#dc2626', border: '#fecaca', accent: '#ef4444' },
-  document: { bg: '#eff6ff', text: '#2563eb', border: '#bfdbfe', accent: '#3b82f6' },
+  document: { bg: '#eff6ff', text: '#7B2D4E', border: '#E8E0D8', accent: '#7B2D4E' },
 };
 
 const TYPE_ICONS = {
@@ -208,7 +208,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
             <PlayCircle style={{ height: '28px', width: '28px', color: '#7c3aed' }} />
             <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0 }}>Media Library</h2>
           </div>
-          <p style={{ fontSize: '14px', color: '#6b7280', margin: '4px 0 0 40px' }}>
+          <p style={{ fontSize: '14px', color: '#9B9590', margin: '4px 0 0 40px' }}>
             Sermons, recordings, and resources
           </p>
         </div>
@@ -292,7 +292,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                 borderColor: typeFilter === btn.value ? '#7c3aed' : '#d1d5db',
                 borderRadius: '6px',
                 backgroundColor: typeFilter === btn.value ? '#f3e8ff' : 'white',
-                color: typeFilter === btn.value ? '#7c3aed' : '#374151',
+                color: typeFilter === btn.value ? '#7c3aed' : '#6B6560',
                 cursor: 'pointer',
                 fontSize: '13px',
                 fontWeight: typeFilter === btn.value ? '600' : '400',
@@ -389,7 +389,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
               )}
             </div>
             <h3 style={{ fontSize: '22px', fontWeight: 'bold', margin: '0 0 6px 0' }}>{latestMedia.title}</h3>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', color: '#6b7280', fontSize: '14px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', color: '#9B9590', fontSize: '14px' }}>
               {latestMedia.speaker && <span>{latestMedia.speaker}</span>}
               <span>{formatDate(latestMedia.date)}</span>
               <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -398,7 +398,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
               </span>
             </div>
             {latestMedia.description && (
-              <p style={{ color: '#6b7280', fontSize: '14px', margin: '10px 0 0 0', lineHeight: '1.5' }}>
+              <p style={{ color: '#9B9590', fontSize: '14px', margin: '10px 0 0 0', lineHeight: '1.5' }}>
                 {latestMedia.description}
               </p>
             )}
@@ -444,7 +444,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                       gap: '8px',
                       marginBottom: '8px',
                       fontSize: '13px',
-                      color: '#6b7280',
+                      color: '#9B9590',
                     }}
                   >
                     {item.speaker && <span>{item.speaker}</span>}
@@ -475,8 +475,8 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                         <span
                           key={tag}
                           style={{
-                            backgroundColor: '#f3f4f6',
-                            color: '#6b7280',
+                            backgroundColor: '#F0E8DD',
+                            color: '#9B9590',
                             padding: '2px 8px',
                             borderRadius: '8px',
                             fontSize: '11px',
@@ -577,7 +577,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                           alignItems: 'center',
                           gap: '4px',
                           backgroundColor: '#eff6ff',
-                          color: '#2563eb',
+                          color: '#7B2D4E',
                           padding: '6px 10px',
                           borderRadius: '6px',
                           fontSize: '12px',
@@ -598,9 +598,9 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
       ) : (
         !latestMedia && (
           <div style={{ textAlign: 'center', paddingTop: '48px' }}>
-            <Film style={{ height: '48px', width: '48px', color: '#6b7280', margin: '0 auto 16px' }} />
+            <Film style={{ height: '48px', width: '48px', color: '#9B9590', margin: '0 auto 16px' }} />
             <h3 style={{ fontSize: '18px', marginBottom: '8px' }}>No Media Items</h3>
-            <p style={{ color: '#6b7280' }}>Add sermons, videos, and documents to build your media library.</p>
+            <p style={{ color: '#9B9590' }}>Add sermons, videos, and documents to build your media library.</p>
           </div>
         )
       )}
@@ -640,7 +640,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                 onClick={() => setShowAddForm(false)}
                 style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }}
               >
-                <X style={{ height: '20px', width: '20px', color: '#6b7280' }} />
+                <X style={{ height: '20px', width: '20px', color: '#9B9590' }} />
               </button>
             </div>
 
@@ -653,7 +653,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                     fontSize: '13px',
                     fontWeight: '600',
                     marginBottom: '4px',
-                    color: '#374151',
+                    color: '#6B6560',
                   }}
                 >
                   Title *
@@ -683,7 +683,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                       fontSize: '13px',
                       fontWeight: '600',
                       marginBottom: '4px',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Type
@@ -712,7 +712,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                       fontSize: '13px',
                       fontWeight: '600',
                       marginBottom: '4px',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     Date
@@ -741,7 +741,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                     fontSize: '13px',
                     fontWeight: '600',
                     marginBottom: '4px',
-                    color: '#374151',
+                    color: '#6B6560',
                   }}
                 >
                   Speaker
@@ -770,7 +770,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                     fontSize: '13px',
                     fontWeight: '600',
                     marginBottom: '4px',
-                    color: '#374151',
+                    color: '#6B6560',
                   }}
                 >
                   Description
@@ -800,7 +800,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                     fontSize: '13px',
                     fontWeight: '600',
                     marginBottom: '4px',
-                    color: '#374151',
+                    color: '#6B6560',
                   }}
                 >
                   YouTube URL
@@ -827,7 +827,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                     fontSize: '13px',
                     fontWeight: '600',
                     marginBottom: '4px',
-                    color: '#374151',
+                    color: '#6B6560',
                   }}
                 >
                   Audio URL
@@ -854,7 +854,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                     fontSize: '13px',
                     fontWeight: '600',
                     marginBottom: '4px',
-                    color: '#374151',
+                    color: '#6B6560',
                   }}
                 >
                   Notes / PDF URL
@@ -883,7 +883,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                     fontSize: '13px',
                     fontWeight: '600',
                     marginBottom: '4px',
-                    color: '#374151',
+                    color: '#6B6560',
                   }}
                 >
                   Tags (comma-separated)
@@ -912,7 +912,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                     fontSize: '13px',
                     fontWeight: '600',
                     marginBottom: '4px',
-                    color: '#374151',
+                    color: '#6B6560',
                   }}
                 >
                   Series
@@ -947,7 +947,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                     fontSize: '13px',
                     fontWeight: '600',
                     marginBottom: '4px',
-                    color: '#374151',
+                    color: '#6B6560',
                   }}
                 >
                   Link to Event
@@ -981,7 +981,7 @@ const MediaView = ({ mediaItems, setMediaItems, events, addNotification }) => {
                     border: '1px solid #d1d5db',
                     borderRadius: '8px',
                     backgroundColor: 'white',
-                    color: '#374151',
+                    color: '#6B6560',
                     cursor: 'pointer',
                     fontSize: '14px',
                     fontWeight: '500',

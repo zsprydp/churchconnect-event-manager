@@ -23,7 +23,7 @@ import {
 
 const TRIGGER_META = {
   first_checkin: { label: 'First Check-in', icon: UserCheck, color: '#8b5cf6' },
-  registration: { label: 'Registration', icon: ClipboardList, color: '#3b82f6' },
+  registration: { label: 'Registration', icon: ClipboardList, color: '#7B2D4E' },
   absent_weeks: { label: 'Absent Member', icon: Clock, color: '#f59e0b' },
   event_upcoming: { label: 'Upcoming Event', icon: CalendarClock, color: '#10b981' },
 };
@@ -106,7 +106,7 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
       case 'scheduled':
         return <Clock style={{ height: '14px', width: '14px', color: '#f59e0b' }} />;
       default:
-        return <AlertCircle style={{ height: '14px', width: '14px', color: '#6b7280' }} />;
+        return <AlertCircle style={{ height: '14px', width: '14px', color: '#9B9590' }} />;
     }
   };
 
@@ -119,7 +119,7 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
       case 'scheduled':
         return { bg: '#fef3c7', color: '#d97706' };
       default:
-        return { bg: '#f3f4f6', color: '#6b7280' };
+        return { bg: '#F0E8DD', color: '#9B9590' };
     }
   };
 
@@ -139,7 +139,7 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
             <Zap style={{ height: '28px', width: '28px', color: '#f59e0b' }} />
             <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0 }}>Automations</h2>
           </div>
-          <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
+          <p style={{ fontSize: '14px', color: '#9B9590', margin: 0 }}>
             Automated workflows that run when events happen
           </p>
         </div>
@@ -170,7 +170,7 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
           const trigger = TRIGGER_META[workflow.trigger] || {
             label: workflow.trigger,
             icon: Zap,
-            color: '#6b7280',
+            color: '#9B9590',
           };
           const TriggerIcon = trigger.icon;
           const isExpanded = expandedWorkflow === workflow.id;
@@ -184,7 +184,7 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
                 backgroundColor: 'white',
                 borderRadius: '12px',
                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                border: `2px solid ${workflow.enabled ? trigger.color + '33' : '#e5e7eb'}`,
+                border: `2px solid ${workflow.enabled ? trigger.color + '33' : '#E8E0D8'}`,
                 overflow: 'hidden',
                 opacity: workflow.enabled ? 1 : 0.7,
                 transition: 'all 0.2s',
@@ -224,11 +224,11 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
                     >
                       {trigger.label}
                     </span>
-                    <span style={{ fontSize: '13px', color: '#6b7280' }}>
+                    <span style={{ fontSize: '13px', color: '#9B9590' }}>
                       {workflow.actions.length} action{workflow.actions.length !== 1 ? 's' : ''}
                     </span>
                     {workflow.triggerValue !== undefined && (
-                      <span style={{ fontSize: '13px', color: '#6b7280' }}>
+                      <span style={{ fontSize: '13px', color: '#9B9590' }}>
                         &middot;{' '}
                         {workflow.trigger === 'absent_weeks'
                           ? `${workflow.triggerValue} weeks`
@@ -245,7 +245,7 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
                     disabled={isRunning || !workflow.enabled}
                     style={{
                       backgroundColor: isRunning ? '#d1d5db' : '#fef3c7',
-                      color: isRunning ? '#6b7280' : '#92400e',
+                      color: isRunning ? '#9B9590' : '#92400e',
                       border: 'none',
                       borderRadius: '8px',
                       padding: '8px 14px',
@@ -301,7 +301,7 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
                       border: 'none',
                       cursor: 'pointer',
                       padding: '4px',
-                      color: '#6b7280',
+                      color: '#9B9590',
                     }}
                   >
                     {isExpanded ? (
@@ -315,9 +315,9 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
 
               {/* Expanded Content */}
               {isExpanded && (
-                <div style={{ borderTop: '1px solid #e5e7eb', padding: '20px', backgroundColor: '#fafafa' }}>
+                <div style={{ borderTop: '1px solid #E8E0D8', padding: '20px', backgroundColor: '#fafafa' }}>
                   {/* Action Steps */}
-                  <h4 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '12px', color: '#374151' }}>
+                  <h4 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '12px', color: '#6B6560' }}>
                     Workflow Steps
                   </h4>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
@@ -331,7 +331,7 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
                           padding: '12px 16px',
                           backgroundColor: 'white',
                           borderRadius: '8px',
-                          border: '1px solid #e5e7eb',
+                          border: '1px solid #E8E0D8',
                         }}
                       >
                         <div
@@ -356,13 +356,13 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
                             {action.type === 'send_email' ? `Send Email: ${action.template}` : 'Notify Staff'}
                           </span>
                           {action.delay > 0 && (
-                            <span style={{ fontSize: '12px', color: '#6b7280', marginLeft: '8px' }}>
+                            <span style={{ fontSize: '12px', color: '#9B9590', marginLeft: '8px' }}>
                               (after {action.delay} day{action.delay !== 1 ? 's' : ''})
                             </span>
                           )}
                         </div>
                         {action.type === 'notify_staff' && action.message && (
-                          <span style={{ fontSize: '12px', color: '#6b7280', fontStyle: 'italic' }}>
+                          <span style={{ fontSize: '12px', color: '#9B9590', fontStyle: 'italic' }}>
                             &quot;{action.message}&quot;
                           </span>
                         )}
@@ -377,7 +377,7 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
                         onClick={() => setEditingWorkflow(isEditing ? null : workflow.id)}
                         style={{
                           backgroundColor: 'transparent',
-                          color: '#6b7280',
+                          color: '#9B9590',
                           border: '1px solid #d1d5db',
                           borderRadius: '6px',
                           padding: '6px 14px',
@@ -395,7 +395,7 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
                             padding: '16px',
                             backgroundColor: 'white',
                             borderRadius: '8px',
-                            border: '1px solid #e5e7eb',
+                            border: '1px solid #E8E0D8',
                           }}
                         >
                           <label
@@ -446,7 +446,7 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
         <div
           style={{
             padding: '20px',
-            borderBottom: '1px solid #e5e7eb',
+            borderBottom: '1px solid #E8E0D8',
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
@@ -457,7 +457,7 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
           <span
             style={{
               fontSize: '13px',
-              color: '#6b7280',
+              color: '#9B9590',
               marginLeft: '4px',
             }}
           >
@@ -468,7 +468,7 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
         {activityLog.length === 0 ? (
           <div style={{ padding: '40px', textAlign: 'center' }}>
             <Zap style={{ height: '40px', width: '40px', color: '#d1d5db', margin: '0 auto 12px' }} />
-            <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
+            <p style={{ fontSize: '14px', color: '#9B9590', margin: 0 }}>
               No workflow activity yet. Run a test to see results here.
             </p>
           </div>
@@ -481,7 +481,7 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
                   key={entry.id}
                   style={{
                     padding: '14px 20px',
-                    borderBottom: '1px solid #f3f4f6',
+                    borderBottom: '1px solid #F0E8DD',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '12px',
@@ -504,7 +504,7 @@ const WorkflowsView = ({ addNotification, attendees, events, volunteers }) => {
                         {entry.status}
                       </span>
                     </div>
-                    <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                    <div style={{ fontSize: '12px', color: '#9B9590' }}>
                       {entry.actionType === 'send_email' ? 'Email' : 'Staff Notification'} &rarr; {entry.recipient}
                       {entry.detail && <span> &middot; {entry.detail}</span>}
                     </div>

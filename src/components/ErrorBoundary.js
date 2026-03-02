@@ -28,7 +28,7 @@ class ErrorBoundary extends React.Component {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#f9fafb',
+            backgroundColor: '#FAF5EF',
             padding: '24px',
           }}
         >
@@ -48,7 +48,7 @@ class ErrorBoundary extends React.Component {
               style={{
                 fontSize: '20px',
                 fontWeight: '600',
-                color: '#111827',
+                color: '#2D2A26',
                 marginBottom: '8px',
               }}
             >
@@ -57,7 +57,7 @@ class ErrorBoundary extends React.Component {
             <p
               style={{
                 fontSize: '14px',
-                color: '#6b7280',
+                color: '#9B9590',
                 marginBottom: '24px',
                 lineHeight: '1.5',
               }}

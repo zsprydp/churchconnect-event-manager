@@ -24,18 +24,18 @@ import {
 } from '../services/stripeService';
 
 const CAMPAIGNS = [
-  { value: 'General Fund', color: '#3b82f6' },
+  { value: 'General Fund', color: '#7B2D4E' },
   { value: 'Building Fund', color: '#10b981' },
   { value: 'Youth Ministry', color: '#8b5cf6' },
   { value: 'Missions', color: '#f97316' },
-  { value: 'Other', color: '#6b7280' },
+  { value: 'Other', color: '#9B9590' },
 ];
 
 const PRESET_AMOUNTS = [25, 50, 100, 250, 500];
 
 const getCampaignColor = (campaign) => {
   const found = CAMPAIGNS.find((c) => c.value === campaign);
-  return found ? found.color : '#6b7280';
+  return found ? found.color : '#9B9590';
 };
 
 const GivingView = ({ donations, setDonations, payments, setPayments, events, addNotification }) => {
@@ -246,7 +246,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
 
       {/* Sub-tabs */}
       <div style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'flex', borderBottom: '1px solid #e5e7eb' }}>
+        <div style={{ display: 'flex', borderBottom: '1px solid #E8E0D8' }}>
           {[
             { id: 'give', label: 'Give', icon: Heart },
             { id: 'history', label: 'History', icon: Clock },
@@ -262,8 +262,8 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                   border: 'none',
                   backgroundColor: 'transparent',
                   cursor: 'pointer',
-                  borderBottom: activeSubTab === tab.id ? '2px solid #3b82f6' : 'none',
-                  color: activeSubTab === tab.id ? '#3b82f6' : '#6b7280',
+                  borderBottom: activeSubTab === tab.id ? '2px solid #7B2D4E' : 'none',
+                  color: activeSubTab === tab.id ? '#7B2D4E' : '#9B9590',
                   fontWeight: activeSubTab === tab.id ? 'bold' : 'normal',
                   display: 'flex',
                   alignItems: 'center',
@@ -305,7 +305,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                 }}
               />
               <h3 style={{ fontSize: '22px', fontWeight: 'bold', margin: '0 0 4px 0' }}>Make a Gift</h3>
-              <p style={{ color: '#6b7280', margin: 0, fontSize: '14px' }}>Your generosity makes a difference</p>
+              <p style={{ color: '#9B9590', margin: 0, fontSize: '14px' }}>Your generosity makes a difference</p>
             </div>
 
             {/* Preset amounts */}
@@ -316,7 +316,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                   fontSize: '14px',
                   fontWeight: '600',
                   marginBottom: '10px',
-                  color: '#374151',
+                  color: '#6B6560',
                 }}
               >
                 Select Amount
@@ -338,9 +338,9 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                     style={{
                       padding: '14px 8px',
                       borderRadius: '10px',
-                      border: selectedAmount === amt ? '2px solid #3b82f6' : '2px solid #e5e7eb',
-                      backgroundColor: selectedAmount === amt ? '#dbeafe' : 'white',
-                      color: selectedAmount === amt ? '#1d4ed8' : '#374151',
+                      border: selectedAmount === amt ? '2px solid #7B2D4E' : '2px solid #E8E0D8',
+                      backgroundColor: selectedAmount === amt ? '#FAF5EF' : 'white',
+                      color: selectedAmount === amt ? '#7B2D4E' : '#6B6560',
                       cursor: 'pointer',
                       fontSize: '18px',
                       fontWeight: 'bold',
@@ -355,9 +355,9 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                   style={{
                     padding: '14px 8px',
                     borderRadius: '10px',
-                    border: selectedAmount === 'custom' ? '2px solid #3b82f6' : '2px solid #e5e7eb',
-                    backgroundColor: selectedAmount === 'custom' ? '#dbeafe' : 'white',
-                    color: selectedAmount === 'custom' ? '#1d4ed8' : '#374151',
+                    border: selectedAmount === 'custom' ? '2px solid #7B2D4E' : '2px solid #E8E0D8',
+                    backgroundColor: selectedAmount === 'custom' ? '#FAF5EF' : 'white',
+                    color: selectedAmount === 'custom' ? '#7B2D4E' : '#6B6560',
                     cursor: 'pointer',
                     fontSize: '14px',
                     fontWeight: 'bold',
@@ -376,7 +376,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                       transform: 'translateY(-50%)',
                       height: '18px',
                       width: '18px',
-                      color: '#6b7280',
+                      color: '#9B9590',
                     }}
                   />
                   <input
@@ -409,7 +409,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                   fontSize: '14px',
                   fontWeight: '600',
                   marginBottom: '6px',
-                  color: '#374151',
+                  color: '#6B6560',
                 }}
               >
                 Campaign
@@ -453,7 +453,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                   alignItems: 'center',
                   gap: '10px',
                   background: 'none',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid #E8E0D8',
                   borderRadius: '8px',
                   padding: '10px 14px',
                   cursor: 'pointer',
@@ -462,11 +462,11 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                 }}
               >
                 {isRecurring ? (
-                  <ToggleRight style={{ height: '22px', width: '22px', color: '#3b82f6' }} />
+                  <ToggleRight style={{ height: '22px', width: '22px', color: '#7B2D4E' }} />
                 ) : (
                   <ToggleLeft style={{ height: '22px', width: '22px', color: '#9ca3af' }} />
                 )}
-                <span style={{ fontSize: '14px', color: '#374151' }}>Make this a recurring gift (monthly)</span>
+                <span style={{ fontSize: '14px', color: '#6B6560' }}>Make this a recurring gift (monthly)</span>
               </button>
               <button
                 onClick={() => setIsAnonymous((prev) => !prev)}
@@ -476,7 +476,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                   alignItems: 'center',
                   gap: '10px',
                   background: 'none',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid #E8E0D8',
                   borderRadius: '8px',
                   padding: '10px 14px',
                   cursor: 'pointer',
@@ -485,11 +485,11 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                 }}
               >
                 {isAnonymous ? (
-                  <ToggleRight style={{ height: '22px', width: '22px', color: '#3b82f6' }} />
+                  <ToggleRight style={{ height: '22px', width: '22px', color: '#7B2D4E' }} />
                 ) : (
                   <ToggleLeft style={{ height: '22px', width: '22px', color: '#9ca3af' }} />
                 )}
-                <span style={{ fontSize: '14px', color: '#374151' }}>Give anonymously</span>
+                <span style={{ fontSize: '14px', color: '#6B6560' }}>Give anonymously</span>
               </button>
             </div>
 
@@ -504,7 +504,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                       fontSize: '13px',
                       fontWeight: '600',
                       marginBottom: '4px',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     <User
@@ -542,7 +542,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                       fontSize: '13px',
                       fontWeight: '600',
                       marginBottom: '4px',
-                      color: '#374151',
+                      color: '#6B6560',
                     }}
                   >
                     <Mail
@@ -584,7 +584,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                   fontSize: '13px',
                   fontWeight: '600',
                   marginBottom: '4px',
-                  color: '#374151',
+                  color: '#6B6560',
                 }}
               >
                 <MessageSquare
@@ -626,7 +626,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                 padding: '16px',
                 borderRadius: '10px',
                 border: 'none',
-                backgroundColor: isProcessing || getAmount() <= 0 ? '#93c5fd' : '#3b82f6',
+                backgroundColor: isProcessing || getAmount() <= 0 ? '#93c5fd' : '#7B2D4E',
                 color: 'white',
                 fontSize: '18px',
                 fontWeight: 'bold',
@@ -665,7 +665,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
             }}
           >
             <div>
-              <p style={{ fontSize: '14px', color: '#6b7280', margin: '0 0 4px 0' }}>Total Giving</p>
+              <p style={{ fontSize: '14px', color: '#9B9590', margin: '0 0 4px 0' }}>Total Giving</p>
               <p
                 style={{
                   fontSize: '28px',
@@ -686,7 +686,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                backgroundColor: '#3b82f6',
+                backgroundColor: '#7B2D4E',
                 color: 'white',
                 padding: '10px 16px',
                 borderRadius: '8px',
@@ -719,7 +719,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                   transform: 'translateY(-50%)',
                   height: '16px',
                   width: '16px',
-                  color: '#6b7280',
+                  color: '#9B9590',
                 }}
               />
               <input
@@ -739,7 +739,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
               />
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Filter style={{ height: '16px', width: '16px', color: '#6b7280' }} />
+              <Filter style={{ height: '16px', width: '16px', color: '#9B9590' }} />
               <select
                 aria-label="Filter by campaign"
                 value={historyCampaignFilter}
@@ -779,14 +779,14 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
               }}
             >
               <thead>
-                <tr style={{ backgroundColor: '#f9fafb' }}>
+                <tr style={{ backgroundColor: '#FAF5EF' }}>
                   <th
                     style={{
                       padding: '12px 16px',
                       textAlign: 'left',
                       fontWeight: '600',
-                      color: '#374151',
-                      borderBottom: '1px solid #e5e7eb',
+                      color: '#6B6560',
+                      borderBottom: '1px solid #E8E0D8',
                     }}
                   >
                     Date
@@ -796,8 +796,8 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                       padding: '12px 16px',
                       textAlign: 'left',
                       fontWeight: '600',
-                      color: '#374151',
-                      borderBottom: '1px solid #e5e7eb',
+                      color: '#6B6560',
+                      borderBottom: '1px solid #E8E0D8',
                     }}
                   >
                     Donor
@@ -807,8 +807,8 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                       padding: '12px 16px',
                       textAlign: 'right',
                       fontWeight: '600',
-                      color: '#374151',
-                      borderBottom: '1px solid #e5e7eb',
+                      color: '#6B6560',
+                      borderBottom: '1px solid #E8E0D8',
                     }}
                   >
                     Amount
@@ -818,8 +818,8 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                       padding: '12px 16px',
                       textAlign: 'left',
                       fontWeight: '600',
-                      color: '#374151',
-                      borderBottom: '1px solid #e5e7eb',
+                      color: '#6B6560',
+                      borderBottom: '1px solid #E8E0D8',
                     }}
                   >
                     Campaign
@@ -829,8 +829,8 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                       padding: '12px 16px',
                       textAlign: 'left',
                       fontWeight: '600',
-                      color: '#374151',
-                      borderBottom: '1px solid #e5e7eb',
+                      color: '#6B6560',
+                      borderBottom: '1px solid #E8E0D8',
                     }}
                   >
                     Method
@@ -840,8 +840,8 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                       padding: '12px 16px',
                       textAlign: 'center',
                       fontWeight: '600',
-                      color: '#374151',
-                      borderBottom: '1px solid #e5e7eb',
+                      color: '#6B6560',
+                      borderBottom: '1px solid #E8E0D8',
                     }}
                   >
                     Status
@@ -864,8 +864,8 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                   </tr>
                 ) : (
                   filteredDonations.map((d) => (
-                    <tr key={d.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                      <td style={{ padding: '12px 16px', color: '#6b7280' }}>
+                    <tr key={d.id} style={{ borderBottom: '1px solid #F0E8DD' }}>
+                      <td style={{ padding: '12px 16px', color: '#9B9590' }}>
                         {new Date(d.date).toLocaleDateString()}
                       </td>
                       <td style={{ padding: '12px 16px', fontWeight: '500' }}>
@@ -909,7 +909,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                         />
                         {d.campaign || 'General'}
                       </td>
-                      <td style={{ padding: '12px 16px', color: '#6b7280' }}>{d.paymentMethod}</td>
+                      <td style={{ padding: '12px 16px', color: '#9B9590' }}>{d.paymentMethod}</td>
                       <td style={{ padding: '12px 16px', textAlign: 'center' }}>
                         {(d.status || 'completed') === 'completed' ? (
                           <CheckCircle
@@ -974,7 +974,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                       borderRadius: '8px',
                       padding: '24px',
                       boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid #E8E0D8',
                     }}
                   >
                     <div style={{ marginBottom: '16px' }}>
@@ -992,7 +992,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                           display: 'flex',
                           alignItems: 'center',
                           gap: '6px',
-                          color: '#6b7280',
+                          color: '#9B9590',
                           fontSize: '13px',
                         }}
                       >
@@ -1009,7 +1009,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                         justifyContent: 'space-between',
                         marginBottom: '16px',
                         padding: '12px',
-                        backgroundColor: '#f9fafb',
+                        backgroundColor: '#FAF5EF',
                         borderRadius: '8px',
                       }}
                     >
@@ -1018,7 +1018,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                           style={{
                             fontSize: '22px',
                             fontWeight: 'bold',
-                            color: '#1d4ed8',
+                            color: '#7B2D4E',
                             margin: 0,
                           }}
                         >
@@ -1027,7 +1027,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                         <p
                           style={{
                             fontSize: '12px',
-                            color: '#6b7280',
+                            color: '#9B9590',
                             margin: '2px 0 0 0',
                           }}
                         >
@@ -1048,7 +1048,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                         <p
                           style={{
                             fontSize: '12px',
-                            color: '#6b7280',
+                            color: '#9B9590',
                             margin: '2px 0 0 0',
                           }}
                         >
@@ -1065,7 +1065,7 @@ const GivingView = ({ donations, setDonations, payments, setPayments, events, ad
                         padding: '12px',
                         borderRadius: '8px',
                         border: 'none',
-                        backgroundColor: isPurchasing ? '#93c5fd' : '#3b82f6',
+                        backgroundColor: isPurchasing ? '#93c5fd' : '#7B2D4E',
                         color: 'white',
                         fontSize: '14px',
                         fontWeight: 'bold',

@@ -33,8 +33,8 @@ const CommunicationsView = ({
               }
             }}
             style={{
-              backgroundColor: '#f3f4f6',
-              color: '#374151',
+              backgroundColor: '#F0E8DD',
+              color: '#6B6560',
               padding: '10px 16px',
               borderRadius: '6px',
               border: 'none',
@@ -51,7 +51,7 @@ const CommunicationsView = ({
           <button
             onClick={() => setShowSendMessage(true)}
             style={{
-              backgroundColor: '#3b82f6',
+              backgroundColor: '#7B2D4E',
               color: 'white',
               padding: '10px 16px',
               borderRadius: '6px',
@@ -69,7 +69,7 @@ const CommunicationsView = ({
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: '4px', marginBottom: '20px', borderBottom: '1px solid #e5e7eb' }}>
+      <div style={{ display: 'flex', gap: '4px', marginBottom: '20px', borderBottom: '1px solid #E8E0D8' }}>
         <button
           onClick={() => setCommunicationsTab('compose')}
           style={{
@@ -77,8 +77,8 @@ const CommunicationsView = ({
             border: 'none',
             backgroundColor: 'transparent',
             cursor: 'pointer',
-            borderBottom: communicationsTab === 'compose' ? '2px solid #3b82f6' : 'none',
-            color: communicationsTab === 'compose' ? '#3b82f6' : '#6b7280',
+            borderBottom: communicationsTab === 'compose' ? '2px solid #7B2D4E' : 'none',
+            color: communicationsTab === 'compose' ? '#7B2D4E' : '#9B9590',
             fontWeight: 'bold',
           }}
         >
@@ -91,8 +91,8 @@ const CommunicationsView = ({
             border: 'none',
             backgroundColor: 'transparent',
             cursor: 'pointer',
-            borderBottom: communicationsTab === 'history' ? '2px solid #3b82f6' : 'none',
-            color: communicationsTab === 'history' ? '#3b82f6' : '#6b7280',
+            borderBottom: communicationsTab === 'history' ? '2px solid #7B2D4E' : 'none',
+            color: communicationsTab === 'history' ? '#7B2D4E' : '#9B9590',
             fontWeight: 'bold',
           }}
         >
@@ -105,8 +105,8 @@ const CommunicationsView = ({
             border: 'none',
             backgroundColor: 'transparent',
             cursor: 'pointer',
-            borderBottom: communicationsTab === 'recent' ? '2px solid #3b82f6' : 'none',
-            color: communicationsTab === 'recent' ? '#3b82f6' : '#6b7280',
+            borderBottom: communicationsTab === 'recent' ? '2px solid #7B2D4E' : 'none',
+            color: communicationsTab === 'recent' ? '#7B2D4E' : '#9B9590',
             fontWeight: 'bold',
           }}
         >
@@ -119,8 +119,8 @@ const CommunicationsView = ({
             border: 'none',
             backgroundColor: 'transparent',
             cursor: 'pointer',
-            borderBottom: communicationsTab === 'settings' ? '2px solid #3b82f6' : 'none',
-            color: communicationsTab === 'settings' ? '#3b82f6' : '#6b7280',
+            borderBottom: communicationsTab === 'settings' ? '2px solid #7B2D4E' : 'none',
+            color: communicationsTab === 'settings' ? '#7B2D4E' : '#9B9590',
             fontWeight: 'bold',
           }}
         >
@@ -162,12 +162,12 @@ const CommunicationsView = ({
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
             {Object.entries(enhancedMessageTemplates).map(([key, template]) => (
-              <div key={key} style={{ border: '1px solid #e5e7eb', borderRadius: '8px', padding: '16px' }}>
+              <div key={key} style={{ border: '1px solid #E8E0D8', borderRadius: '8px', padding: '16px' }}>
                 <h4 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px', textTransform: 'capitalize' }}>
                   {key.replace('-', ' ')}
                 </h4>
-                <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '8px' }}>{template.subject}</p>
-                <p style={{ fontSize: '12px', color: '#6b7280', marginBottom: '12px', lineHeight: '1.4' }}>
+                <p style={{ fontSize: '14px', color: '#9B9590', marginBottom: '8px' }}>{template.subject}</p>
+                <p style={{ fontSize: '12px', color: '#9B9590', marginBottom: '12px', lineHeight: '1.4' }}>
                   {template.message.substring(0, 100)}...
                 </p>
                 <div style={{ display: 'flex', gap: '8px' }}>
@@ -188,7 +188,7 @@ const CommunicationsView = ({
                       setShowSendMessage(true);
                     }}
                     style={{
-                      backgroundColor: '#3b82f6',
+                      backgroundColor: '#7B2D4E',
                       color: 'white',
                       border: 'none',
                       borderRadius: '4px',
@@ -206,8 +206,8 @@ const CommunicationsView = ({
                       addNotification('Template preview shown in console.', 'info');
                     }}
                     style={{
-                      backgroundColor: '#f3f4f6',
-                      color: '#374151',
+                      backgroundColor: '#F0E8DD',
+                      color: '#6B6560',
                       border: 'none',
                       borderRadius: '4px',
                       padding: '6px 12px',
@@ -231,7 +231,7 @@ const CommunicationsView = ({
               key={comm.id}
               style={{
                 padding: '20px',
-                borderBottom: index < communications.length - 1 ? '1px solid #e5e7eb' : 'none',
+                borderBottom: index < communications.length - 1 ? '1px solid #E8E0D8' : 'none',
               }}
             >
               <div
@@ -242,8 +242,8 @@ const CommunicationsView = ({
                     <h4 style={{ fontSize: '16px', fontWeight: 'bold', margin: '0' }}>{comm.subject}</h4>
                     <span
                       style={{
-                        backgroundColor: comm.type === 'automated' ? '#fef3c7' : '#dbeafe',
-                        color: comm.type === 'automated' ? '#d97706' : '#1d4ed8',
+                        backgroundColor: comm.type === 'automated' ? '#fef3c7' : '#FAF5EF',
+                        color: comm.type === 'automated' ? '#d97706' : '#7B2D4E',
                         padding: '2px 8px',
                         borderRadius: '12px',
                         fontSize: '10px',
@@ -268,19 +268,19 @@ const CommunicationsView = ({
                       </span>
                     )}
                   </div>
-                  <p style={{ fontSize: '14px', color: '#6b7280', margin: '0 0 8px 0' }}>
+                  <p style={{ fontSize: '14px', color: '#9B9590', margin: '0 0 8px 0' }}>
                     To: {comm.recipients} • {comm.recipientCount} recipient{comm.recipientCount !== 1 ? 's' : ''} •{' '}
                     {comm.sendVia}
                   </p>
-                  <p style={{ fontSize: '14px', color: '#374151', margin: '0', lineHeight: '1.4' }}>
+                  <p style={{ fontSize: '14px', color: '#6B6560', margin: '0', lineHeight: '1.4' }}>
                     {comm.message.length > 120 ? comm.message.substring(0, 120) + '...' : comm.message}
                   </p>
                 </div>
                 <div style={{ textAlign: 'right', marginLeft: '16px' }}>
-                  <p style={{ fontSize: '12px', color: '#6b7280', margin: '0' }}>
+                  <p style={{ fontSize: '12px', color: '#9B9590', margin: '0' }}>
                     {new Date(comm.sentDate).toLocaleDateString()}
                   </p>
-                  <p style={{ fontSize: '12px', color: '#6b7280', margin: '0' }}>By {comm.sentBy}</p>
+                  <p style={{ fontSize: '12px', color: '#9B9590', margin: '0' }}>By {comm.sentBy}</p>
                 </div>
               </div>
             </div>
@@ -288,9 +288,9 @@ const CommunicationsView = ({
 
           {communications.length === 0 && (
             <div style={{ textAlign: 'center', padding: '48px' }}>
-              <Mail style={{ height: '48px', width: '48px', color: '#6b7280', margin: '0 auto 16px' }} />
+              <Mail style={{ height: '48px', width: '48px', color: '#9B9590', margin: '0 auto 16px' }} />
               <h3 style={{ fontSize: '18px', marginBottom: '8px' }}>No Messages Sent Yet</h3>
-              <p style={{ color: '#6b7280' }}>Your communication history will appear here</p>
+              <p style={{ color: '#9B9590' }}>Your communication history will appear here</p>
             </div>
           )}
         </div>
@@ -306,7 +306,7 @@ const CommunicationsView = ({
           }}
         >
           <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '20px' }}>Recent Communications</h3>
-          <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '20px' }}>
+          <p style={{ fontSize: '14px', color: '#9B9590', marginBottom: '20px' }}>
             Your most recent communications and messages sent.
           </p>
 
@@ -315,10 +315,10 @@ const CommunicationsView = ({
               key={item.id}
               style={{
                 padding: '16px',
-                backgroundColor: '#f9fafb',
+                backgroundColor: '#FAF5EF',
                 borderRadius: '8px',
                 marginBottom: '12px',
-                border: '1px solid #e5e7eb',
+                border: '1px solid #E8E0D8',
               }}
             >
               <div
@@ -327,8 +327,8 @@ const CommunicationsView = ({
                 <h4 style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 0 4px 0' }}>{item.subject}</h4>
                 <span
                   style={{
-                    backgroundColor: item.type === 'automated' ? '#fef3c7' : '#dbeafe',
-                    color: item.type === 'automated' ? '#d97706' : '#1d4ed8',
+                    backgroundColor: item.type === 'automated' ? '#fef3c7' : '#FAF5EF',
+                    color: item.type === 'automated' ? '#d97706' : '#7B2D4E',
                     padding: '2px 8px',
                     borderRadius: '12px',
                     fontSize: '10px',
@@ -339,11 +339,11 @@ const CommunicationsView = ({
                   {item.type}
                 </span>
               </div>
-              <p style={{ fontSize: '14px', color: '#6b7280', margin: '0 0 8px 0' }}>
+              <p style={{ fontSize: '14px', color: '#9B9590', margin: '0 0 8px 0' }}>
                 To: {item.recipients} • {item.recipientCount} recipient{item.recipientCount !== 1 ? 's' : ''} •{' '}
                 {item.sendVia}
               </p>
-              <p style={{ fontSize: '14px', color: '#374151', margin: '0 0 8px 0', lineHeight: '1.4' }}>
+              <p style={{ fontSize: '14px', color: '#6B6560', margin: '0 0 8px 0', lineHeight: '1.4' }}>
                 {item.message.length > 150 ? item.message.substring(0, 150) + '...' : item.message}
               </p>
               <div
@@ -352,7 +352,7 @@ const CommunicationsView = ({
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   fontSize: '12px',
-                  color: '#6b7280',
+                  color: '#9B9590',
                 }}
               >
                 <span>Sent by {item.sentBy}</span>
@@ -363,9 +363,9 @@ const CommunicationsView = ({
 
           {communications.length === 0 && (
             <div style={{ textAlign: 'center', padding: '32px' }}>
-              <MessageCircle style={{ height: '32px', width: '32px', color: '#6b7280', margin: '0 auto 12px' }} />
+              <MessageCircle style={{ height: '32px', width: '32px', color: '#9B9590', margin: '0 auto 12px' }} />
               <h4 style={{ fontSize: '16px', marginBottom: '4px' }}>No Communications Yet</h4>
-              <p style={{ color: '#6b7280', fontSize: '14px' }}>Your recent communications will appear here</p>
+              <p style={{ color: '#9B9590', fontSize: '14px' }}>Your recent communications will appear here</p>
             </div>
           )}
         </div>
@@ -381,7 +381,7 @@ const CommunicationsView = ({
           }}
         >
           <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '20px' }}>Automated Notifications</h3>
-          <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '20px' }}>
+          <p style={{ fontSize: '14px', color: '#9B9590', marginBottom: '20px' }}>
             Configure which notifications are sent automatically when certain events occur.
           </p>
 
@@ -417,13 +417,13 @@ const CommunicationsView = ({
                   alignItems: 'center',
                   padding: '16px',
                   marginBottom: '8px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid #E8E0D8',
                   borderRadius: '8px',
                 }}
               >
                 <div>
                   <p style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 0 4px 0' }}>{setting.label}</p>
-                  <p style={{ fontSize: '14px', color: '#6b7280', margin: '0' }}>{setting.description}</p>
+                  <p style={{ fontSize: '14px', color: '#9B9590', margin: '0' }}>{setting.description}</p>
                 </div>
                 <button
                   onClick={() => toggleNotificationSetting(setting.key)}

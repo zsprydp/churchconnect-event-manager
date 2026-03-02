@@ -33,8 +33,8 @@ const EventsView = ({
           <button
             onClick={() => setShowArchivedEvents(!showArchivedEvents)}
             style={{
-              backgroundColor: '#f3f4f6',
-              color: '#374151',
+              backgroundColor: '#F0E8DD',
+              color: '#6B6560',
               padding: '6px 12px',
               borderRadius: '6px',
               border: 'none',
@@ -60,7 +60,7 @@ const EventsView = ({
                 }
               }}
               style={{
-                backgroundColor: '#6b7280',
+                backgroundColor: '#9B9590',
                 color: 'white',
                 padding: '6px 12px',
                 borderRadius: '6px',
@@ -76,7 +76,7 @@ const EventsView = ({
         <button
           onClick={() => setShowCreateEvent(true)}
           style={{
-            backgroundColor: '#3b82f6',
+            backgroundColor: '#7B2D4E',
             color: 'white',
             padding: '10px 16px',
             borderRadius: '6px',
@@ -104,7 +104,7 @@ const EventsView = ({
               transform: 'translateY(-50%)',
               height: '16px',
               width: '16px',
-              color: '#6b7280',
+              color: '#9B9590',
             }}
           />
           <input
@@ -176,8 +176,8 @@ const EventsView = ({
                     {event.status !== 'active' && (
                       <span
                         style={{
-                          backgroundColor: event.status === 'closed' ? '#fef3c7' : '#f3f4f6',
-                          color: event.status === 'closed' ? '#d97706' : '#6b7280',
+                          backgroundColor: event.status === 'closed' ? '#fef3c7' : '#F0E8DD',
+                          color: event.status === 'closed' ? '#d97706' : '#9B9590',
                           padding: '2px 8px',
                           borderRadius: '12px',
                           fontSize: '12px',
@@ -190,21 +190,21 @@ const EventsView = ({
                     )}
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
-                    <CalendarIcon style={{ height: '16px', width: '16px', marginRight: '6px', color: '#6b7280' }} />
-                    <span style={{ fontSize: '14px', color: '#6b7280' }}>{formatEventDates(event)}</span>
+                    <CalendarIcon style={{ height: '16px', width: '16px', marginRight: '6px', color: '#9B9590' }} />
+                    <span style={{ fontSize: '14px', color: '#9B9590' }}>{formatEventDates(event)}</span>
                   </div>
                   {event.startTime && event.endTime && (
                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
-                      <Clock style={{ height: '16px', width: '16px', marginRight: '6px', color: '#6b7280' }} />
-                      <span style={{ fontSize: '14px', color: '#6b7280' }}>
+                      <Clock style={{ height: '16px', width: '16px', marginRight: '6px', color: '#9B9590' }} />
+                      <span style={{ fontSize: '14px', color: '#9B9590' }}>
                         {event.startTime} - {event.endTime}
                       </span>
                     </div>
                   )}
                   {event.location && (
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <MapPin style={{ height: '16px', width: '16px', marginRight: '6px', color: '#6b7280' }} />
-                      <span style={{ fontSize: '14px', color: '#6b7280' }}>{event.location}</span>
+                      <MapPin style={{ height: '16px', width: '16px', marginRight: '6px', color: '#9B9590' }} />
+                      <span style={{ fontSize: '14px', color: '#9B9590' }}>{event.location}</span>
                     </div>
                   )}
                 </div>
@@ -213,22 +213,22 @@ const EventsView = ({
                   style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px', marginBottom: '16px' }}
                 >
                   <div style={{ textAlign: 'center' }}>
-                    <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#3b82f6' }}>
+                    <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#7B2D4E' }}>
                       {totalPeople}/{event.capacity}
                     </p>
-                    <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Registered</p>
+                    <p style={{ fontSize: '12px', color: '#9B9590', margin: '2px 0 0 0' }}>Registered</p>
                   </div>
                   <div style={{ textAlign: 'center' }}>
                     <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#8b5cf6' }}>
                       {eventVolunteers.length}
                     </p>
-                    <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Volunteers</p>
+                    <p style={{ fontSize: '12px', color: '#9B9590', margin: '2px 0 0 0' }}>Volunteers</p>
                   </div>
                   <div style={{ textAlign: 'center' }}>
                     <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#10b981' }}>
                       ${event.registrationFee}
                     </p>
-                    <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Fee</p>
+                    <p style={{ fontSize: '12px', color: '#9B9590', margin: '2px 0 0 0' }}>Fee</p>
                   </div>
                   <div style={{ textAlign: 'center' }}>
                     <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#f59e0b' }}>
@@ -237,7 +237,7 @@ const EventsView = ({
                           .length
                       }
                     </p>
-                    <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Messages</p>
+                    <p style={{ fontSize: '12px', color: '#9B9590', margin: '2px 0 0 0' }}>Messages</p>
                   </div>
                 </div>
 
@@ -252,7 +252,7 @@ const EventsView = ({
                       onClick={() => handleManageEvent(event)}
                       style={{
                         flex: 1,
-                        backgroundColor: '#3b82f6',
+                        backgroundColor: '#7B2D4E',
                         color: 'white',
                         padding: '8px',
                         border: 'none',
@@ -355,7 +355,7 @@ const EventsView = ({
                       onClick={() => handleEventStatusChange(event.id, 'archived')}
                       style={{
                         flex: 1,
-                        backgroundColor: '#6b7280',
+                        backgroundColor: '#9B9590',
                         color: 'white',
                         padding: '8px',
                         border: 'none',

@@ -79,7 +79,7 @@ const PaymentsView = ({
           <button
             onClick={() => setShowCreatePayment(true)}
             style={{
-              backgroundColor: '#3b82f6',
+              backgroundColor: '#7B2D4E',
               color: 'white',
               padding: '10px 16px',
               borderRadius: '6px',
@@ -99,7 +99,7 @@ const PaymentsView = ({
 
       {/* Payment Tabs */}
       <div style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'flex', borderBottom: '1px solid #e5e7eb' }}>
+        <div style={{ display: 'flex', borderBottom: '1px solid #E8E0D8' }}>
           {['overview', 'payments', 'donations', 'reports'].map((tab) => (
             <button
               key={tab}
@@ -109,8 +109,8 @@ const PaymentsView = ({
                 border: 'none',
                 backgroundColor: 'transparent',
                 cursor: 'pointer',
-                borderBottom: paymentsTab === tab ? '2px solid #3b82f6' : 'none',
-                color: paymentsTab === tab ? '#3b82f6' : '#6b7280',
+                borderBottom: paymentsTab === tab ? '2px solid #7B2D4E' : 'none',
+                color: paymentsTab === tab ? '#7B2D4E' : '#9B9590',
                 fontWeight: paymentsTab === tab ? 'bold' : 'normal',
               }}
             >
@@ -140,12 +140,12 @@ const PaymentsView = ({
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-                <div style={{ backgroundColor: '#dbeafe', padding: '8px', borderRadius: '6px' }}>
-                  <DollarSign style={{ height: '20px', width: '20px', color: '#1d4ed8' }} />
+                <div style={{ backgroundColor: '#FAF5EF', padding: '8px', borderRadius: '6px' }}>
+                  <DollarSign style={{ height: '20px', width: '20px', color: '#7B2D4E' }} />
                 </div>
                 <div>
-                  <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Total Revenue</p>
-                  <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#1d4ed8' }}>
+                  <p style={{ fontSize: '14px', color: '#9B9590', margin: 0 }}>Total Revenue</p>
+                  <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#7B2D4E' }}>
                     ${getTotalRevenue().toFixed(2)}
                   </p>
                 </div>
@@ -165,7 +165,7 @@ const PaymentsView = ({
                   <CreditCard style={{ height: '20px', width: '20px', color: '#d97706' }} />
                 </div>
                 <div>
-                  <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Event Payments</p>
+                  <p style={{ fontSize: '14px', color: '#9B9590', margin: 0 }}>Event Payments</p>
                   <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#d97706' }}>
                     ${getEventPaymentsTotal().toFixed(2)}
                   </p>
@@ -186,7 +186,7 @@ const PaymentsView = ({
                   <Heart style={{ height: '20px', width: '20px', color: '#16a34a' }} />
                 </div>
                 <div>
-                  <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Donations</p>
+                  <p style={{ fontSize: '14px', color: '#9B9590', margin: 0 }}>Donations</p>
                   <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#16a34a' }}>
                     ${getDonationsTotal().toFixed(2)}
                   </p>
@@ -207,7 +207,7 @@ const PaymentsView = ({
                   <Users style={{ height: '20px', width: '20px', color: '#dc2626' }} />
                 </div>
                 <div>
-                  <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Active Donors</p>
+                  <p style={{ fontSize: '14px', color: '#9B9590', margin: 0 }}>Active Donors</p>
                   <p style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#dc2626' }}>
                     {getActiveDonorsCount()}
                   </p>
@@ -238,15 +238,15 @@ const PaymentsView = ({
                       alignItems: 'center',
                       padding: '12px',
                       marginBottom: '8px',
-                      backgroundColor: '#f9fafb',
+                      backgroundColor: '#FAF5EF',
                       borderRadius: '6px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid #E8E0D8',
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <div
                         style={{
-                          backgroundColor: activity.type === 'donation' ? '#dcfce7' : '#dbeafe',
+                          backgroundColor: activity.type === 'donation' ? '#dcfce7' : '#FAF5EF',
                           padding: '6px',
                           borderRadius: '4px',
                         }}
@@ -254,12 +254,12 @@ const PaymentsView = ({
                         {activity.type === 'donation' ? (
                           <Heart style={{ height: '14px', width: '14px', color: '#16a34a' }} />
                         ) : (
-                          <CreditCard style={{ height: '14px', width: '14px', color: '#1d4ed8' }} />
+                          <CreditCard style={{ height: '14px', width: '14px', color: '#7B2D4E' }} />
                         )}
                       </div>
                       <div>
                         <p style={{ margin: '0 0 2px 0', fontWeight: 'bold' }}>{activity.description}</p>
-                        <p style={{ margin: 0, fontSize: '12px', color: '#6b7280' }}>
+                        <p style={{ margin: 0, fontSize: '12px', color: '#9B9590' }}>
                           {activity.donorName || activity.eventName} • {new Date(activity.date).toLocaleDateString()}
                         </p>
                       </div>
@@ -268,7 +268,7 @@ const PaymentsView = ({
                       <p style={{ margin: '0 0 2px 0', fontWeight: 'bold', color: '#10b981' }}>
                         +${activity.amount.toFixed(2)}
                       </p>
-                      <p style={{ margin: 0, fontSize: '12px', color: '#6b7280' }}>{activity.status}</p>
+                      <p style={{ margin: 0, fontSize: '12px', color: '#9B9590' }}>{activity.status}</p>
                     </div>
                   </div>
                 ))}
@@ -290,7 +290,7 @@ const PaymentsView = ({
                   transform: 'translateY(-50%)',
                   height: '16px',
                   width: '16px',
-                  color: '#6b7280',
+                  color: '#9B9590',
                 }}
               />
               <input
@@ -338,7 +338,7 @@ const PaymentsView = ({
                   borderRadius: '8px',
                   padding: '20px',
                   boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid #E8E0D8',
                 }}
               >
                 <div
@@ -351,7 +351,7 @@ const PaymentsView = ({
                 >
                   <div>
                     <h4 style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 0 4px 0' }}>{payment.eventName}</h4>
-                    <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>Attendee: {payment.attendeeName}</p>
+                    <p style={{ fontSize: '14px', color: '#9B9590', margin: 0 }}>Attendee: {payment.attendeeName}</p>
                   </div>
                   <span
                     style={{
@@ -375,13 +375,13 @@ const PaymentsView = ({
                     <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#10b981' }}>
                       ${payment.amount.toFixed(2)}
                     </p>
-                    <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Amount</p>
+                    <p style={{ fontSize: '12px', color: '#9B9590', margin: '2px 0 0 0' }}>Amount</p>
                   </div>
                   <div style={{ textAlign: 'center' }}>
                     <p style={{ fontSize: '18px', width: '18px', fontWeight: 'bold', margin: '0', color: '#8b5cf6' }}>
                       {payment.attendeeCount}
                     </p>
-                    <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>People</p>
+                    <p style={{ fontSize: '12px', color: '#9B9590', margin: '2px 0 0 0' }}>People</p>
                   </div>
                   <div style={{ textAlign: 'center' }}>
                     <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#f59e0b' }}>
@@ -396,7 +396,7 @@ const PaymentsView = ({
                     onClick={() => handleViewPaymentDetails(payment)}
                     style={{
                       flex: 1,
-                      backgroundColor: '#3b82f6',
+                      backgroundColor: '#7B2D4E',
                       color: 'white',
                       padding: '8px',
                       border: 'none',
@@ -445,7 +445,7 @@ const PaymentsView = ({
                   transform: 'translateY(-50%)',
                   height: '16px',
                   width: '16px',
-                  color: '#6b7280',
+                  color: '#9B9590',
                 }}
               />
               <input
@@ -493,7 +493,7 @@ const PaymentsView = ({
                   borderRadius: '8px',
                   padding: '20px',
                   boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid #E8E0D8',
                 }}
               >
                 <div
@@ -506,7 +506,7 @@ const PaymentsView = ({
                 >
                   <div>
                     <h4 style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 0 4px 0' }}>{donation.donorName}</h4>
-                    <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
+                    <p style={{ fontSize: '14px', color: '#9B9590', margin: 0 }}>
                       {donation.campaign || 'General Donation'}
                     </p>
                   </div>
@@ -532,33 +532,33 @@ const PaymentsView = ({
                     <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#10b981' }}>
                       ${donation.amount.toFixed(2)}
                     </p>
-                    <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Amount</p>
+                    <p style={{ fontSize: '12px', color: '#9B9590', margin: '2px 0 0 0' }}>Amount</p>
                   </div>
                   <div style={{ textAlign: 'center' }}>
                     <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#8b5cf6' }}>
                       {donation.paymentMethod}
                     </p>
-                    <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Method</p>
+                    <p style={{ fontSize: '12px', color: '#9B9590', margin: '2px 0 0 0' }}>Method</p>
                   </div>
                   <div style={{ textAlign: 'center' }}>
                     <p style={{ fontSize: '18px', fontWeight: 'bold', margin: '0', color: '#f59e0b' }}>
                       {donation.anonymous ? 'Anonymous' : 'Named'}
                     </p>
-                    <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>Display</p>
+                    <p style={{ fontSize: '12px', color: '#9B9590', margin: '2px 0 0 0' }}>Display</p>
                   </div>
                 </div>
 
                 {donation.message && (
                   <div
                     style={{
-                      backgroundColor: '#f9fafb',
+                      backgroundColor: '#FAF5EF',
                       padding: '12px',
                       borderRadius: '6px',
                       marginBottom: '16px',
-                      border: '1px solid #e5e7eb',
+                      border: '1px solid #E8E0D8',
                     }}
                   >
-                    <p style={{ margin: 0, fontSize: '14px', fontStyle: 'italic', color: '#6b7280' }}>
+                    <p style={{ margin: 0, fontSize: '14px', fontStyle: 'italic', color: '#9B9590' }}>
                       "{donation.message}"
                     </p>
                   </div>
@@ -569,7 +569,7 @@ const PaymentsView = ({
                     onClick={() => handleViewDonationDetails(donation)}
                     style={{
                       flex: 1,
-                      backgroundColor: '#3b82f6',
+                      backgroundColor: '#7B2D4E',
                       color: 'white',
                       padding: '8px',
                       border: 'none',
@@ -628,13 +628,13 @@ const PaymentsView = ({
                   <div key={index} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <div
                       style={{
-                        backgroundColor: '#3b82f6',
+                        backgroundColor: '#7B2D4E',
                         width: '100%',
                         height: `${(month.amount / Math.max(...getMonthlyRevenueData().map((m) => m.amount))) * 150}px`,
                         borderRadius: '4px 4px 0 0',
                       }}
                     />
-                    <p style={{ fontSize: '10px', margin: '4px 0 0 0', color: '#6b7280' }}>{month.month}</p>
+                    <p style={{ fontSize: '10px', margin: '4px 0 0 0', color: '#9B9590' }}>{month.month}</p>
                   </div>
                 ))}
               </div>
@@ -660,13 +660,13 @@ const PaymentsView = ({
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         padding: '8px 0',
-                        borderBottom: index < 4 ? '1px solid #f3f4f6' : 'none',
+                        borderBottom: index < 4 ? '1px solid #F0E8DD' : 'none',
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <span
                           style={{
-                            backgroundColor: '#3b82f6',
+                            backgroundColor: '#7B2D4E',
                             color: 'white',
                             width: '20px',
                             height: '20px',
@@ -702,7 +702,7 @@ const PaymentsView = ({
               <button
                 onClick={() => exportPaymentsReport()}
                 style={{
-                  backgroundColor: '#3b82f6',
+                  backgroundColor: '#7B2D4E',
                   color: 'white',
                   padding: '10px 16px',
                   border: 'none',

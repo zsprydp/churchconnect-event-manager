@@ -137,13 +137,13 @@ const PaymentProcessingModal = ({ paymentFormData, setPaymentFormData, onClose, 
               padding: '12px',
               backgroundColor: '#f0f9ff',
               borderRadius: '4px',
-              border: '1px solid #dbeafe',
+              border: '1px solid #FAF5EF',
             }}
           >
-            <h4 style={{ fontSize: '14px', fontWeight: 'bold', margin: '0 0 8px 0', color: '#1d4ed8' }}>
+            <h4 style={{ fontSize: '14px', fontWeight: 'bold', margin: '0 0 8px 0', color: '#7B2D4E' }}>
               Cost Breakdown:
             </h4>
-            <div style={{ fontSize: '12px', color: '#6b7280' }}>
+            <div style={{ fontSize: '12px', color: '#9B9590' }}>
               <p style={{ margin: '0 0 4px 0' }}>Amount: ${paymentFormData.amount || '0.00'}</p>
               {paymentFormData.amount && (
                 <>
@@ -191,7 +191,7 @@ const PaymentProcessingModal = ({ paymentFormData, setPaymentFormData, onClose, 
               style={{
                 flex: 1,
                 backgroundColor: 'white',
-                color: '#374151',
+                color: '#6B6560',
                 padding: '10px',
                 border: '1px solid #d1d5db',
                 borderRadius: '4px',

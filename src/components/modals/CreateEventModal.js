@@ -196,7 +196,7 @@ const CreateEventModal = ({
             <button
               onClick={() => handleEventInputChange('dates', [...newEvent.dates, ''])}
               style={{
-                backgroundColor: '#3b82f6',
+                backgroundColor: '#7B2D4E',
                 color: 'white',
                 border: 'none',
                 borderRadius: '4px',
@@ -332,12 +332,12 @@ const CreateEventModal = ({
           {newEvent.customQuestions.map((q) => (
             <div
               key={q.id}
-              style={{ padding: '8px', backgroundColor: '#f9fafb', borderRadius: '4px', marginBottom: '8px' }}
+              style={{ padding: '8px', backgroundColor: '#FAF5EF', borderRadius: '4px', marginBottom: '8px' }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
                 <div style={{ flex: 1 }}>
                   <p style={{ margin: '0 0 4px 0', fontWeight: 'bold', fontSize: '14px' }}>{q.question}</p>
-                  <p style={{ margin: '0', fontSize: '12px', color: '#6b7280' }}>
+                  <p style={{ margin: '0', fontSize: '12px', color: '#9B9590' }}>
                     Type: {q.type} • {q.required ? 'Required' : 'Optional'}
                   </p>
                 </div>
@@ -397,7 +397,7 @@ const CreateEventModal = ({
             <button
               onClick={addCustomQuestion}
               style={{
-                backgroundColor: '#3b82f6',
+                backgroundColor: '#7B2D4E',
                 color: 'white',
                 border: 'none',
                 borderRadius: '4px',
@@ -416,7 +416,7 @@ const CreateEventModal = ({
             onClick={onCreate}
             style={{
               flex: 1,
-              backgroundColor: '#3b82f6',
+              backgroundColor: '#7B2D4E',
               color: 'white',
               padding: '10px',
               border: 'none',
@@ -432,7 +432,7 @@ const CreateEventModal = ({
             style={{
               flex: 1,
               backgroundColor: 'white',
-              color: '#374151',
+              color: '#6B6560',
               padding: '10px',
               border: '1px solid #d1d5db',
               borderRadius: '4px',

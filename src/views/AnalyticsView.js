@@ -81,7 +81,7 @@ const AnalyticsView = ({ events, attendees, volunteers, donations, payments, add
     if (index === 0) return '#f59e0b';
     if (index === 1) return '#9ca3af';
     if (index === 2) return '#cd7f32';
-    return '#6b7280';
+    return '#9B9590';
   };
 
   const getRankLabel = (index) => {
@@ -94,7 +94,7 @@ const AnalyticsView = ({ events, attendees, volunteers, donations, payments, add
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '28px' }}>
-        <TrendingUp style={{ height: '28px', width: '28px', color: '#2563eb' }} />
+        <TrendingUp style={{ height: '28px', width: '28px', color: '#7B2D4E' }} />
         <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0 }}>Analytics</h2>
       </div>
 
@@ -112,7 +112,7 @@ const AnalyticsView = ({ events, attendees, volunteers, donations, payments, add
             label: 'Total Events',
             value: totalEvents,
             icon: CalendarDays,
-            color: '#2563eb',
+            color: '#7B2D4E',
           },
           {
             label: 'Total Registrations',
@@ -140,13 +140,13 @@ const AnalyticsView = ({ events, attendees, volunteers, donations, payments, add
               borderRadius: '12px',
               padding: '24px',
               boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-              border: '1px solid #e5e7eb',
+              border: '1px solid #E8E0D8',
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
               <div>
-                <p style={{ fontSize: '14px', color: '#6b7280', margin: '0 0 8px 0' }}>{metric.label}</p>
-                <p style={{ fontSize: '28px', fontWeight: 'bold', margin: 0, color: '#111827' }}>{metric.value}</p>
+                <p style={{ fontSize: '14px', color: '#9B9590', margin: '0 0 8px 0' }}>{metric.label}</p>
+                <p style={{ fontSize: '28px', fontWeight: 'bold', margin: 0, color: '#2D2A26' }}>{metric.value}</p>
               </div>
               <div
                 style={{
@@ -168,7 +168,7 @@ const AnalyticsView = ({ events, attendees, volunteers, donations, payments, add
                   backgroundColor: '#10b981',
                 }}
               />
-              <span style={{ fontSize: '12px', color: '#6b7280' }}>Active</span>
+              <span style={{ fontSize: '12px', color: '#9B9590' }}>Active</span>
             </div>
           </div>
         ))}
@@ -181,7 +181,7 @@ const AnalyticsView = ({ events, attendees, volunteers, donations, payments, add
           borderRadius: '12px',
           padding: '24px',
           boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-          border: '1px solid #e5e7eb',
+          border: '1px solid #E8E0D8',
           marginBottom: '32px',
         }}
       >
@@ -189,7 +189,7 @@ const AnalyticsView = ({ events, attendees, volunteers, donations, payments, add
           Attendance Trends — Registrations per Event
         </h3>
         {registrationsByEvent.length === 0 ? (
-          <p style={{ color: '#6b7280', textAlign: 'center', padding: '24px 0' }}>No event data yet.</p>
+          <p style={{ color: '#9B9590', textAlign: 'center', padding: '24px 0' }}>No event data yet.</p>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {registrationsByEvent.map((ev) => (
@@ -197,7 +197,7 @@ const AnalyticsView = ({ events, attendees, volunteers, donations, payments, add
                 <span
                   style={{
                     fontSize: '13px',
-                    color: '#374151',
+                    color: '#6B6560',
                     width: '180px',
                     flexShrink: 0,
                     textAlign: 'right',
@@ -209,26 +209,26 @@ const AnalyticsView = ({ events, attendees, volunteers, donations, payments, add
                 >
                   {ev.name}
                 </span>
-                <div style={{ flex: 1, backgroundColor: '#f3f4f6', borderRadius: '6px', height: '28px' }}>
+                <div style={{ flex: 1, backgroundColor: '#F0E8DD', borderRadius: '6px', height: '28px' }}>
                   <div
                     style={{
                       width: `${(ev.count / maxRegistrations) * 100}%`,
                       minWidth: ev.count > 0 ? '4px' : '0',
-                      backgroundColor: ev.status === 'active' ? '#3b82f6' : '#9ca3af',
+                      backgroundColor: ev.status === 'active' ? '#7B2D4E' : '#9ca3af',
                       height: '100%',
                       borderRadius: '6px',
                       transition: 'width 0.4s ease',
                     }}
                   />
                 </div>
-                <span style={{ fontSize: '14px', fontWeight: '600', color: '#111827', minWidth: '30px' }}>
+                <span style={{ fontSize: '14px', fontWeight: '600', color: '#2D2A26', minWidth: '30px' }}>
                   {ev.count}
                 </span>
               </div>
             ))}
           </div>
         )}
-        <div style={{ display: 'flex', gap: '20px', marginTop: '16px', fontSize: '12px', color: '#6b7280' }}>
+        <div style={{ display: 'flex', gap: '20px', marginTop: '16px', fontSize: '12px', color: '#9B9590' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span
               style={{
@@ -236,7 +236,7 @@ const AnalyticsView = ({ events, attendees, volunteers, donations, payments, add
                 width: '12px',
                 height: '12px',
                 borderRadius: '3px',
-                backgroundColor: '#3b82f6',
+                backgroundColor: '#7B2D4E',
               }}
             />
             Active Events
@@ -299,12 +299,12 @@ const AnalyticsView = ({ events, attendees, volunteers, donations, payments, add
                 }}
               >
                 <div style={{ flex: 1, minWidth: '200px' }}>
-                  <p style={{ fontWeight: '600', fontSize: '15px', margin: '0 0 4px 0', color: '#111827' }}>
+                  <p style={{ fontWeight: '600', fontSize: '15px', margin: '0 0 4px 0', color: '#2D2A26' }}>
                     {person.primaryName}
                   </p>
-                  <p style={{ fontSize: '13px', color: '#6b7280', margin: '0 0 2px 0' }}>{person.email}</p>
+                  <p style={{ fontSize: '13px', color: '#9B9590', margin: '0 0 2px 0' }}>{person.email}</p>
                   {person.phone && (
-                    <p style={{ fontSize: '13px', color: '#6b7280', margin: '0 0 4px 0' }}>{person.phone}</p>
+                    <p style={{ fontSize: '13px', color: '#9B9590', margin: '0 0 4px 0' }}>{person.phone}</p>
                   )}
                   <p style={{ fontSize: '12px', color: '#9ca3af', margin: 0 }}>
                     Last event: <strong>{person.eventName}</strong> &middot; {person.daysSince} days ago
@@ -314,7 +314,7 @@ const AnalyticsView = ({ events, attendees, volunteers, donations, payments, add
                   <button
                     onClick={() => handleReachOut(person)}
                     style={{
-                      backgroundColor: '#2563eb',
+                      backgroundColor: '#7B2D4E',
                       color: 'white',
                       border: 'none',
                       borderRadius: '6px',
@@ -329,8 +329,8 @@ const AnalyticsView = ({ events, attendees, volunteers, donations, payments, add
                   <button
                     onClick={() => handleDismiss(person.id)}
                     style={{
-                      backgroundColor: '#f3f4f6',
-                      color: '#374151',
+                      backgroundColor: '#F0E8DD',
+                      color: '#6B6560',
                       border: '1px solid #d1d5db',
                       borderRadius: '6px',
                       padding: '8px 12px',
@@ -359,7 +359,7 @@ const AnalyticsView = ({ events, attendees, volunteers, donations, payments, add
           borderRadius: '12px',
           padding: '24px',
           boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-          border: '1px solid #e5e7eb',
+          border: '1px solid #E8E0D8',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
@@ -368,7 +368,7 @@ const AnalyticsView = ({ events, attendees, volunteers, donations, payments, add
         </div>
 
         {volunteerLeaderboard.length === 0 ? (
-          <p style={{ color: '#6b7280', textAlign: 'center', padding: '24px 0' }}>No volunteer data yet.</p>
+          <p style={{ color: '#9B9590', textAlign: 'center', padding: '24px 0' }}>No volunteer data yet.</p>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {volunteerLeaderboard.map((vol, index) => (
@@ -380,20 +380,20 @@ const AnalyticsView = ({ events, attendees, volunteers, donations, payments, add
                   gap: '14px',
                   padding: '12px 16px',
                   backgroundColor:
-                    index === 0 ? '#fffbeb' : index === 1 ? '#f9fafb' : index === 2 ? '#fdf4e8' : 'white',
+                    index === 0 ? '#fffbeb' : index === 1 ? '#FAF5EF' : index === 2 ? '#fdf4e8' : 'white',
                   borderRadius: '8px',
-                  border: `1px solid ${index < 3 ? '#e5e7eb' : '#f3f4f6'}`,
+                  border: `1px solid ${index < 3 ? '#E8E0D8' : '#F0E8DD'}`,
                 }}
               >
                 <span style={{ fontSize: '20px', width: '32px', textAlign: 'center' }}>{getRankLabel(index)}</span>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontWeight: '600', fontSize: '15px', margin: '0 0 2px 0', color: '#111827' }}>
+                  <p style={{ fontWeight: '600', fontSize: '15px', margin: '0 0 2px 0', color: '#2D2A26' }}>
                     {vol.name}
                   </p>
-                  <p style={{ fontSize: '13px', color: '#6b7280', margin: 0 }}>{vol.role}</p>
+                  <p style={{ fontSize: '13px', color: '#9B9590', margin: 0 }}>{vol.role}</p>
                 </div>
                 <div style={{ width: '120px', flexShrink: 0 }}>
-                  <div style={{ backgroundColor: '#f3f4f6', borderRadius: '4px', height: '8px' }}>
+                  <div style={{ backgroundColor: '#F0E8DD', borderRadius: '4px', height: '8px' }}>
                     <div
                       style={{
                         width: `${(vol.eventCount / maxVolunteerEvents) * 100}%`,

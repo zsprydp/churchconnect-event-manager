@@ -4,12 +4,12 @@ import { useAuth } from '../contexts/AuthContext';
 
 const CATEGORY_COLORS = {
   health: { bg: '#fef2f2', text: '#dc2626', border: '#fecaca' },
-  personal: { bg: '#eff6ff', text: '#2563eb', border: '#bfdbfe' },
+  personal: { bg: '#eff6ff', text: '#7B2D4E', border: '#E8E0D8' },
   family: { bg: '#faf5ff', text: '#7c3aed', border: '#ddd6fe' },
   financial: { bg: '#f0fdf4', text: '#16a34a', border: '#bbf7d0' },
   community: { bg: '#fff7ed', text: '#ea580c', border: '#fed7aa' },
   thanksgiving: { bg: '#fffbeb', text: '#d97706', border: '#fde68a' },
-  other: { bg: '#f9fafb', text: '#6b7280', border: '#e5e7eb' },
+  other: { bg: '#FAF5EF', text: '#9B9590', border: '#E8E0D8' },
 };
 
 const CATEGORIES = ['health', 'personal', 'family', 'financial', 'community', 'thanksgiving', 'other'];
@@ -128,7 +128,7 @@ const PrayerView = ({ prayerPosts, setPrayerPosts, addNotification }) => {
         <Heart style={{ height: '28px', width: '28px', color: '#dc2626' }} />
         <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0 }}>Prayer &amp; Praise</h2>
       </div>
-      <p style={{ color: '#6b7280', marginTop: 0, marginBottom: '24px' }}>Supporting each other through prayer</p>
+      <p style={{ color: '#9B9590', marginTop: 0, marginBottom: '24px' }}>Supporting each other through prayer</p>
 
       {/* New Post Form */}
       <div
@@ -154,8 +154,8 @@ const PrayerView = ({ prayerPosts, setPrayerPosts, addNotification }) => {
                 cursor: 'pointer',
                 fontWeight: '600',
                 fontSize: '14px',
-                backgroundColor: postType === 'request' ? '#dbeafe' : '#f3f4f6',
-                color: postType === 'request' ? '#1d4ed8' : '#6b7280',
+                backgroundColor: postType === 'request' ? '#FAF5EF' : '#F0E8DD',
+                color: postType === 'request' ? '#7B2D4E' : '#9B9590',
                 transition: 'all 0.2s',
               }}
             >
@@ -172,8 +172,8 @@ const PrayerView = ({ prayerPosts, setPrayerPosts, addNotification }) => {
                 cursor: 'pointer',
                 fontWeight: '600',
                 fontSize: '14px',
-                backgroundColor: postType === 'praise' ? '#fef3c7' : '#f3f4f6',
-                color: postType === 'praise' ? '#d97706' : '#6b7280',
+                backgroundColor: postType === 'praise' ? '#fef3c7' : '#F0E8DD',
+                color: postType === 'praise' ? '#d97706' : '#9B9590',
                 transition: 'all 0.2s',
               }}
             >
@@ -255,7 +255,7 @@ const PrayerView = ({ prayerPosts, setPrayerPosts, addNotification }) => {
                 padding: '10px 24px',
                 borderRadius: '8px',
                 border: 'none',
-                backgroundColor: postType === 'request' ? '#2563eb' : '#d97706',
+                backgroundColor: postType === 'request' ? '#7B2D4E' : '#d97706',
                 color: 'white',
                 fontWeight: '600',
                 fontSize: '14px',
@@ -296,7 +296,7 @@ const PrayerView = ({ prayerPosts, setPrayerPosts, addNotification }) => {
                 cursor: 'pointer',
                 fontSize: '13px',
                 fontWeight: filterType === tab.id ? '600' : '400',
-                backgroundColor: filterType === tab.id ? '#1d4ed8' : '#f3f4f6',
+                backgroundColor: filterType === tab.id ? '#7B2D4E' : '#F0E8DD',
                 color: filterType === tab.id ? 'white' : '#4b5563',
                 transition: 'all 0.2s',
               }}
@@ -368,7 +368,7 @@ const PrayerView = ({ prayerPosts, setPrayerPosts, addNotification }) => {
               borderRadius: '12px',
               padding: '20px',
               marginBottom: '16px',
-              border: isAnswered ? '2px solid #10b981' : `1px solid ${isRequest ? '#dbeafe' : '#fef3c7'}`,
+              border: isAnswered ? '2px solid #10b981' : `1px solid ${isRequest ? '#FAF5EF' : '#fef3c7'}`,
               boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
               transition: 'all 0.2s',
             }}
@@ -384,14 +384,14 @@ const PrayerView = ({ prayerPosts, setPrayerPosts, addNotification }) => {
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 {isRequest ? (
-                  <HandHeart style={{ height: '20px', width: '20px', color: '#2563eb' }} />
+                  <HandHeart style={{ height: '20px', width: '20px', color: '#7B2D4E' }} />
                 ) : (
                   <Star style={{ height: '20px', width: '20px', color: '#d97706' }} />
                 )}
-                <span style={{ fontWeight: '600', fontSize: '14px', color: '#111827' }}>
+                <span style={{ fontWeight: '600', fontSize: '14px', color: '#2D2A26' }}>
                   {post.anonymous ? (
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                      <Shield style={{ height: '14px', width: '14px', color: '#6b7280' }} />
+                      <Shield style={{ height: '14px', width: '14px', color: '#9B9590' }} />
                       Anonymous
                     </span>
                   ) : (
@@ -449,7 +449,7 @@ const PrayerView = ({ prayerPosts, setPrayerPosts, addNotification }) => {
             </div>
 
             {/* Content */}
-            <p style={{ fontSize: '15px', color: '#374151', lineHeight: '1.6', margin: '0 0 16px 0' }}>
+            <p style={{ fontSize: '15px', color: '#6B6560', lineHeight: '1.6', margin: '0 0 16px 0' }}>
               {post.content}
             </p>
 
@@ -503,7 +503,7 @@ const PrayerView = ({ prayerPosts, setPrayerPosts, addNotification }) => {
                     backgroundColor: 'transparent',
                     cursor: 'pointer',
                     fontSize: '12px',
-                    color: '#6b7280',
+                    color: '#9B9590',
                   }}
                 >
                   {isExpanded ? (

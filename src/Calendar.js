@@ -172,7 +172,7 @@ const Calendar = ({ events = [], volunteers = [], attendees = [], onEventClick }
         }}
       >
         <h3 style={{ fontSize: '18px', fontWeight: 'bold', margin: 0 }}>Event Calendar</h3>
-        <p style={{ color: '#6b7280', marginTop: '8px' }}>Loading calendar data...</p>
+        <p style={{ color: '#9B9590', marginTop: '8px' }}>Loading calendar data...</p>
       </div>
     );
   }
@@ -213,7 +213,7 @@ const Calendar = ({ events = [], volunteers = [], attendees = [], onEventClick }
           <button
             onClick={goToPreviousMonth}
             style={{
-              backgroundColor: '#f3f4f6',
+              backgroundColor: '#F0E8DD',
               border: 'none',
               borderRadius: '4px',
               padding: '6px',
@@ -232,7 +232,7 @@ const Calendar = ({ events = [], volunteers = [], attendees = [], onEventClick }
           <button
             onClick={goToNextMonth}
             style={{
-              backgroundColor: '#f3f4f6',
+              backgroundColor: '#F0E8DD',
               border: 'none',
               borderRadius: '4px',
               padding: '6px',
@@ -247,18 +247,18 @@ const Calendar = ({ events = [], volunteers = [], attendees = [], onEventClick }
       </div>
 
       {/* Calendar Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '1px', backgroundColor: '#e5e7eb' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '1px', backgroundColor: '#E8E0D8' }}>
         {/* Week day headers */}
         {weekDays.map((day) => (
           <div
             key={day}
             style={{
-              backgroundColor: '#f9fafb',
+              backgroundColor: '#FAF5EF',
               padding: '8px',
               textAlign: 'center',
               fontSize: '12px',
               fontWeight: 'bold',
-              color: '#6b7280',
+              color: '#9B9590',
             }}
           >
             {day}
@@ -273,7 +273,7 @@ const Calendar = ({ events = [], volunteers = [], attendees = [], onEventClick }
               backgroundColor: 'white',
               minHeight: '80px',
               padding: '4px',
-              border: '1px solid #f3f4f6',
+              border: '1px solid #F0E8DD',
               position: 'relative',
             }}
           >
@@ -284,7 +284,7 @@ const Calendar = ({ events = [], volunteers = [], attendees = [], onEventClick }
                   style={{
                     fontSize: '14px',
                     fontWeight: 'bold',
-                    color: '#374151',
+                    color: '#6B6560',
                     marginBottom: '4px',
                   }}
                 >
@@ -297,8 +297,8 @@ const Calendar = ({ events = [], volunteers = [], attendees = [], onEventClick }
                     key={event.id}
                     onClick={(e) => handleEventClick(event, e)}
                     style={{
-                      backgroundColor: '#dbeafe',
-                      border: '1px solid #3b82f6',
+                      backgroundColor: '#FAF5EF',
+                      border: '1px solid #7B2D4E',
                       borderRadius: '4px',
                       padding: '4px',
                       marginBottom: '2px',
@@ -308,16 +308,16 @@ const Calendar = ({ events = [], volunteers = [], attendees = [], onEventClick }
                       transition: 'all 0.2s ease',
                     }}
                     onMouseEnter={(e) => {
-                      e.target.style.backgroundColor = '#bfdbfe';
+                      e.target.style.backgroundColor = '#E8E0D8';
                       e.target.style.transform = 'scale(1.02)';
                     }}
                     onMouseLeave={(e) => {
-                      e.target.style.backgroundColor = '#dbeafe';
+                      e.target.style.backgroundColor = '#FAF5EF';
                       e.target.style.transform = 'scale(1)';
                     }}
                     title={`Click to view ${event.name}`}
                   >
-                    <div style={{ fontWeight: 'bold', color: '#1d4ed8', marginBottom: '2px' }}>{event.name}</div>
+                    <div style={{ fontWeight: 'bold', color: '#7B2D4E', marginBottom: '2px' }}>{event.name}</div>
 
                     {/* Event Time - Between Name and Metrics */}
                     {event.startTime && event.endTime && (
@@ -326,7 +326,7 @@ const Calendar = ({ events = [], volunteers = [], attendees = [], onEventClick }
                           textAlign: 'center',
                           marginBottom: '2px',
                           fontSize: '8px',
-                          color: '#6b7280',
+                          color: '#9B9590',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -352,14 +352,14 @@ const Calendar = ({ events = [], volunteers = [], attendees = [], onEventClick }
       </div>
 
       {/* Legend */}
-      <div style={{ marginTop: '16px', display: 'flex', gap: '16px', fontSize: '12px', color: '#6b7280' }}>
+      <div style={{ marginTop: '16px', display: 'flex', gap: '16px', fontSize: '12px', color: '#9B9590' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
           <div
             style={{
               width: '12px',
               height: '12px',
-              backgroundColor: '#dbeafe',
-              border: '1px solid #3b82f6',
+              backgroundColor: '#FAF5EF',
+              border: '1px solid #7B2D4E',
               borderRadius: '2px',
             }}
           ></div>

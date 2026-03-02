@@ -59,20 +59,20 @@ const ManageEventModal = ({
           </button>
         </div>
 
-        <div style={{ marginBottom: '24px', padding: '16px', backgroundColor: '#f9fafb', borderRadius: '8px' }}>
-          <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#6b7280' }}>
+        <div style={{ marginBottom: '24px', padding: '16px', backgroundColor: '#FAF5EF', borderRadius: '8px' }}>
+          <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#9B9590' }}>
             <CalendarIcon style={{ height: '16px', width: '16px', display: 'inline', marginRight: '6px' }} />
             {formatEventDates(selectedEvent)}
           </p>
           {selectedEvent.location && (
-            <p style={{ margin: '0', fontSize: '14px', color: '#6b7280' }}>
+            <p style={{ margin: '0', fontSize: '14px', color: '#9B9590' }}>
               <MapPin style={{ height: '16px', width: '16px', display: 'inline', marginRight: '6px' }} />
               {selectedEvent.location}
             </p>
           )}
         </div>
 
-        <div style={{ display: 'flex', gap: '4px', marginBottom: '20px', borderBottom: '1px solid #e5e7eb' }}>
+        <div style={{ display: 'flex', gap: '4px', marginBottom: '20px', borderBottom: '1px solid #E8E0D8' }}>
           <button
             onClick={() => setManageEventTab('volunteers')}
             style={{
@@ -80,8 +80,8 @@ const ManageEventModal = ({
               border: 'none',
               backgroundColor: 'transparent',
               cursor: 'pointer',
-              borderBottom: manageEventTab === 'volunteers' ? '2px solid #3b82f6' : 'none',
-              color: manageEventTab === 'volunteers' ? '#3b82f6' : '#6b7280',
+              borderBottom: manageEventTab === 'volunteers' ? '2px solid #7B2D4E' : 'none',
+              color: manageEventTab === 'volunteers' ? '#7B2D4E' : '#9B9590',
               fontWeight: 'bold',
             }}
           >
@@ -94,8 +94,8 @@ const ManageEventModal = ({
               border: 'none',
               backgroundColor: 'transparent',
               cursor: 'pointer',
-              borderBottom: manageEventTab === 'attendees' ? '2px solid #3b82f6' : 'none',
-              color: manageEventTab === 'attendees' ? '#3b82f6' : '#6b7280',
+              borderBottom: manageEventTab === 'attendees' ? '2px solid #7B2D4E' : 'none',
+              color: manageEventTab === 'attendees' ? '#7B2D4E' : '#9B9590',
               fontWeight: 'bold',
             }}
           >
@@ -117,21 +117,21 @@ const ManageEventModal = ({
                     alignItems: 'center',
                     padding: '12px',
                     marginBottom: '8px',
-                    backgroundColor: isAssigned ? '#f0f9ff' : '#f9fafb',
+                    backgroundColor: isAssigned ? '#f0f9ff' : '#FAF5EF',
                     borderRadius: '8px',
-                    border: isAssigned ? '2px solid #3b82f6' : '1px solid #e5e7eb',
+                    border: isAssigned ? '2px solid #7B2D4E' : '1px solid #E8E0D8',
                   }}
                 >
                   <div>
                     <p style={{ margin: '0 0 2px 0', fontWeight: 'bold' }}>{volunteer.name}</p>
-                    <p style={{ margin: '0', fontSize: '12px', color: '#6b7280' }}>
+                    <p style={{ margin: '0', fontSize: '12px', color: '#9B9590' }}>
                       {volunteer.role} • {volunteer.email}
                     </p>
                   </div>
                   <button
                     onClick={() => toggleVolunteerAssignment(volunteer.id)}
                     style={{
-                      backgroundColor: isAssigned ? '#dc2626' : '#3b82f6',
+                      backgroundColor: isAssigned ? '#dc2626' : '#7B2D4E',
                       color: 'white',
                       border: 'none',
                       borderRadius: '6px',
@@ -171,9 +171,9 @@ const ManageEventModal = ({
                 style={{
                   padding: '12px',
                   marginBottom: '8px',
-                  backgroundColor: attendee.checkedIn ? '#f0f9ff' : '#f9fafb',
+                  backgroundColor: attendee.checkedIn ? '#f0f9ff' : '#FAF5EF',
                   borderRadius: '8px',
-                  border: '1px solid #e5e7eb',
+                  border: '1px solid #E8E0D8',
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
@@ -184,10 +184,10 @@ const ManageEventModal = ({
                         <CheckCircle style={{ height: '16px', width: '16px', color: '#10b981' }} />
                       )}
                     </div>
-                    <p style={{ margin: '0', fontSize: '12px', color: '#6b7280' }}>{attendee.email}</p>
+                    <p style={{ margin: '0', fontSize: '12px', color: '#9B9590' }}>{attendee.email}</p>
 
                     {attendee.groupMembers.length > 0 && (
-                      <div style={{ marginTop: '8px', fontSize: '12px', color: '#6b7280' }}>
+                      <div style={{ marginTop: '8px', fontSize: '12px', color: '#9B9590' }}>
                         +{attendee.groupMembers.length} additional:{' '}
                         {attendee.groupMembers.map((m) => m.name).join(', ')}
                       </div>
@@ -213,7 +213,7 @@ const ManageEventModal = ({
             ))}
 
             {getEventAttendees(selectedEvent.id).length === 0 && (
-              <div style={{ textAlign: 'center', padding: '20px', color: '#6b7280' }}>
+              <div style={{ textAlign: 'center', padding: '20px', color: '#9B9590' }}>
                 <User style={{ height: '32px', width: '32px', margin: '0 auto 8px' }} />
                 <p>No attendees registered yet</p>
               </div>
@@ -225,7 +225,7 @@ const ManageEventModal = ({
           <button
             onClick={onClose}
             style={{
-              backgroundColor: '#3b82f6',
+              backgroundColor: '#7B2D4E',
               color: 'white',
               padding: '10px 20px',
               border: 'none',

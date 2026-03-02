@@ -49,7 +49,7 @@ const EventTemplateCreationModal = ({ newEventTemplate, setNewEventTemplate, onC
               padding: '8px',
             }}
           >
-            <X style={{ height: '20px', width: '20px', color: '#6b7280' }} />
+            <X style={{ height: '20px', width: '20px', color: '#9B9590' }} />
           </button>
         </div>
 
@@ -98,7 +98,7 @@ const EventTemplateCreationModal = ({ newEventTemplate, setNewEventTemplate, onC
 
         <div style={{ marginBottom: '24px' }}>
           <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Custom Questions</label>
-          <p style={{ fontSize: '12px', color: '#6b7280', marginBottom: '12px' }}>
+          <p style={{ fontSize: '12px', color: '#9B9590', marginBottom: '12px' }}>
             Add custom questions that attendees will answer when registering for events using this template.
           </p>
 
@@ -106,11 +106,11 @@ const EventTemplateCreationModal = ({ newEventTemplate, setNewEventTemplate, onC
             <div
               key={index}
               style={{
-                border: '1px solid #e5e7eb',
+                border: '1px solid #E8E0D8',
                 borderRadius: '6px',
                 padding: '12px',
                 marginBottom: '8px',
-                backgroundColor: '#f9fafb',
+                backgroundColor: '#FAF5EF',
               }}
             >
               <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
@@ -223,8 +223,8 @@ const EventTemplateCreationModal = ({ newEventTemplate, setNewEventTemplate, onC
               }));
             }}
             style={{
-              backgroundColor: '#f3f4f6',
-              color: '#374151',
+              backgroundColor: '#F0E8DD',
+              color: '#6B6560',
               border: '1px solid #d1d5db',
               borderRadius: '6px',
               padding: '8px 16px',
@@ -244,8 +244,8 @@ const EventTemplateCreationModal = ({ newEventTemplate, setNewEventTemplate, onC
           <button
             onClick={onClose}
             style={{
-              backgroundColor: '#f3f4f6',
-              color: '#374151',
+              backgroundColor: '#F0E8DD',
+              color: '#6B6560',
               border: 'none',
               borderRadius: '6px',
               padding: '12px 24px',
@@ -265,7 +265,7 @@ const EventTemplateCreationModal = ({ newEventTemplate, setNewEventTemplate, onC
               }
             }}
             style={{
-              backgroundColor: '#3b82f6',
+              backgroundColor: '#7B2D4E',
               color: 'white',
               border: 'none',
               borderRadius: '6px',

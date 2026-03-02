@@ -121,7 +121,7 @@ const EditAttendeeModal = ({ selectedAttendee, setSelectedAttendee, onClose, onU
             onClick={onUpdate}
             style={{
               flex: 1,
-              backgroundColor: '#3b82f6',
+              backgroundColor: '#7B2D4E',
               color: 'white',
               padding: '10px',
               border: 'none',
@@ -137,7 +137,7 @@ const EditAttendeeModal = ({ selectedAttendee, setSelectedAttendee, onClose, onU
             style={{
               flex: 1,
               backgroundColor: 'white',
-              color: '#374151',
+              color: '#6B6560',
               padding: '10px',
               border: '1px solid #d1d5db',
               borderRadius: '4px',
